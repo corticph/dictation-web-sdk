@@ -1,9 +1,8 @@
 {
-  "name": "corti-dictation",
+  "name": "corti-dictation-web-sdk",
   "description": "Webcomponent corti-dictation following open-wc recommendations",
-  "license": "MIT",
   "author": "corti-dictation",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "main": "dist/src/index.js",
   "module": "dist/src/index.js",
@@ -15,6 +14,8 @@
     "analyze": "cem analyze --litelement",
     "start": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"web-dev-server\"",
     "build": "tsc && npm run analyze -- --exclude dist",
+    "build:min": "tsc && esbuild dist/src/index.js --bundle --minify --format=esm --outfile=min-dist/corti-dictation.min.js",
+
     "prepublish": "tsc && npm run analyze -- --exclude dist",
     "lint": "eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
     "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
@@ -44,6 +45,7 @@
     "@web/storybook-framework-web-components": "^0.1.2",
     "@web/test-runner": "^0.18.2",
     "concurrently": "^8.2.2",
+    "esbuild": "^0.25.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",
