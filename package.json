@@ -2,17 +2,21 @@
   "name": "@corti/dictation-web",
   "description": "Web component for Corti Dictation",
   "author": "Corti ApS",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "exports": {
-    ".": "./dist/index.js"
+    "import": "./dist/index.js",
+    "default": "./dist/bundle.js"
   },
+  "unpkg": "dist/bundle.js",
   "files": ["dist"],
   "scripts": {
     "analyze": "cem analyze --litelement",
     "build": "tsc && npm run analyze -- --exclude dist",
+    "build:bundle": "esbuild dist/index.js --bundle --outfile=dist/bundle.js --format=esm --platform=browser",
+    "release": "npm run build && npm run build:bundle && npm publish --access public",
     "start": "npm run build && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"web-dev-server\"",
     "prepublish": "tsc && npm run analyze -- --exclude dist",
     "lint": "eslint --ext .ts,.tsx src --ignore-path .gitignore && prettier \"src/**/*.ts\" --check --ignore-path .gitignore",
@@ -24,10 +28,10 @@
     "storybook:build": "tsc && npm run analyze -- --exclude dist && storybook build"
   },
   "dependencies": {
-    "lit": "^3.1.4",
-    "sinon": "^19.0.2"
+    "lit": "^3.1.4"
   },
   "devDependencies": {
+    "sinon": "^19.0.2",
     "@custom-elements-manifest/analyzer": "^0.10.3",
     "@open-wc/eslint-config": "^12.0.3",
     "@open-wc/testing": "^4.0.0",

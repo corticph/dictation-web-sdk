@@ -1,7 +1,7 @@
-import { getAudioDevices } from './utils';
-import { AudioService } from './audioService';
-import { DictationService } from './DictationService';
-import type { DictationConfig, RecordingState } from './types';
+import { getAudioDevices } from './utils.js';
+import { AudioService } from './audioService.js';
+import { DictationService } from './DictationService.js';
+import type { DictationConfig, RecordingState } from './types.js';
 
 export class RecorderManager extends EventTarget {
   public devices: MediaDeviceInfo[] = [];
@@ -24,66 +24,63 @@ export class RecorderManager extends EventTarget {
     this.selectedDevice = deviceResponse.defaultDeviceId || '';
     return deviceResponse;
   }
+  private dispatchCustomEvent(eventName: string, detail: unknown): void {
+    this.dispatchEvent(
+      new CustomEvent(eventName, {
+        detail,
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
 
   async startRecording(params: {
     dictationConfig: DictationConfig;
     authToken: string;
-  }) {
+  }): Promise<void> {
     this._updateRecordingState('initializing');
+
+    // Get media stream and initialize audio service.
     try {
       this._mediaStream = await navigator.mediaDevices.getUserMedia({
         audio: { deviceId: this.selectedDevice },
       });
       this._audioService = new AudioService(this._mediaStream);
-      this._dictationService = new DictationService(this._mediaStream, params);
-
-      // Forward custom events from dictation service
-      this._dictationService.addEventListener('error', e =>
-        this.dispatchEvent(
-          new CustomEvent('error', {
-            detail: (e as CustomEvent).detail,
-            bubbles: true,
-            composed: true,
-          }),
-        ),
-      );
-      this._dictationService.addEventListener('stream-closed', () =>
-        this.stopRecording(),
-      );
-      this._dictationService.addEventListener('transcript', e =>
-        this.dispatchEvent(
-          new CustomEvent('transcript', {
-            detail: (e as CustomEvent).detail,
-            bubbles: true,
-            composed: true,
-          }),
-        ),
-      );
     } catch (error) {
-      this.dispatchEvent(
-        new CustomEvent('error', {
-          detail: error,
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      this.dispatchCustomEvent('error', error);
       this._updateRecordingState('stopped');
       return;
     }
 
-    this._dictationService?.startRecording();
+    // Initialize dictation service.
+    try {
+      this._dictationService = new DictationService(this._mediaStream, params);
+    } catch (error) {
+      this.dispatchCustomEvent('error', error);
+      this.stopRecording();
+      return;
+    }
+
+    // Forward dictation service events.
+    this._dictationService.addEventListener('error', e =>
+      this.dispatchCustomEvent('error', (e as CustomEvent).detail),
+    );
+    this._dictationService.addEventListener('stream-closed', () =>
+      this.stopRecording(),
+    );
+    this._dictationService.addEventListener('transcript', e =>
+      this.dispatchCustomEvent('transcript', (e as CustomEvent).detail),
+    );
+
+    this._dictationService.startRecording();
     this._updateRecordingState('recording');
+
+    // Update audio level visualization.
     this._visualiserInterval = window.setInterval(() => {
       const level = this._audioService
         ? this._audioService.getAudioLevel() * 3
         : 0;
-      this.dispatchEvent(
-        new CustomEvent('audio-level-changed', {
-          detail: { audioLevel: level },
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      this.dispatchCustomEvent('audio-level-changed', { audioLevel: level });
     }, 150);
   }
 
