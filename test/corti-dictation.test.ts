@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit';
+import { html } from 'lit';
 import { fixture, expect, oneEvent } from '@open-wc/testing';
 import sinon from 'sinon';
 import { CortiDictation } from '../src/index.js';
@@ -7,9 +7,13 @@ import '../src/corti-dictation.js';
 // Stub class for RecorderManager
 class StubRecorderManager extends EventTarget {
   devices: MediaDeviceInfo[] = [];
+
   selectedDevice = '';
+
   startRecording = sinon.spy();
+
   stopRecording = sinon.spy();
+
   async initialize() {
     // Simulate async initialization.
   }

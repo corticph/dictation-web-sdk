@@ -1,4 +1,5 @@
-import { LitElement, svg, css, html } from 'lit';
+/* eslint-disable max-classes-per-file */
+import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 @customElement('icon-mic-on')

@@ -5,7 +5,7 @@ const ThemeStyles = css`
     /* Component Defaults */
     --component-font-family: 'Segoe UI', Roboto, sans-serif;
     --component-text-color: #333;
-    
+
     /* Card Defaults */
     --card-background: #fff;
     --card-border-color: #ddd;
@@ -13,7 +13,7 @@ const ThemeStyles = css`
     --card-border-radius: 8px;
     --card-inner-border-radius: 6px;
     --card-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    
+
     /* Actions Defaults */
     --action-plain-border-color: #ccc;
     --action-plain-background-hover: #ddd;
@@ -39,7 +39,6 @@ const ThemeStyles = css`
     --callout-orange-border: #fd7e1499;
     --callout-orange-text: #fd7e14;
 
-
     /* Visualiser Defaults */
     --visualiser-background: #e0e0e0;
     --visualiser-level-color: #28a745;
@@ -47,7 +46,7 @@ const ThemeStyles = css`
 
   @media (prefers-color-scheme: dark) {
     :host {
-       /* Component Dark */
+      /* Component Dark */
       --component-text-color: #eee;
 
       /* Card Dark */
