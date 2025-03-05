@@ -7,7 +7,7 @@
   "plugins": ["@typescript-eslint", "html"],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx"],
+      "files": ["src/**/*.ts", "src/**/*.tsx"],
       "rules": {
         "import/extensions": "off"
       }

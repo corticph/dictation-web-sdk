@@ -12,12 +12,17 @@ The **Corti Dictation SDK** is a web component that enables real-time speech-to-
 Include the SDK in your project by importing the JavaScript module:
 
 ```html
-<script type="module" src="path-to/corti-dictation.js"></script>
+npm i @corti/dictation-web
 ```
 
 ---
 
 ## Usage
+
+### Demo
+
+🚀 [Hosted Demo](https://codepen.io/hccullen/pen/OPJmxQR)
+
 
 ### Basic Example
 
@@ -29,21 +34,12 @@ Include the SDK in your project by importing the JavaScript module:
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-  <corti-dictation></corti-dictation>
+  <corti-dictation authToken="xyz"></corti-dictation>
   <textarea id="transcript" placeholder="Transcript will appear here..."></textarea>
 
   <script type="module">
-    import './path-to/corti-dictation.js';
+    import '@corti/dictation-web';
 
-    const dictationEl = document.querySelector('corti-dictation');
-    
-    // Provide server configuration
-    dictationEl.serverConfig = {
-      environment: "dev-weu",
-      tenant: "copsdev",
-      token: "your-api-token"
-    };
-    
     // Listen for events
     dictationEl.addEventListener('transcript', (e) => {
       document.getElementById('transcript').value += e.detail.data.text + ' ';
@@ -64,7 +60,7 @@ Include the SDK in your project by importing the JavaScript module:
 | `devices`       | Array   | List of available recording devices. |
 | `recordingState` | String  | Current state of recording (`stopped`, `recording`). |
 | `dictationConfig` | Object | Configuration settings for dictation. |
-| `serverConfig`  | Object  | Server authentication and API settings. Must include `environment`, `tenant`, and `token`. |
+| `authToken`  | String  | Authentication token from OAuth server |
 
 ### Methods
 
@@ -85,16 +81,7 @@ Include the SDK in your project by importing the JavaScript module:
 
 ## Authentication
 
-This SDK does not handle OAuth 2.0 authentication. The client must provide an API key or access token in `serverConfig.token`.
-
-Example:
-```js
-dictationEl.serverConfig = {
-  environment: "prod-eu",
-  tenant: "your-tenant-id",
-  token: "your-api-key"
-};
-```
+This SDK does not handle OAuth 2.0 authentication. The client must provide an API key or access token as a string in `authToken`.
 
 ---
 

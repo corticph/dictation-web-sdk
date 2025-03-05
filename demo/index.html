@@ -45,7 +45,7 @@
 </head>
 <body>
   <!-- Directly using the custom element without Lit -->
-  <corti-dictation></corti-dictation>
+  <corti-dictation authToken=""></corti-dictation>
   
   <!-- Textarea to display transcript text -->
   <textarea id="transcript" placeholder="Transcript will appear here..."></textarea>
@@ -54,18 +54,12 @@
 
   <script type="module">
     // Import the custom component (assumes corti-dictation.js registers the element)
-    import '../dist/src/corti-dictation.js';
+    import '../dist/index.js';
 
-    // Server configuration for the dictation component
-    const serverConfig = {
-      environment: "a",
-      tenant: "a",
-      token: "a",
-    };
+   
 
     // Get the corti-dictation element and assign the server config
     const dictationEl = document.querySelector('corti-dictation');
-    dictationEl.serverConfig = serverConfig;
 
     // Listen to events from the dictation component
     dictationEl.addEventListener('recording-state-changed', (e) => {

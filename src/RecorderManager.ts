@@ -1,7 +1,7 @@
 import { getAudioDevices } from './utils';
 import { AudioService } from './audioService';
 import { DictationService } from './DictationService';
-import type { DictationConfig, RecordingState, ServerConfig } from './types';
+import type { DictationConfig, RecordingState } from './types';
 
 export class RecorderManager extends EventTarget {
   public devices: MediaDeviceInfo[] = [];
@@ -27,7 +27,7 @@ export class RecorderManager extends EventTarget {
 
   async startRecording(params: {
     dictationConfig: DictationConfig;
-    serverConfig: ServerConfig;
+    authToken: string;
   }) {
     this._updateRecordingState('initializing');
     try {
