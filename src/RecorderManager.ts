@@ -5,12 +5,17 @@ import type { DictationConfig, RecordingState, ServerConfig } from './types';
 
 export class RecorderManager extends EventTarget {
   public devices: MediaDeviceInfo[] = [];
+
   public selectedDevice: string = '';
+
   public recordingState: RecordingState = 'stopped';
 
   private _mediaStream: MediaStream | null = null;
+
   private _audioService: AudioService | null = null;
+
   private _dictationService: DictationService | null = null;
+
   private _visualiserInterval?: number;
 
   async initialize() {
@@ -45,6 +50,7 @@ export class RecorderManager extends EventTarget {
         }))
       );
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error getting user media:', error);
       this._updateRecordingState('stopped');
       return;

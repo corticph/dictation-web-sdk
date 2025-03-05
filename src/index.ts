@@ -1,5 +1,5 @@
 // corti-dictation.ts
-import { html, LitElement, css } from 'lit';
+import { html, LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { RecorderManager } from './RecorderManager';
 import './components/settings-menu';

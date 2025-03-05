@@ -1,9 +1,10 @@
-import { LitElement, html, css} from 'lit-element';
+import { LitElement, html, css} from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
 @customElement('audio-visualiser')
 export class AudioVisualiser extends LitElement {
   @property({ type: Number }) level = 0; // expects a value from 0 to 100
+
   @property({ type: Boolean }) active = true;
 
   static styles = css`
@@ -37,7 +38,7 @@ export class AudioVisualiser extends LitElement {
     // Each segment represents 20%. Using Math.ceil to fill segments optimistically.
     const activeSegments = Math.round(this.level * 5);
     const segments = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 5; i += 1) {
       segments.push(html`
         <div class="segment ${i < activeSegments ? 'active' : ''}"></div>
       `);

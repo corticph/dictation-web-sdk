@@ -3,8 +3,11 @@ import { DictationConfig, ServerConfig } from "./types";
 
 export class DictationService extends EventTarget {
   private mediaRecorder: MediaRecorder;
+
   private webSocket!: WebSocket;
+
   private serverConfig!: ServerConfig;
+
   private dictationConfig!: DictationConfig;
 
   constructor(mediaStream: MediaStream, {dictationConfig, serverConfig}: {dictationConfig: DictationConfig, serverConfig: ServerConfig}) {
@@ -13,15 +16,6 @@ export class DictationService extends EventTarget {
     this.serverConfig = serverConfig;
     this.dictationConfig = dictationConfig;
     this.mediaRecorder.ondataavailable = event => {
-      // if (event.data && event.data.size > 0) {
-      //   this.dispatchEvent(
-      //     new CustomEvent('audio-packet', {
-      //       detail: event.data,
-      //       bubbles: true,
-      //       composed: true,
-      //     }),
-      //   );
-      // }
 
       // if webSocket is open, send the data
       if (this.webSocket?.readyState === WebSocket.OPEN) {
@@ -68,15 +62,11 @@ export class DictationService extends EventTarget {
         }),
       );
     }
-    this.webSocket.onmessage = (e) => {
 
-    };
     // this implementation should be replaced by handling a proper 'ended' message from the server
     this.webSocket.onclose = async() => {
       this.webSocket.close();
-      clearTimeout(timeOut);
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      return
+      clearTimeout(timeOut);      
     };
     timeOut = setTimeout(() => {
       if (this.webSocket?.readyState === WebSocket.OPEN) {

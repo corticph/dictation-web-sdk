@@ -66,7 +66,7 @@ export class SettingsMenu extends LitElement {
   private _selectDevice(deviceId: string): void {
     this.selectedDevice = deviceId;
     // Find the device object
-    const device = this.devices.find(device => device.deviceId === deviceId);
+    const device = this.devices.find(d => d.deviceId === deviceId);
     this.dispatchEvent(
       new CustomEvent('recording-device-changed', {
         detail: device,

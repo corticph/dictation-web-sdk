@@ -1,5 +1,6 @@
 export class AudioService {
     private audioContext: AudioContext;
+
     private analyser: AnalyserNode;
   
     constructor(mediaStream: MediaStream) {
@@ -15,7 +16,7 @@ export class AudioService {
       const dataArray = new Uint8Array(bufferLength);
       this.analyser.getByteTimeDomainData(dataArray);
       let sum = 0;
-      for (let i = 0; i < bufferLength; i++) {
+      for (let i = 0; i < bufferLength; i += 1) {
         const normalized = (dataArray[i] - 128) / 128;
         sum += normalized * normalized;
       }

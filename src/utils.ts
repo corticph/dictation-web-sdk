@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Returns the localized name of a language given its BCP-47 code.
  *
@@ -27,18 +28,17 @@ export async function requestMicAccess(): Promise<void> {
     if (!navigator.permissions) {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       stream.getTracks().forEach(track => track.stop());
-      console.log('Microphone permission requested (via fallback).');
       return;
     }
 
     const permissionStatus = await navigator.permissions.query({
+      // eslint-disable-next-line no-undef
       name: 'microphone' as PermissionName,
     });
 
     if (permissionStatus.state === 'prompt') {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       stream.getTracks().forEach(track => track.stop());
-      console.log('Microphone permission requested.');
     } else if (permissionStatus.state === 'denied') {
       console.warn('Microphone permission is denied.');
     }
