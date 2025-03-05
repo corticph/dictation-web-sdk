@@ -8,7 +8,6 @@ import { LANGUAGES_SUPPORTED } from '../constants';
 import { getLanguageName } from '../utils';
 import CalloutStyles from '../styles/callout';
 
-
 @customElement('settings-menu')
 export class SettingsMenu extends LitElement {
   @property({ type: Array })
@@ -60,7 +59,7 @@ export class SettingsMenu extends LitElement {
     `,
     ButtonStyles,
     SelectStyles,
-    CalloutStyles
+    CalloutStyles,
   ];
 
   private _selectDevice(deviceId: string): void {
@@ -84,64 +83,61 @@ export class SettingsMenu extends LitElement {
         </button>
         <div id="settings-popover" popover>
           <div class="settings-wrapper">
-          ${
-            this.settingsDisabled
+            ${this.settingsDisabled
               ? html`
                   <div class="callout orange">
-                      Recording is in progress. Stop recording to change settings.
-                    
+                    Recording is in progress. Stop recording to change settings.
                   </div>
                 `
-              : ''
-          }
-          <div class="form-group">
-            <label id="device-select-label" for="device-select">
-              Recording Device
-            </label>
-            <select
-              id="device-select"
-              aria-labelledby="device-select-label"
-              @change=${(e: Event) => {
-                this._selectDevice((e.target as HTMLSelectElement).value);
-              }}
-              ?disabled=${this.settingsDisabled}
-            >
-              ${this.devices.map(
-                device => html`
-                  <option
-                    value=${device.deviceId}
-                    ?selected=${this.selectedDevice === device.deviceId}
-                  >
-                    ${device.label || 'Unknown Device'}
-                  </option>
-                `,
-              )}
-            </select>
-          </div>
-          <div class="form-group">
-            <label id="language-select-label" for="language-select">
-              Dictation Language
-            </label>
-            <select
-              id="language-select"
-              aria-labelledby="language-select-label"
-              @change=${(e: Event) => {
-                this._selectDevice((e.target as HTMLSelectElement).value);
-              }}
-              ?disabled=${this.settingsDisabled}
-            >
-              ${LANGUAGES_SUPPORTED.map(
-                language => html`
-                  <option
-                    value=${language}
-                    ?selected=${this.selectedLanguage === language}
-                  >
-                    ${getLanguageName(language)}
-                  </option>
-                `,
-              )}
-            </select>
-          </div>
+              : ''}
+            <div class="form-group">
+              <label id="device-select-label" for="device-select">
+                Recording Device
+              </label>
+              <select
+                id="device-select"
+                aria-labelledby="device-select-label"
+                @change=${(e: Event) => {
+                  this._selectDevice((e.target as HTMLSelectElement).value);
+                }}
+                ?disabled=${this.settingsDisabled}
+              >
+                ${this.devices.map(
+                  device => html`
+                    <option
+                      value=${device.deviceId}
+                      ?selected=${this.selectedDevice === device.deviceId}
+                    >
+                      ${device.label || 'Unknown Device'}
+                    </option>
+                  `,
+                )}
+              </select>
+            </div>
+            <div class="form-group">
+              <label id="language-select-label" for="language-select">
+                Dictation Language
+              </label>
+              <select
+                id="language-select"
+                aria-labelledby="language-select-label"
+                @change=${(e: Event) => {
+                  this._selectDevice((e.target as HTMLSelectElement).value);
+                }}
+                ?disabled=${this.settingsDisabled}
+              >
+                ${LANGUAGES_SUPPORTED.map(
+                  language => html`
+                    <option
+                      value=${language}
+                      ?selected=${this.selectedLanguage === language}
+                    >
+                      ${getLanguageName(language)}
+                    </option>
+                  `,
+                )}
+              </select>
+            </div>
           </div>
         </div>
       </div>

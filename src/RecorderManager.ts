@@ -25,7 +25,10 @@ export class RecorderManager extends EventTarget {
     return deviceResponse;
   }
 
-  async startRecording(params: {dictationConfig: DictationConfig, serverConfig: ServerConfig}) {
+  async startRecording(params: {
+    dictationConfig: DictationConfig;
+    serverConfig: ServerConfig;
+  }) {
     this._updateRecordingState('initializing');
     try {
       this._mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -35,23 +38,35 @@ export class RecorderManager extends EventTarget {
       this._dictationService = new DictationService(this._mediaStream, params);
 
       // Forward custom events from dictation service
-      this._dictationService.addEventListener('audio-packet', e =>
-        this.dispatchEvent(new CustomEvent('audio-packet', {
-          detail: (e as CustomEvent).detail,
-          bubbles: true,
-          composed: true,
-        }))
+      this._dictationService.addEventListener('error', e =>
+        this.dispatchEvent(
+          new CustomEvent('error', {
+            detail: (e as CustomEvent).detail,
+            bubbles: true,
+            composed: true,
+          }),
+        ),
+      );
+      this._dictationService.addEventListener('stream-closed', () =>
+        this.stopRecording(),
       );
       this._dictationService.addEventListener('transcript', e =>
-        this.dispatchEvent(new CustomEvent('transcript', {
-          detail: (e as CustomEvent).detail,
-          bubbles: true,
-          composed: true,
-        }))
+        this.dispatchEvent(
+          new CustomEvent('transcript', {
+            detail: (e as CustomEvent).detail,
+            bubbles: true,
+            composed: true,
+          }),
+        ),
       );
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Error getting user media:', error);
+      this.dispatchEvent(
+        new CustomEvent('error', {
+          detail: error,
+          bubbles: true,
+          composed: true,
+        }),
+      );
       this._updateRecordingState('stopped');
       return;
     }
@@ -59,12 +74,16 @@ export class RecorderManager extends EventTarget {
     this._dictationService?.startRecording();
     this._updateRecordingState('recording');
     this._visualiserInterval = window.setInterval(() => {
-      const level = this._audioService ? this._audioService.getAudioLevel() * 3 : 0;
-      this.dispatchEvent(new CustomEvent('audio-level-changed', {
-        detail: { audioLevel: level },
-        bubbles: true,
-        composed: true,
-      }));
+      const level = this._audioService
+        ? this._audioService.getAudioLevel() * 3
+        : 0;
+      this.dispatchEvent(
+        new CustomEvent('audio-level-changed', {
+          detail: { audioLevel: level },
+          bubbles: true,
+          composed: true,
+        }),
+      );
     }, 150);
   }
 
@@ -84,10 +103,12 @@ export class RecorderManager extends EventTarget {
 
   private _updateRecordingState(state: RecordingState) {
     this.recordingState = state;
-    this.dispatchEvent(new CustomEvent('recording-state-changed', {
-      detail: { state },
-      bubbles: true,
-      composed: true,
-    }));
+    this.dispatchEvent(
+      new CustomEvent('recording-state-changed', {
+        detail: { state },
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 }

@@ -76,6 +76,10 @@
       console.log('Recording Device Changed:', e.detail);
     });
 
+    dictationEl.addEventListener('error', (e) => {
+      console.error(e.detail);
+    });
+
     // Update the textarea with transcript text when received
     dictationEl.addEventListener('transcript', (e) => {
       const {data} = e.detail

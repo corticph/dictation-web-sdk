@@ -37,26 +37,26 @@ export class CortiDictation extends LitElement {
     super.connectedCallback();
     await this.recorderManager.initialize();
     this.devices = this.recorderManager.devices;
-  
+
     // Map event names to any extra handling logic
     const eventHandlers: Record<string, (e: CustomEvent) => void> = {
-      'recording-state-changed': (e) => {
+      'recording-state-changed': e => {
         this.recordingState = e.detail.state;
       },
-      'audio-level-changed': (e) => {
+      'audio-level-changed': e => {
         this._audioLevel = e.detail.audioLevel;
         this.requestUpdate();
       },
     };
-  
+
     const eventsToRelay = [
       'recording-state-changed',
       'audio-level-changed',
-      'audio-packet',
+      'error',
       'transcript',
     ];
-  
-    eventsToRelay.forEach((eventName) => {
+
+    eventsToRelay.forEach(eventName => {
       this.recorderManager.addEventListener(eventName, (e: Event) => {
         const customEvent = e as CustomEvent;
         // Perform any additional handling if defined
@@ -69,12 +69,12 @@ export class CortiDictation extends LitElement {
             detail: customEvent.detail,
             bubbles: true,
             composed: true,
-          })
+          }),
         );
       });
     });
   }
-  
+
   public toggleRecording() {
     this._toggleRecording();
   }
@@ -83,7 +83,10 @@ export class CortiDictation extends LitElement {
     if (this.recordingState === 'recording') {
       this.recorderManager.stopRecording();
     } else if (this.recordingState === 'stopped') {
-      this.recorderManager.startRecording({dictationConfig: this.dictationConfig, serverConfig: this.serverConfig});
+      this.recorderManager.startRecording({
+        dictationConfig: this.dictationConfig,
+        serverConfig: this.serverConfig,
+      });
     }
   }
 
@@ -93,13 +96,19 @@ export class CortiDictation extends LitElement {
     this.recorderManager.selectedDevice = customEvent.detail.deviceId;
     if (this.recordingState === 'recording') {
       await this.recorderManager.stopRecording();
-      await this.recorderManager.startRecording({dictationConfig: this.dictationConfig, serverConfig: this.serverConfig});
+      await this.recorderManager.startRecording({
+        dictationConfig: this.dictationConfig,
+        serverConfig: this.serverConfig,
+      });
     }
   }
 
   render() {
-
-    const isConfigured = this.serverConfig && this.serverConfig.token && this.serverConfig.environment && this.serverConfig.tenant;
+    const isConfigured =
+      this.serverConfig &&
+      this.serverConfig.token &&
+      this.serverConfig.environment &&
+      this.serverConfig.tenant;
     if (!isConfigured) {
       return html`
         <div class="wrapper">
@@ -123,14 +132,14 @@ export class CortiDictation extends LitElement {
           ${isLoading
             ? html`<icon-loading-spinner></icon-loading-spinner>`
             : isRecording
-            ? html`<icon-recording></icon-recording>`
-            : html`<icon-mic-on></icon-mic-on>`}
+              ? html`<icon-recording></icon-recording>`
+              : html`<icon-mic-on></icon-mic-on>`}
           <audio-visualiser
             .level=${this._audioLevel}
             .active=${isRecording}
           ></audio-visualiser>
         </button>
-  
+
         <settings-menu
           .devices=${this.devices}
           .selectedDevice=${this.recorderManager.selectedDevice}

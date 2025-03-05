@@ -1,4 +1,4 @@
-import { LitElement, html, css} from 'lit';
+import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
 @customElement('audio-visualiser')
@@ -8,9 +8,9 @@ export class AudioVisualiser extends LitElement {
   @property({ type: Boolean }) active = true;
 
   static styles = css`
-  :host {
-    height: 100%;
-  }
+    :host {
+      height: 100%;
+    }
     .container {
       display: flex;
       width: 8px;
@@ -19,7 +19,7 @@ export class AudioVisualiser extends LitElement {
       gap: 1px;
       opacity: 0.5;
       &.active {
-       opacity: 1 
+        opacity: 1;
       }
     }
     .segment {
@@ -44,9 +44,7 @@ export class AudioVisualiser extends LitElement {
       `);
     }
     return html`
-      <div class="container ${this.active ? 'active' : ''}">
-        ${segments}
-      </div>
+      <div class="container ${this.active ? 'active' : ''}">${segments}</div>
     `;
   }
 }
