@@ -91,7 +91,7 @@ export class RecorderManager extends EventTarget {
       this._audioService = new AudioService(this._mediaStream);
     } catch (error) {
       this.dispatchCustomEvent('error', error);
-      this._updateRecordingState('stopped');
+      this.stopRecording();
       return;
     }
 
@@ -124,7 +124,7 @@ export class RecorderManager extends EventTarget {
       );
     } catch (error) {
       this.dispatchCustomEvent('error', error);
-      this._updateRecordingState('stopped');
+      this.stopRecording();
       return;
     }
 
@@ -138,7 +138,7 @@ export class RecorderManager extends EventTarget {
           composed: true,
         }),
       );
-      this._updateRecordingState('stopped');
+      this.stopRecording();
       return;
     }
     this._updateRecordingState('recording');
@@ -160,7 +160,6 @@ export class RecorderManager extends EventTarget {
     }
     if (this._mediaStream) {
       this._mediaStream.getTracks().forEach(track => track.stop());
-      this._mediaStream = null;
     }
     this.dispatchCustomEvent('audio-level-changed', { audioLevel: 0 });
     await this._dictationService?.stopRecording();
