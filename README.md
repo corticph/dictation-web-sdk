@@ -29,23 +29,30 @@ npm i @corti/dictation-web
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-  <corti-dictation authToken="xyz"></corti-dictation>
-  <textarea id="transcript" placeholder="Transcript will appear here..."></textarea>
+  <body>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@corti/dictation-web/dist/bundle.min.js"
+      preload
+      type="module"
+    ></script>
+    <corti-dictation></corti-dictation>
+    <textarea
+      id="transcript"
+      placeholder="Transcript will appear here..."
+    ></textarea>
 
-  <script type="module">
-    import '@corti/dictation-web';
+    <script>
+      const dictationEl = document.getElementById('transcript');
 
-    // Listen for events
-    dictationEl.addEventListener('transcript', (e) => {
-      document.getElementById('transcript').value += e.detail.data.text + ' ';
-    });
-  </script>
-</body>
+      // Set properties
+      dictationEl.authToken = "abc"
+
+      // Listen for events
+      dictationEl.addEventListener('transcript', e => {
+        document.getElementById('transcript').value += e.detail.data.text + ' ';
+      });
+    </script>
+  </body>
 </html>
 ```
 
@@ -55,12 +62,13 @@ npm i @corti/dictation-web
 
 ### Properties
 
-| Property         | Type    | Description |
-|-----------------|---------|-------------|
-| `devices`       | Array   | List of available recording devices. |
-| `recordingState` | String  | Current state of recording (`stopped`, `recording`). |
-| `dictationConfig` | Object | Configuration settings for dictation. |
-| `authToken`  | String  | Authentication token from OAuth server |
+| Property          | Type   | Description                                          |
+| ----------------- | ------ | ---------------------------------------------------- |
+| `devices`         | Array  | List of available recording devices.                 |
+| `selectedDevice`  | Object | The selected device used for recording (MediaDeviceInfo). |
+| `recordingState`  | String | Current state of recording (`stopped`, `recording`, `initializing` and `stopping`, ). |
+| `dictationConfig` | Object | Configuration settings for dictation.                |
+| `authToken`       | String | Authentication token from OAuth server               |
 
 ### Methods
 
@@ -70,14 +78,14 @@ npm i @corti/dictation-web
 
 ### Events
 
-| Event                      | Description |
-|----------------------------|-------------|
-| `recording-state-changed`  | Fired when the recording state changes. `detail.state` contains the new state. |
-| `recording-device-changed` | Fired when the user switches recording devices. `detail.deviceId` contains the new device ID. |
-| `transcript`               | Fired when a new transcript is received. `detail.data.text` contains the transcribed text. |
-| `audio-level-changed`      | Fired when the input audio level changes. `detail.audioLevel` contains the new level. |
-
----
+| Event                      | Description                                                                                   |
+| -------------------------- | --------------------------------------------------------------------------------------------- |
+| `ready`  | Fired once the component is ready.                |
+| `recording-state-changed`  | Fired when the recording state changes. `detail.state` contains the new state.                |
+| `recording-devices-changed` | Fired when the user switches recording devices or the list of recording devices changes. `detail.devices` contains the full devices list. `detail.selectedDevice` contains the current selected device. |
+| `transcript`               | Fired when a new transcript is received. `detail.data.text` contains the transcribed text.    |
+| `audio-level-changed`      | Fired when the input audio level changes. `detail.audioLevel` contains the new level.         |
+| `error`      | Fired on error. `detail` contains the full error.         |
 
 ## Authentication
 

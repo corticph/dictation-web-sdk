@@ -5,6 +5,6 @@ export const DEFAULT_DICTATION_CONFIG: DictationConfig = {
   primaryLanguage: 'en',
   interimResults: true,
   spokenPunctuation: true,
-  automaticPunctuation: true,
+  automaticPunctuation: false,
   model: 'others',
 };

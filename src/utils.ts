@@ -60,7 +60,7 @@ export async function requestMicAccess(): Promise<void> {
  */
 export async function getAudioDevices(): Promise<{
   devices: MediaDeviceInfo[];
-  defaultDeviceId?: string;
+  defaultDevice?: MediaDeviceInfo;
 }> {
   if (!navigator.mediaDevices?.enumerateDevices) {
     console.error('Media devices API not supported.');
@@ -73,9 +73,8 @@ export async function getAudioDevices(): Promise<{
     // Optionally: await navigator.mediaDevices.getUserMedia({ audio: true });
     const devices = await navigator.mediaDevices.enumerateDevices();
     const audioDevices = devices.filter(device => device.kind === 'audioinput');
-    const defaultDeviceId =
-      audioDevices.length > 0 ? audioDevices[0].deviceId : undefined;
-    return { devices: audioDevices, defaultDeviceId };
+    const defaultDevice = audioDevices.length > 0 ? audioDevices[0] : undefined;
+    return { devices: audioDevices, defaultDevice };
   } catch (error) {
     console.error('Error enumerating devices:', error);
     return { devices: [] };

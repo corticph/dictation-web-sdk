@@ -56,7 +56,7 @@ export class DictationService extends EventTarget {
     };
     this.webSocket.onmessage = event => {
       const message = JSON.parse(event.data);
-      if (message.type === 'config') {
+      if (message.type === 'CONFIG_ACCEPTED') {
         this.mediaRecorder.start(250);
       } else if (message.type === 'transcript') {
         this.dispatchEvent(

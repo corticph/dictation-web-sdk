@@ -1,26 +1,46 @@
 // mic-selector.ts
 import { LitElement, html, css, TemplateResult, CSSResultGroup } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 
-import ButtonStyles from '../styles/buttons';
-import SelectStyles from '../styles/select';
-import { LANGUAGES_SUPPORTED } from '../constants';
-import { getLanguageName } from '../utils';
-import CalloutStyles from '../styles/callout';
+import ButtonStyles from '../styles/buttons.js';
+import SelectStyles from '../styles/select.js';
+import { LANGUAGES_SUPPORTED } from '../constants.js';
+import { getAudioDevices, getLanguageName } from '../utils.js';
+import CalloutStyles from '../styles/callout.js';
 
 @customElement('settings-menu')
 export class SettingsMenu extends LitElement {
-  @property({ type: Array })
-  devices: MediaDeviceInfo[] = [];
-
   @property({ type: String })
-  selectedDevice: string = '';
+  selectedDevice: MediaDeviceInfo | undefined;
 
   @property({ type: String })
   selectedLanguage: string = '';
 
   @property({ type: Boolean })
   settingsDisabled: boolean = false;
+
+  @state()
+  private _devices: MediaDeviceInfo[] = [];
+
+  constructor() {
+    super();
+    navigator.mediaDevices.addEventListener(
+      'devicechange',
+      this.handleDevicesChange.bind(this),
+    );
+  }
+
+  // on load, get the available devices
+  async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    const deviceResponse = await getAudioDevices();
+    this._devices = deviceResponse.devices;
+  }
+
+  private async handleDevicesChange() {
+    const deviceResponse = await getAudioDevices();
+    this._devices = deviceResponse.devices;
+  }
 
   static styles: CSSResultGroup = [
     css`
@@ -63,12 +83,18 @@ export class SettingsMenu extends LitElement {
   ];
 
   private _selectDevice(deviceId: string): void {
-    this.selectedDevice = deviceId;
     // Find the device object
-    const device = this.devices.find(d => d.deviceId === deviceId);
+    const device = this._devices.find(d => d.deviceId === deviceId);
+    if (!device) {
+      return;
+    }
+    this.selectedDevice = device;
     this.dispatchEvent(
-      new CustomEvent('recording-device-changed', {
-        detail: device,
+      new CustomEvent('recording-devices-changed', {
+        detail: {
+          devices: this._devices,
+          selectedDevice: device,
+        },
         bubbles: true,
         composed: true,
       }),
@@ -102,11 +128,11 @@ export class SettingsMenu extends LitElement {
                 }}
                 ?disabled=${this.settingsDisabled}
               >
-                ${this.devices.map(
+                ${this._devices.map(
                   device => html`
                     <option
                       value=${device.deviceId}
-                      ?selected=${this.selectedDevice === device.deviceId}
+                      ?selected=${this.selectedDevice === device}
                     >
                       ${device.label || 'Unknown Device'}
                     </option>

@@ -9,18 +9,12 @@ import ThemeStyles from './styles/theme';
 import ButtonStyles from './styles/buttons';
 import ComponentStyles from './styles/ComponentStyles';
 
-import { DictationConfig } from './types';
-import { DEFAULT_DICTATION_CONFIG } from './constants';
-import CalloutStyles from './styles/callout';
+import type { DictationConfig, RecordingState } from './types.js';
+import { DEFAULT_DICTATION_CONFIG } from './constants.js';
+import CalloutStyles from './styles/callout.js';
 
 export class CortiDictation extends LitElement {
   static styles = [ButtonStyles, ThemeStyles, ComponentStyles, CalloutStyles];
-
-  @property({ type: Array })
-  devices: MediaDeviceInfo[] = [];
-
-  @property({ type: String, reflect: true })
-  recordingState = 'stopped';
 
   @property({ type: Object })
   dictationConfig: DictationConfig = DEFAULT_DICTATION_CONFIG;
@@ -29,19 +23,36 @@ export class CortiDictation extends LitElement {
   authToken: string | undefined;
 
   @state()
-  private _audioLevel = 0;
+  private _audioLevel: number = 0;
+
+  @state()
+  private _recordingState: RecordingState = 'stopped';
+
+  @state()
+  private _selectedDevice: MediaDeviceInfo | undefined;
+
+  @state()
+  private _devices: MediaDeviceInfo[] = [];
 
   private recorderManager = new RecorderManager();
 
   async connectedCallback() {
     super.connectedCallback();
-    await this.recorderManager.initialize();
-    this.devices = this.recorderManager.devices;
+    const devices = await this.recorderManager.initialize();
+    if (devices.selectedDevice) {
+      this._selectedDevice = this.recorderManager.selectedDevice;
+      this._devices = this.recorderManager.devices;
+      this.dispatchEvent(new CustomEvent('ready'));
+    }
 
     // Map event names to any extra handling logic
     const eventHandlers: Record<string, (e: CustomEvent) => void> = {
       'recording-state-changed': e => {
-        this.recordingState = e.detail.state;
+        this._recordingState = e.detail.state;
+      },
+      'devices-changed': () => {
+        this._devices = [...this.recorderManager.devices];
+        this.requestUpdate();
       },
       'audio-level-changed': e => {
         this._audioLevel = e.detail.audioLevel;
@@ -51,9 +62,11 @@ export class CortiDictation extends LitElement {
 
     const eventsToRelay = [
       'recording-state-changed',
+      'recording-devices-changed',
       'audio-level-changed',
       'error',
       'transcript',
+      'ready',
     ];
 
     eventsToRelay.forEach(eventName => {
@@ -79,24 +92,23 @@ export class CortiDictation extends LitElement {
     this._toggleRecording();
   }
 
-  _toggleRecording() {
-    if (!this.authToken) return;
-    if (this.recordingState === 'recording') {
-      this.recorderManager.stopRecording();
-    } else if (this.recordingState === 'stopped') {
-      this.recorderManager.startRecording({
-        dictationConfig: this.dictationConfig,
-        authToken: this.authToken,
-      });
-    }
+  public get selectedDevice(): MediaDeviceInfo | null {
+    return this.recorderManager.selectedDevice || null;
   }
 
-  // Handle device change events if needed
-  async _onRecordingDeviceChanged(event: Event) {
-    const customEvent = event as CustomEvent;
+  public get recordingState(): RecordingState {
+    return this._recordingState;
+  }
+
+  public get devices(): MediaDeviceInfo[] {
+    return this._devices;
+  }
+
+  public async setRecordingDevice(device: MediaDeviceInfo) {
+    this.recorderManager.selectedDevice = device;
+    this._selectedDevice = device;
     if (!this.authToken) return;
-    this.recorderManager.selectedDevice = customEvent.detail.deviceId;
-    if (this.recordingState === 'recording') {
+    if (this._recordingState === 'recording') {
       await this.recorderManager.stopRecording();
       await this.recorderManager.startRecording({
         dictationConfig: this.dictationConfig,
@@ -105,22 +117,38 @@ export class CortiDictation extends LitElement {
     }
   }
 
+  _toggleRecording() {
+    if (!this.authToken) return;
+    if (this._recordingState === 'recording') {
+      this.recorderManager.stopRecording();
+    } else if (this._recordingState === 'stopped') {
+      this.recorderManager.startRecording({
+        dictationConfig: this.dictationConfig,
+        authToken: this.authToken,
+      });
+    }
+  }
+
+  // Handle device change events if needed
+  async _onRecordingDevicesChanged(event: Event) {
+    const customEvent = event as CustomEvent;
+    this.setRecordingDevice(customEvent.detail.selectedDevice);
+  }
+
   render() {
     const isConfigured = this.authToken;
     if (!isConfigured) {
       return html`
         <div class="wrapper">
-          <div class="callout red tiny">
-            Please configure the server settings in the parent component.
-          </div>
+          <div class="callout red small">No Auth Token</div>
         </div>
       `;
     }
 
     const isLoading =
-      this.recordingState === 'initializing' ||
-      this.recordingState === 'stopping';
-    const isRecording = this.recordingState === 'recording';
+      this._recordingState === 'initializing' ||
+      this._recordingState === 'stopping';
+    const isRecording = this._recordingState === 'recording';
     return html`
       <div class="wrapper">
         <button
@@ -139,10 +167,9 @@ export class CortiDictation extends LitElement {
         </button>
 
         <settings-menu
-          .devices=${this.devices}
-          .selectedDevice=${this.recorderManager.selectedDevice}
-          ?settingsDisabled=${this.recordingState !== 'stopped'}
-          @recording-device-changed=${this._onRecordingDeviceChanged}
+          .selectedDevice=${this._selectedDevice}
+          ?settingsDisabled=${this._recordingState !== 'stopped'}
+          @recording-devices-changed=${this._onRecordingDevicesChanged}
         ></settings-menu>
       </div>
     `;
