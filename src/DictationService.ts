@@ -1,14 +1,12 @@
-import { DictationConfig } from './types';
-import { decodeToken } from './utils';
+import type { DictationConfig, ServerConfig } from './types.js';
+import { decodeToken } from './utils.js';
 
 export class DictationService extends EventTarget {
   private mediaRecorder: MediaRecorder;
-
   private webSocket!: WebSocket;
-
-  private authToken!: string;
-
-  private dictationConfig!: DictationConfig;
+  private authToken: string;
+  private dictationConfig: DictationConfig;
+  private serverConfig: ServerConfig;
 
   constructor(
     mediaStream: MediaStream,
@@ -21,8 +19,15 @@ export class DictationService extends EventTarget {
     this.mediaRecorder = new MediaRecorder(mediaStream);
     this.authToken = authToken;
     this.dictationConfig = dictationConfig;
+
+    // Decode token during construction.
+    const config = decodeToken(this.authToken);
+    if (!config) {
+      throw new Error('Invalid token');
+    }
+    this.serverConfig = config;
+
     this.mediaRecorder.ondataavailable = event => {
-      // if webSocket is open, send the data
       if (this.webSocket?.readyState === WebSocket.OPEN) {
         this.webSocket.send(event.data);
       }
@@ -44,6 +49,7 @@ export class DictationService extends EventTarget {
 
     const url = `wss://api.${serverConfig.environment}.corti.app/audio-bridge/v2/transcribe?tenant-name=${serverConfig.tenant}&token=Bearer%20${this.authToken}`;
     this.webSocket = new WebSocket(url);
+
     this.webSocket.onopen = () => {
       this.webSocket.send(
         JSON.stringify({
@@ -52,61 +58,41 @@ export class DictationService extends EventTarget {
         }),
       );
     };
+
     this.webSocket.onmessage = event => {
       const message = JSON.parse(event.data);
-      if (message.type === 'CONFIG_ACCEPTED') {
+      if (message.type === 'config') {
         this.mediaRecorder.start(250);
       } else if (message.type === 'transcript') {
-        this.dispatchEvent(
-          new CustomEvent('transcript', {
-            detail: message,
-            bubbles: true,
-            composed: true,
-          }),
-        );
+        this.dispatchCustomEvent('transcript', message);
       }
     };
+
     this.webSocket.onerror = event => {
-      this.dispatchEvent(
-        new CustomEvent('error', {
-          detail: event,
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      this.dispatchCustomEvent('error', event);
     };
+
     this.webSocket.onclose = event => {
-      this.dispatchEvent(
-        new CustomEvent('stream-closed', {
-          detail: event,
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      this.dispatchCustomEvent('stream-closed', event);
     };
   }
 
-  public async stopRecording() {
+  public async stopRecording(): Promise<void> {
     this.mediaRecorder.stop();
 
     if (this.webSocket?.readyState === WebSocket.OPEN) {
-      this.webSocket.send(
-        JSON.stringify({
-          type: 'end',
-        }),
-      );
+      this.webSocket.send(JSON.stringify({ type: 'end' }));
     }
 
-    const timeOut: NodeJS.Timeout = setTimeout(() => {
+    const timeout = setTimeout(() => {
       if (this.webSocket?.readyState === WebSocket.OPEN) {
         this.webSocket.close();
       }
     }, 10000);
 
-    // This implementation should be replaced by handling a proper 'ended' message from the server
     this.webSocket.onclose = () => {
       this.webSocket?.close();
-      clearTimeout(timeOut);
+      clearTimeout(timeout);
     };
   }
 }

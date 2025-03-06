@@ -1,4 +1,4 @@
-import { DictationConfig } from './types';
+import { DictationConfig } from './types.js';
 
 export const LANGUAGES_SUPPORTED = ['en', 'da'];
 export const DEFAULT_DICTATION_CONFIG: DictationConfig = {

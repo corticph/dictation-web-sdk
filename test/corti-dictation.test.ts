@@ -2,7 +2,7 @@
 import { html } from 'lit';
 import { fixture, expect, oneEvent } from '@open-wc/testing';
 import sinon from 'sinon';
-import { CortiDictation } from '../src/index.js';
+import CortiDictation from '../src/index.js';
 import '../src/corti-dictation.js';
 
 // Stub class for RecorderManager
@@ -33,7 +33,7 @@ describe('CortiDictation', () => {
     );
     // Override the recorderManager to avoid real initialization.
     (el as any).recorderManager = stubRecorder;
-    el.serverConfig = {}; // Missing required keys.
+    el.authToken = ''; // Empty string
     await el.updateComplete;
     const callout = el.shadowRoot?.querySelector('.callout');
     expect(callout).to.exist;
@@ -43,12 +43,11 @@ describe('CortiDictation', () => {
   });
 
   it('renders the recording icon when recordingState is "recording"', async () => {
-    const configured = { token: 'abc', environment: 'prod', tenant: '123' };
     const el = await fixture<CortiDictation>(
       html`<corti-dictation></corti-dictation>`,
     );
     (el as any).recorderManager = stubRecorder;
-    el.serverConfig = configured;
+    el.authToken = 'abc';
     el.recordingState = 'recording';
     await el.updateComplete;
     const recordingIcon = el.shadowRoot?.querySelector('icon-recording');
@@ -56,12 +55,11 @@ describe('CortiDictation', () => {
   });
 
   it('calls startRecording when button is clicked and state is "stopped"', async () => {
-    const configured = { token: 'abc', environment: 'prod', tenant: '123' };
     const el = await fixture<CortiDictation>(
       html`<corti-dictation></corti-dictation>`,
     );
     (el as any).recorderManager = stubRecorder;
-    el.serverConfig = configured;
+    el.authToken = 'abc';
     el.recordingState = 'stopped';
     await el.updateComplete;
     const button = el.shadowRoot!.querySelector('button')!;
@@ -70,16 +68,15 @@ describe('CortiDictation', () => {
     // Check that startRecording was called with a config object
     const args = stubRecorder.startRecording.getCall(0).args[0];
     expect(args).to.have.property('dictationConfig');
-    expect(args).to.have.property('serverConfig');
+    expect(args).to.have.property('authToken');
   });
 
   it('calls stopRecording when button is clicked and state is "recording"', async () => {
-    const configured = { token: 'abc', environment: 'prod', tenant: '123' };
     const el = await fixture<CortiDictation>(
       html`<corti-dictation></corti-dictation>`,
     );
     (el as any).recorderManager = stubRecorder;
-    el.serverConfig = configured;
+    el.authToken = '';
     el.recordingState = 'recording';
     await el.updateComplete;
     const button = el.shadowRoot!.querySelector('button')!;
@@ -88,12 +85,11 @@ describe('CortiDictation', () => {
   });
 
   it('updates the audio level when an "audio-level-changed" event is dispatched', async () => {
-    const configured = { token: 'abc', environment: 'prod', tenant: '123' };
     const el = await fixture<CortiDictation>(
       html`<corti-dictation></corti-dictation>`,
     );
     (el as any).recorderManager = stubRecorder;
-    el.serverConfig = configured;
+    el.authToken = 'abc';
     el.recordingState = 'recording';
     await el.updateComplete;
     const testLevel = 42;
@@ -108,12 +104,11 @@ describe('CortiDictation', () => {
   });
 
   it('re-dispatches recorderManager events', async () => {
-    const configured = { token: 'abc', environment: 'prod', tenant: '123' };
     const el = await fixture<CortiDictation>(
       html`<corti-dictation></corti-dictation>`,
     );
     (el as any).recorderManager = stubRecorder;
-    el.serverConfig = configured;
+    el.authToken = 'abc';
     el.recordingState = 'stopped';
     await el.updateComplete;
     // Listen for a re-dispatched event from the component.

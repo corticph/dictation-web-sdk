@@ -1,17 +1,17 @@
 // corti-dictation.ts
 import { html, LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { RecorderManager } from './RecorderManager';
-import './components/settings-menu';
-import './components/audio-visualiser';
-import './icons/icons';
-import ThemeStyles from './styles/theme';
-import ButtonStyles from './styles/buttons';
-import ComponentStyles from './styles/ComponentStyles';
+import { RecorderManager } from './RecorderManager.js';
+import './components/settings-menu.js';
+import './components/audio-visualiser.js';
+import './icons/icons.js';
+import ThemeStyles from './styles/theme.js';
+import ButtonStyles from './styles/buttons.js';
+import ComponentStyles from './styles/ComponentStyles.js';
 
-import type { DictationConfig, RecordingState } from './types.js';
-import { DEFAULT_DICTATION_CONFIG } from './constants.js';
-import CalloutStyles from './styles/callout.js';
+import type { DictationConfig, RecordingState } from './types.js.js';
+import { DEFAULT_DICTATION_CONFIG } from './constants.js.js';
+import CalloutStyles from './styles/callout.js.js';
 
 export class CortiDictation extends LitElement {
   static styles = [ButtonStyles, ThemeStyles, ComponentStyles, CalloutStyles];
