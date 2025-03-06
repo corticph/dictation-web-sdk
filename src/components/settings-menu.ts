@@ -2,11 +2,11 @@
 import { LitElement, html, css, TemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import ButtonStyles from '../styles/buttons';
-import SelectStyles from '../styles/select';
-import { LANGUAGES_SUPPORTED } from '../constants';
-import { getLanguageName } from '../utils';
-import CalloutStyles from '../styles/callout';
+import ButtonStyles from '../styles/buttons.js';
+import SelectStyles from '../styles/select.js';
+import { LANGUAGES_SUPPORTED } from '../constants.js';
+import { getLanguageName } from '../utils.js';
+import CalloutStyles from '../styles/callout.js';
 
 @customElement('settings-menu')
 export class SettingsMenu extends LitElement {

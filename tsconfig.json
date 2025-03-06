@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
     "target": "es2021",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "Node16",
+    "moduleResolution": "node16",
     "noEmitOnError": true,
     "lib": ["es2021", "dom", "DOM.Iterable"],
     "strict": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "importHelpers": true,
+    "importHelpers": false,
     "outDir": "dist",
     "sourceMap": true,
     "inlineSources": true,
