@@ -1,6 +1,7 @@
 ## editors
 /.idea
 /.vscode
+tsconfig.tsbuildinfo
 
 ## system files
 .DS_Store

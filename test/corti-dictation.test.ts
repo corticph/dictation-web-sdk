@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { html } from 'lit';
 import { fixture, expect, oneEvent } from '@open-wc/testing';
 import sinon from 'sinon';
@@ -28,7 +29,7 @@ describe('CortiDictation', () => {
 
   it('renders a callout warning if serverConfig is not configured', async () => {
     const el = await fixture<CortiDictation>(
-      html`<corti-dictation></corti-dictation>`
+      html`<corti-dictation></corti-dictation>`,
     );
     // Override the recorderManager to avoid real initialization.
     (el as any).recorderManager = stubRecorder;
@@ -37,14 +38,14 @@ describe('CortiDictation', () => {
     const callout = el.shadowRoot?.querySelector('.callout');
     expect(callout).to.exist;
     expect(el.shadowRoot?.textContent).to.include(
-      'Please configure the server settings in the parent component'
+      'Please configure the server settings in the parent component',
     );
   });
 
   it('renders the recording icon when recordingState is "recording"', async () => {
     const configured = { token: 'abc', environment: 'prod', tenant: '123' };
     const el = await fixture<CortiDictation>(
-      html`<corti-dictation></corti-dictation>`
+      html`<corti-dictation></corti-dictation>`,
     );
     (el as any).recorderManager = stubRecorder;
     el.serverConfig = configured;
@@ -57,7 +58,7 @@ describe('CortiDictation', () => {
   it('calls startRecording when button is clicked and state is "stopped"', async () => {
     const configured = { token: 'abc', environment: 'prod', tenant: '123' };
     const el = await fixture<CortiDictation>(
-      html`<corti-dictation></corti-dictation>`
+      html`<corti-dictation></corti-dictation>`,
     );
     (el as any).recorderManager = stubRecorder;
     el.serverConfig = configured;
@@ -75,7 +76,7 @@ describe('CortiDictation', () => {
   it('calls stopRecording when button is clicked and state is "recording"', async () => {
     const configured = { token: 'abc', environment: 'prod', tenant: '123' };
     const el = await fixture<CortiDictation>(
-      html`<corti-dictation></corti-dictation>`
+      html`<corti-dictation></corti-dictation>`,
     );
     (el as any).recorderManager = stubRecorder;
     el.serverConfig = configured;
@@ -89,14 +90,16 @@ describe('CortiDictation', () => {
   it('updates the audio level when an "audio-level-changed" event is dispatched', async () => {
     const configured = { token: 'abc', environment: 'prod', tenant: '123' };
     const el = await fixture<CortiDictation>(
-      html`<corti-dictation></corti-dictation>`
+      html`<corti-dictation></corti-dictation>`,
     );
     (el as any).recorderManager = stubRecorder;
     el.serverConfig = configured;
     el.recordingState = 'recording';
     await el.updateComplete;
     const testLevel = 42;
-    const event = new CustomEvent('audio-level-changed', { detail: { audioLevel: testLevel } });
+    const event = new CustomEvent('audio-level-changed', {
+      detail: { audioLevel: testLevel },
+    });
     stubRecorder.dispatchEvent(event);
     await el.updateComplete;
     const audioVisualiser = el.shadowRoot?.querySelector('audio-visualiser');
@@ -107,7 +110,7 @@ describe('CortiDictation', () => {
   it('re-dispatches recorderManager events', async () => {
     const configured = { token: 'abc', environment: 'prod', tenant: '123' };
     const el = await fixture<CortiDictation>(
-      html`<corti-dictation></corti-dictation>`
+      html`<corti-dictation></corti-dictation>`,
     );
     (el as any).recorderManager = stubRecorder;
     el.serverConfig = configured;
@@ -115,7 +118,9 @@ describe('CortiDictation', () => {
     await el.updateComplete;
     // Listen for a re-dispatched event from the component.
     setTimeout(() => {
-      const event = new CustomEvent('transcript', { detail: { transcript: 'hello' } });
+      const event = new CustomEvent('transcript', {
+        detail: { transcript: 'hello' },
+      });
       stubRecorder.dispatchEvent(event);
     });
     const dispatchedEvent = (await oneEvent(el, 'transcript')) as CustomEvent;
