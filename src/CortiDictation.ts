@@ -9,9 +9,9 @@ import ThemeStyles from './styles/theme.js';
 import ButtonStyles from './styles/buttons.js';
 import ComponentStyles from './styles/ComponentStyles.js';
 
-import type { DictationConfig, RecordingState } from './types.js.js';
-import { DEFAULT_DICTATION_CONFIG } from './constants.js.js';
-import CalloutStyles from './styles/callout.js.js';
+import type { DictationConfig, RecordingState } from './types.js';
+import { DEFAULT_DICTATION_CONFIG } from './constants.js';
+import CalloutStyles from './styles/callout.js';
 
 export class CortiDictation extends LitElement {
   static styles = [ButtonStyles, ThemeStyles, ComponentStyles, CalloutStyles];

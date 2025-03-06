@@ -34,6 +34,16 @@ export class DictationService extends EventTarget {
     };
   }
 
+  private dispatchCustomEvent(eventName: string, detail?: unknown): void {
+    this.dispatchEvent(
+      new CustomEvent(eventName, {
+        detail,
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
   public startRecording() {
     const serverConfig = decodeToken(this.authToken);
     if (!serverConfig) {

@@ -58,15 +58,6 @@ export class RecorderManager extends EventTarget {
       selectedDevice: this.selectedDevice || deviceResponse.defaultDevice,
     });
   }
-  private dispatchCustomEvent(eventName: string, detail: unknown): void {
-    this.dispatchEvent(
-      new CustomEvent(eventName, {
-        detail,
-        bubbles: true,
-        composed: true,
-      }),
-    );
-  }
 
   async startRecording(params: {
     dictationConfig: DictationConfig;

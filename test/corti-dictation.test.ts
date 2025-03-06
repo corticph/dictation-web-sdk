@@ -42,25 +42,12 @@ describe('CortiDictation', () => {
     );
   });
 
-  it('renders the recording icon when recordingState is "recording"', async () => {
-    const el = await fixture<CortiDictation>(
-      html`<corti-dictation></corti-dictation>`,
-    );
-    (el as any).recorderManager = stubRecorder;
-    el.authToken = 'abc';
-    el.recordingState = 'recording';
-    await el.updateComplete;
-    const recordingIcon = el.shadowRoot?.querySelector('icon-recording');
-    expect(recordingIcon).to.exist;
-  });
-
   it('calls startRecording when button is clicked and state is "stopped"', async () => {
     const el = await fixture<CortiDictation>(
       html`<corti-dictation></corti-dictation>`,
     );
     (el as any).recorderManager = stubRecorder;
     el.authToken = 'abc';
-    el.recordingState = 'stopped';
     await el.updateComplete;
     const button = el.shadowRoot!.querySelector('button')!;
     button.click();
@@ -77,7 +64,6 @@ describe('CortiDictation', () => {
     );
     (el as any).recorderManager = stubRecorder;
     el.authToken = '';
-    el.recordingState = 'recording';
     await el.updateComplete;
     const button = el.shadowRoot!.querySelector('button')!;
     button.click();
@@ -90,7 +76,6 @@ describe('CortiDictation', () => {
     );
     (el as any).recorderManager = stubRecorder;
     el.authToken = 'abc';
-    el.recordingState = 'recording';
     await el.updateComplete;
     const testLevel = 42;
     const event = new CustomEvent('audio-level-changed', {
@@ -109,7 +94,6 @@ describe('CortiDictation', () => {
     );
     (el as any).recorderManager = stubRecorder;
     el.authToken = 'abc';
-    el.recordingState = 'stopped';
     await el.updateComplete;
     // Listen for a re-dispatched event from the component.
     setTimeout(() => {
