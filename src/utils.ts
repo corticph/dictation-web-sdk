@@ -115,8 +115,6 @@ export function decodeToken(token: string) {
   // Replace URL-safe characters to match standard base64 encoding
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
 
-  console.log('Decoded base64:', base64);
-
   // Decode the base64 string into a JSON string
   let jsonPayload: string;
   try {
@@ -129,8 +127,6 @@ export function decodeToken(token: string) {
   } catch (error) {
     throw new Error('Failed to decode token payload');
   }
-
-  console.log('Decoded payload:', jsonPayload);
 
   // Parse the JSON string to obtain token details
   let tokenDetails: { iss: string; [key: string]: unknown };
@@ -153,11 +149,8 @@ export function decodeToken(token: string) {
     /^https:\/\/(keycloak|auth)\.([^.]+)\.corti\.app\/realms\/([^/]+)/;
   const match = issuerUrl.match(regex);
 
-  console.log('Matched URL pattern:', match);
-
   // If the issuer URL matches the expected pattern, return the extracted values along with the token
   if (match) {
-    console.log('Matched URL pattern:', match);
     return {
       environment: match[2],
       tenant: match[3],

@@ -42,8 +42,6 @@ export class DictationService extends EventTarget {
       return;
     }
 
-    console.log('serverConfig:', serverConfig);
-
     const url = `wss://api.${serverConfig.environment}.corti.app/audio-bridge/v2/transcribe?tenant-name=${serverConfig.tenant}&token=Bearer%20${this.authToken}`;
     this.webSocket = new WebSocket(url);
     this.webSocket.onopen = () => {
