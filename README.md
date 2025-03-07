@@ -86,6 +86,7 @@ Alternatively, use a CDN to start quickly (not recommended).
 | `recording-state-changed`  | Fired when the recording state changes. `detail.state` contains the new state.                |
 | `recording-devices-changed` | Fired when the user switches recording devices or the list of recording devices changes. `detail.devices` contains the full devices list. `detail.selectedDevice` contains the current selected device. |
 | `transcript`               | Fired when a new transcript is received. `detail.data.text` contains the transcribed text.    |
+| `command`               | Fired whenever a new command is detected.    |
 | `audio-level-changed`      | Fired when the input audio level changes. `detail.audioLevel` contains the new level.         |
 | `error`      | Fired on error. `detail` contains the full error.         |
 
