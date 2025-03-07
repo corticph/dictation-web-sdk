@@ -22,6 +22,9 @@ export class CortiDictation extends LitElement {
   @property({ type: String })
   authToken: string | undefined;
 
+  @property({ type: Boolean })
+  debug_displayAudio: boolean = false;
+
   @state()
   private _audioLevel: number = 0;
 
@@ -125,6 +128,7 @@ export class CortiDictation extends LitElement {
       this.recorderManager.startRecording({
         dictationConfig: this.dictationConfig,
         authToken: this.authToken,
+        debug_displayAudio: this.debug_displayAudio,
       });
     }
   }

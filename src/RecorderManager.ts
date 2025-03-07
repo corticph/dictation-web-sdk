@@ -1,4 +1,4 @@
-import { getAudioDevices } from './utils.js';
+import { getAudioDevices, getMediaStream } from './utils.js';
 import { AudioService } from './audioService.js';
 import { DictationService } from './DictationService.js';
 import type { DictationConfig, RecordingState } from './types.js';
@@ -62,18 +62,17 @@ export class RecorderManager extends EventTarget {
   async startRecording(params: {
     dictationConfig: DictationConfig;
     authToken: string;
+    debug_displayAudio?: boolean;
   }): Promise<void> {
     this._updateRecordingState('initializing');
 
-    // Get media stream and initialize audio service.
-    const constraints: MediaStreamConstraints =
-      this.selectedDevice && this.selectedDevice.deviceId !== 'default'
-        ? { audio: { deviceId: { exact: this.selectedDevice.deviceId } } }
-        : { audio: true };
-
     try {
-      this._mediaStream =
-        await navigator.mediaDevices.getUserMedia(constraints);
+      this._mediaStream = await getMediaStream(
+        params.debug_displayAudio
+          ? 'display_audio'
+          : this.selectedDevice?.deviceId,
+      );
+
       this._mediaStream.getTracks().forEach((track: MediaStreamTrack) => {
         track.addEventListener('ended', () => {
           if (this.recordingState === 'recording') {

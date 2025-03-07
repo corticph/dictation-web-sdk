@@ -106,7 +106,7 @@ export function decodeToken(token: string) {
   // Validate the token structure (should contain at least header and payload parts)
   const parts = token.split('.');
   if (parts.length < 2) {
-    throw new Error('Invalid token format: expected header.payload.signature');
+    throw new Error('Invalid token format');
   }
 
   // Retrieve the payload (second part) of the JWT token
@@ -157,4 +157,31 @@ export function decodeToken(token: string) {
       token,
     };
   }
+}
+
+export async function getMediaStream(deviceId?: string): Promise<MediaStream> {
+  if (!deviceId) {
+    throw new Error('No device ID provided');
+  }
+
+  if (deviceId === 'display_audio') {
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      audio: true,
+      video: true,
+    });
+    stream.getTracks().forEach(track => {
+      if (track.kind === 'video') {
+        stream.removeTrack(track);
+      }
+    });
+    return stream;
+  }
+
+  // Get media stream and initialize audio service.
+  const constraints: MediaStreamConstraints =
+    deviceId !== 'default'
+      ? { audio: { deviceId: { exact: deviceId } } }
+      : { audio: true };
+
+  return await navigator.mediaDevices.getUserMedia(constraints);
 }

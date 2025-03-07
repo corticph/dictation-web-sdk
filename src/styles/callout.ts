@@ -10,7 +10,7 @@ const CalloutStyles = css`
     display: flex;
     font-size: 0.9rem;
     gap: 8px;
-    align-items: flex-start;
+    align-items: center;
     max-width: 100%;
     height: fit-content;
     &.red {

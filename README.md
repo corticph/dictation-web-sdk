@@ -70,6 +70,7 @@ Alternatively, use a CDN to start quickly (not recommended).
 | `recordingState`  | String | Current state of recording (`stopped`, `recording`, `initializing` and `stopping`, ). |
 | `dictationConfig` | Object | Configuration settings for dictation.                |
 | `authToken`       | String | Authentication token from OAuth server               |
+| `debug_displayAudio`       | Boolean | Overrides any device selection and instead uses getDisplayMedia to stream system audio. SHould only be used for debugging               |
 
 ### Methods
 
