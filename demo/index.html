@@ -44,8 +44,7 @@
   </style>
 </head>
 <body>
-  <!-- Directly using the custom element without Lit -->
-  <corti-dictation authToken="ff"></corti-dictation>
+  <corti-dictation></corti-dictation>
   
   <!-- Textarea to display transcript text -->
   <textarea id="transcript" placeholder="Transcript will appear here..."></textarea>
@@ -53,29 +52,37 @@
   <div id="interimTranscript"></div>
 
   <script type="module">
-    // Import the custom component (assumes corti-dictation.js registers the element)
+    // Import the Corti Dictation SDK
+    // import "@corti/dictation-web";
     import '../dist/index.js';
 
    
 
     // Get the corti-dictation element and assign the server config
-    const dictationEl = document.querySelector('corti-dictation');
+    const dictation = document.querySelector('corti-dictation');
+    dictation.authToken = "YOUR_AUTH_TOKEN";
 
     // Listen to events from the dictation component
-    dictationEl.addEventListener('recording-state-changed', (e) => {
+    dictation.addEventListener('recording-state-changed', (e) => {
       console.log('Recording state:', e.detail.state);
     });
 
-    dictationEl.addEventListener('recording-device-changed', (e) => {
+    dictation.addEventListener('recording-devices-changed', (e) => {
       console.log('Recording Device Changed:', e.detail);
     });
 
-    dictationEl.addEventListener('error', (e) => {
+
+    dictation.addEventListener('devices-changed', (e) => {
+      console.log('Device List Changed:', e.detail);
+    });
+
+
+    dictation.addEventListener('error', (e) => {
       console.error(e.detail);
     });
 
     // Update the textarea with transcript text when received
-    dictationEl.addEventListener('transcript', (e) => {
+    dictation.addEventListener('transcript', (e) => {
       const {data} = e.detail
       const transcriptArea = document.getElementById('transcript');
       const interimTranscript = document.getElementById('interimTranscript');

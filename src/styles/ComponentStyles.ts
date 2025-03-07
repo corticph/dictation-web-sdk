@@ -11,6 +11,7 @@ const ComponentStyles = css`
     width: min-content;
     gap: 4px;
     height: 46px;
+    width: 98px;
     box-sizing: border-box;
     overflow: hidden;
   }

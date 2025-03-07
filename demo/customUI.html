@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Corti Dictation Example</title>
+    <style>
+      /* Hide the built-in UI of corti-dictation */
+      corti-dictation {
+        display: none;
+      }
+      /* Basic styling for custom UI */
+      #controls {
+        margin-bottom: 1rem;
+      }
+      #audioVisualizer {
+        border: 1px solid #ccc;
+        width: 300px;
+        height: 50px;
+        display: block;
+        margin-bottom: 1rem;
+      }
+      textarea {
+        width: 100%;
+        height: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- The hidden Corti Dictation component -->
+    <corti-dictation id="dictation"></corti-dictation>
+
+    <!-- Custom UI Elements -->
+    <div id="controls">
+      <button id="toggleButton">Start</button>
+      <select id="micSelector"></select>
+    </div>
+    <canvas id="audioVisualizer" width="300" height="50"></canvas>
+    <textarea
+      id="transcriptArea"
+      placeholder="Transcript will appear here..."
+    ></textarea>
+
+    <script type="module">
+      // Import the Corti Dictation SDK
+      // import "@corti/dictation-web";
+      import '../dist/index.js';
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const dictation = document.getElementById('dictation');
+        const toggleButton = document.getElementById('toggleButton');
+        const micSelector = document.getElementById('micSelector');
+        const transcriptArea = document.getElementById('transcriptArea');
+        const audioVisualizer = document.getElementById('audioVisualizer');
+        const canvasCtx = audioVisualizer.getContext('2d');
+
+
+        // Set your authentication token here
+        dictation.authToken = "YOUR_AUTH_TOKEN";
+
+        // Populate available microphone devices when they become available.
+        function populateDevices(devices, selectedDevice) {
+          if (
+            Array.isArray(devices) &&
+            devices.length > 0
+          ) {
+            micSelector.innerHTML = '';
+            devices.forEach(device => {
+              const option = document.createElement('option');
+              option.value = device.deviceId;
+              option.textContent = device.label || `Device ${device.deviceId}`;
+              micSelector.appendChild(option);
+            });
+            // set the selected device if provided
+            if (selectedDevice) {
+              micSelector.value = selectedDevice.deviceId;
+            }
+          } else {
+            console.log('No devices available yet.');
+          }
+        }
+
+        // wait until the dictation component is ready
+        dictation.addEventListener('ready', async(e) => {
+          populateDevices(dictation.devices, dictation.selectedDevice);
+        });
+
+        // Listen for recording state changes.
+        dictation.addEventListener('recording-state-changed', e => {
+          const state = e.detail.state;
+          toggleButton.textContent = state === 'recording' ? 'Stop' : 'Start';
+          // Refresh the mic list when recording starts.
+          if (state === 'recording') {
+            // populateDevices();
+          }
+        });
+
+        // Listen for device change events (if fired) to update the selector.
+        dictation.addEventListener('recording-devices-changed', e => {
+          console.log('Recording device changed:', e.detail);
+          populateDevices(e.detail.devices, e.detail.selectedDevice);
+        });
+
+        // Append new transcript text to the textarea.
+        dictation.addEventListener('transcript', e => {
+          console.log('Transcript:', e.detail.data);
+          transcriptArea.value += e.detail.data.text + ' ';
+        });
+
+        // Draw audio level visualisation.
+        dictation.addEventListener('audio-level-changed', e => {
+          const level = e.detail.audioLevel; // assumed to be between 0 and 1
+          drawAudioLevel(level);
+        });
+
+        // Draw audio level visualisation.
+        dictation.addEventListener('error', e => {
+          console.error('Error:', e.detail);
+        });
+
+        // Toggle recording on button click.
+        toggleButton.addEventListener('click', () => {
+          console.log('Toggling recording...');
+          dictation.toggleRecording();
+        });
+
+        // Update selected microphone when the dropdown changes.
+        micSelector.addEventListener('change', () => {
+          dictation.selectedDeviceId = micSelector.value;
+        });
+
+        function drawAudioLevel(level) {
+          const width = audioVisualizer.width;
+          const height = audioVisualizer.height;
+          canvasCtx.clearRect(0, 0, width, height);
+          // A simple bar proportional to the level
+          canvasCtx.fillRect(0, 0, width * level, height);
+        }
+
+      });
+    </script>
+  </body>
+</html>

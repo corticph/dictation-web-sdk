@@ -11,6 +11,8 @@ const CalloutStyles = css`
     font-size: 0.9rem;
     gap: 8px;
     align-items: flex-start;
+    max-width: 100%;
+    height: fit-content;
     &.red {
       background: var(--callout-red-background);
       border: 1px solid var(--callout-red-border);
@@ -20,6 +22,11 @@ const CalloutStyles = css`
       background: var(--callout-orange-background);
       border: 1px solid var(--callout-orange-border);
       color: var(--callout-orange-text);
+    }
+    &.small {
+      width: 100%;
+      padding: 6px;
+      font-size: 0.7rem;
     }
   }
 `;

@@ -6,7 +6,6 @@ export class DictationService extends EventTarget {
   private webSocket!: WebSocket;
   private authToken: string;
   private dictationConfig: DictationConfig;
-  private serverConfig: ServerConfig;
 
   constructor(
     mediaStream: MediaStream,
@@ -25,7 +24,6 @@ export class DictationService extends EventTarget {
     if (!config) {
       throw new Error('Invalid token');
     }
-    this.serverConfig = config;
 
     this.mediaRecorder.ondataavailable = event => {
       if (this.webSocket?.readyState === WebSocket.OPEN) {
@@ -34,7 +32,7 @@ export class DictationService extends EventTarget {
     };
   }
 
-  private dispatchCustomEvent(eventName: string, detail: unknown): void {
+  private dispatchCustomEvent(eventName: string, detail?: unknown): void {
     this.dispatchEvent(
       new CustomEvent(eventName, {
         detail,
@@ -44,8 +42,20 @@ export class DictationService extends EventTarget {
     );
   }
 
-  public startRecording(): void {
-    const url = `wss://api.${this.serverConfig.environment}.corti.app/audio-bridge/v2/transcribe?tenant-name=${this.serverConfig.tenant}&token=Bearer%20${this.authToken}`;
+  public startRecording() {
+    const serverConfig: ServerConfig | undefined = decodeToken(this.authToken);
+    if (!serverConfig) {
+      this.dispatchEvent(
+        new CustomEvent('error', {
+          detail: 'Invalid token',
+          bubbles: true,
+          composed: true,
+        }),
+      );
+      return;
+    }
+
+    const url = `wss://api.${serverConfig.environment}.corti.app/audio-bridge/v2/transcribe?tenant-name=${serverConfig.tenant}&token=Bearer%20${this.authToken}`;
     this.webSocket = new WebSocket(url);
 
     this.webSocket.onopen = () => {
@@ -59,7 +69,7 @@ export class DictationService extends EventTarget {
 
     this.webSocket.onmessage = event => {
       const message = JSON.parse(event.data);
-      if (message.type === 'config') {
+      if (message.type === 'CONFIG_ACCEPTED') {
         this.mediaRecorder.start(250);
       } else if (message.type === 'transcript') {
         this.dispatchCustomEvent('transcript', message);
@@ -82,7 +92,7 @@ export class DictationService extends EventTarget {
       this.webSocket.send(JSON.stringify({ type: 'end' }));
     }
 
-    const timeout = setTimeout(() => {
+    const timeout: NodeJS.Timeout = setTimeout(() => {
       if (this.webSocket?.readyState === WebSocket.OPEN) {
         this.webSocket.close();
       }
