@@ -94,10 +94,8 @@ Alternatively, use a CDN to start quickly (not recommended).
 
 This SDK does not handle OAuth 2.0 authentication. The client must provide an API key or access token as a string in `authToken`.
 
-## Notes
-
-- Works in modern browsers that support Web Components and MediaRecorder API.
-- Supports dark and light mode based on browser preference.
+## Styling UI
+If you use the. The UI supports dark and light mode based on browser preference. Alternatively, you can override the CSS variables used in the web component. Refer to our [Styling Guide](docs/styling.md).
 
 ## License
 

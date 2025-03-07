@@ -27,21 +27,20 @@ const ThemeStyles = css`
     --action-red-text-color: #fff;
 
     /* Callout Defaults */
-    --callout-accent-background: #007bff33;
-    --callout-accent-border: #007bff99;
-    --callout-accent-text: #007bff;
+    --callout-info-background: #007bff33;
+    --callout-info-border: #007bff99;
+    --callout-info-text: #007bff;
 
-    --callout-red-background: #dc354533;
-    --callout-red-border: #dc354599;
-    --callout-red-text: #dc3545;
+    --callout-error-background: #dc354533;
+    --callout-error-border: #dc354599;
+    --callout-error-text: #dc3545;
 
-    --callout-orange-background: #fd7e1433;
-    --callout-orange-border: #fd7e1499;
-    --callout-orange-text: #fd7e14;
+    --callout-warn-background: #fd7e1433;
+    --callout-warn-border: #fd7e1499;
+    --callout-warn-text: #fd7e14;
 
     /* Visualiser Defaults */
     --visualiser-background: #e0e0e0;
-    --visualiser-level-color: #28a745;
   }
 
   @media (prefers-color-scheme: dark) {

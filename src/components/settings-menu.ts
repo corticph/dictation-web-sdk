@@ -111,7 +111,7 @@ export class SettingsMenu extends LitElement {
           <div class="settings-wrapper">
             ${this.settingsDisabled
               ? html`
-                  <div class="callout orange">
+                  <div class="callout warn">
                     Recording is in progress. Stop recording to change settings.
                   </div>
                 `

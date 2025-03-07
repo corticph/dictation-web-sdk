@@ -145,7 +145,7 @@ export class CortiDictation extends LitElement {
     if (!isConfigured) {
       return html`
         <div class="wrapper">
-          <div class="callout red small">No Auth Token</div>
+          <div class="callout error small">No Auth Token</div>
         </div>
       `;
     }

@@ -2,9 +2,9 @@ import { css } from 'lit';
 
 const CalloutStyles = css`
   .callout {
-    background: var(--callout-accent-background);
-    border: 1px solid var(--callout-accent-border);
-    color: var(--callout-accent-text);
+    background: var(--callout-info-background);
+    border: 1px solid var(--callout-info-border);
+    color: var(--callout-info-text);
     padding: 8px;
     border-radius: var(--card-inner-border-radius);
     display: flex;
@@ -13,15 +13,15 @@ const CalloutStyles = css`
     align-items: center;
     max-width: 100%;
     height: fit-content;
-    &.red {
-      background: var(--callout-red-background);
-      border: 1px solid var(--callout-red-border);
-      color: var(--callout-red-text);
+    &.error {
+      background: var(--callout-error-background);
+      border: 1px solid var(--callout-error-border);
+      color: var(--callout-warn-text);
     }
-    &.orange {
-      background: var(--callout-orange-background);
-      border: 1px solid var(--callout-orange-border);
-      color: var(--callout-orange-text);
+    &.warn {
+      background: var(--callout-warn-background);
+      border: 1px solid var(--callout-warn-border);
+      color: var(--callout-warn-text);
     }
     &.small {
       width: 100%;
