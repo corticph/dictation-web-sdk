@@ -66,9 +66,6 @@ export class RecorderManager extends EventTarget {
     this._updateRecordingState('initializing');
 
     // Get media stream and initialize audio service.
-
-    // Get media stream and initialize audio service.
-
     const constraints: MediaStreamConstraints =
       this.selectedDevice && this.selectedDevice.deviceId !== 'default'
         ? { audio: { deviceId: { exact: this.selectedDevice.deviceId } } }

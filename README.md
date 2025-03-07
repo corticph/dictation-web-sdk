@@ -41,14 +41,15 @@ Alternatively, use a CDN to start quickly (not recommended).
       preload
       type="module"
     ></script>
-    <corti-dictation authToken="xyz"></corti-dictation>
+    <corti-dictation></corti-dictation>
     <textarea
       id="transcript"
       placeholder="Transcript will appear here..."
     ></textarea>
 
     <script>
-      const dictationEl = document.getElementById('transcript');
+      const dictation = document.getElementById('transcript');
+      dictation.authToken = "YOUR_AUTH_TOKEN" // Note: Never hardcode tokens
       // Listen for events
       dictationEl.addEventListener('transcript', e => {
         document.getElementById('transcript').value += e.detail.data.text + ' ';
@@ -65,7 +66,8 @@ Alternatively, use a CDN to start quickly (not recommended).
 | Property          | Type   | Description                                          |
 | ----------------- | ------ | ---------------------------------------------------- |
 | `devices`         | Array  | List of available recording devices.                 |
-| `recordingState`  | String | Current state of recording (`stopped`, `recording`). |
+| `selectedDevice`  | Object | The selected device used for recording (MediaDeviceInfo). |
+| `recordingState`  | String | Current state of recording (`stopped`, `recording`, `initializing` and `stopping`, ). |
 | `dictationConfig` | Object | Configuration settings for dictation.                |
 | `authToken`       | String | Authentication token from OAuth server               |
 
@@ -79,8 +81,9 @@ Alternatively, use a CDN to start quickly (not recommended).
 
 | Event                      | Description                                                                                   |
 | -------------------------- | --------------------------------------------------------------------------------------------- |
+| `ready`  | Fired once the component is ready.                |
 | `recording-state-changed`  | Fired when the recording state changes. `detail.state` contains the new state.                |
-| `recording-device-changed` | Fired when the user switches recording devices. `detail.deviceId` contains the new device ID. |
+| `recording-devices-changed` | Fired when the user switches recording devices or the list of recording devices changes. `detail.devices` contains the full devices list. `detail.selectedDevice` contains the current selected device. |
 | `transcript`               | Fired when a new transcript is received. `detail.data.text` contains the transcribed text.    |
 | `audio-level-changed`      | Fired when the input audio level changes. `detail.audioLevel` contains the new level.         |
 | `error`      | Fired on error. `detail` contains the full error.         |

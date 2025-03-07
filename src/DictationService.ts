@@ -94,7 +94,7 @@ export class DictationService extends EventTarget {
       this.webSocket.send(JSON.stringify({ type: 'end' }));
     }
 
-    const timeout = setTimeout(() => {
+    const timeout: NodeJS.Timeout = setTimeout(() => {
       if (this.webSocket?.readyState === WebSocket.OPEN) {
         this.webSocket.close();
       }
