@@ -118,6 +118,15 @@ export class RecorderManager extends EventTarget {
           }),
         ),
       );
+      this._dictationService.addEventListener('command', e =>
+        this.dispatchEvent(
+          new CustomEvent('command', {
+            detail: (e as CustomEvent).detail,
+            bubbles: true,
+            composed: true,
+          }),
+        ),
+      );
     } catch (error) {
       this.dispatchCustomEvent('error', error);
       this.stopRecording();
