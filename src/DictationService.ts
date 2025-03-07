@@ -6,7 +6,6 @@ export class DictationService extends EventTarget {
   private webSocket!: WebSocket;
   private authToken: string;
   private dictationConfig: DictationConfig;
-  private serverConfig: ServerConfig;
 
   constructor(
     mediaStream: MediaStream,
@@ -25,7 +24,6 @@ export class DictationService extends EventTarget {
     if (!config) {
       throw new Error('Invalid token');
     }
-    this.serverConfig = config;
 
     this.mediaRecorder.ondataavailable = event => {
       if (this.webSocket?.readyState === WebSocket.OPEN) {
@@ -45,7 +43,7 @@ export class DictationService extends EventTarget {
   }
 
   public startRecording() {
-    const serverConfig = decodeToken(this.authToken);
+    const serverConfig: ServerConfig | undefined = decodeToken(this.authToken);
     if (!serverConfig) {
       this.dispatchEvent(
         new CustomEvent('error', {

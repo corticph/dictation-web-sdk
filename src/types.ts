@@ -4,10 +4,16 @@ export type RecordingState =
   | 'stopping'
   | 'stopped';
 
+interface CommandVariable {
+  key: string;
+  type: 'enum' | 'string';
+  enum?: string[];
+}
+
 export interface Command {
-  command: string;
-  action: string;
-  keywords: string[];
+  id: string;
+  phrases: string[];
+  variables?: CommandVariable[];
 }
 
 export interface DictationConfig {
