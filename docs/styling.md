@@ -2,8 +2,17 @@
 
 The **Corti Dictation Web Component** provides various CSS variables for customization. You can override these variables to match your design system.
 
+## Overriding Dark/Light Theme
+By default, the UI uses the system color-scheme (dark or light). This may not suit your application though, so you can force either dark or light using the `color-scheme` CSS property. For example, the styles below will force light mode.
+
+```css
+corti-dictation {
+    color-scheme: light;
+}
+```
+
 ## Using CSS Variables
-To customize the component, define the variables inside a global CSS file or within a `<style>` tag.
+For more control in customization of the UI component, you can redefine the variables inside a global CSS file or within a `<style>` tag. Note, the following CSS variables may change over time.
 
 ```css
 corti-dictation {
@@ -15,8 +24,6 @@ corti-dictation {
 ```
 
 ## Available Styling Variables
-
-Note, the following CSS variables may change at any time.
 
 ### Component Defaults
 | Variable | Default Value (Light) | Description |
@@ -47,26 +54,11 @@ Note, the following CSS variables may change at any time.
 | `--action-red-text-color` | `#fff` | Text color for recording active action buttons. |
 
 ## Customizing with Shadow DOM 
-The component uses Shadow DOM, so styles outside of CSS variables must be injected inside the Shadow DOM. You can do this using JavaScript:
+The component uses Shadow DOM, so styles outside of CSS variables must be injected inside the Shadow DOM. Element IDs can change at any time though, so you should only consider this in very specifci situations. You can do this using JavaScript:
 
 ```js
 document.querySelector('corti-dictation').shadowRoot.querySelector('button').style.color = "red"
 ```
 
-## Example: Dark Mode
-To apply a dark theme, override the default styles like this:
-
-```css
-corti-dictation {
-  --component-text-color: #eee;
-  --card-background: #222;
-  --card-border-color: #444;
-  --action-accent-background: #ff6600;
-}
-```
-
-For further customization, consider using the component’s events and JavaScript APIs.
-
----
-For additional support, contact **Corti Support** at [support@corti.ai](mailto:support@corti.ai).
+For further customization, consider using the component’s events and JavaScript APIs to build your own UI.
 
