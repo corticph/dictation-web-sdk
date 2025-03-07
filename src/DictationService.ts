@@ -81,7 +81,6 @@ export class DictationService extends EventTarget {
           break;
         case 'command':
           this.dispatchCustomEvent('command', message);
-          console.log('Command received:', message);
           break;
         default:
           console.warn(`Unhandled message type: ${message.type}`);
