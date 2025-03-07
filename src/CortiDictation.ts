@@ -69,6 +69,7 @@ export class CortiDictation extends LitElement {
       'audio-level-changed',
       'error',
       'transcript',
+      'command',
       'ready',
     ];
 

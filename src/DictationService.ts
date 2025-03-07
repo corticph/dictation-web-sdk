@@ -69,10 +69,23 @@ export class DictationService extends EventTarget {
 
     this.webSocket.onmessage = event => {
       const message = JSON.parse(event.data);
-      if (message.type === 'CONFIG_ACCEPTED') {
-        this.mediaRecorder.start(250);
-      } else if (message.type === 'transcript') {
-        this.dispatchCustomEvent('transcript', message);
+      switch (message.type) {
+        case 'CONFIG_ACCEPTED':
+          this.mediaRecorder.start(250);
+          break;
+        case 'CONFIG_DENIED':
+          this.dispatchCustomEvent('error', message);
+          return this.stopRecording();
+        case 'transcript':
+          this.dispatchCustomEvent('transcript', message);
+          break;
+        case 'command':
+          this.dispatchCustomEvent('command', message);
+          console.log('Command received:', message);
+          break;
+        default:
+          console.warn(`Unhandled message type: ${message.type}`);
+          break;
       }
     };
 
@@ -86,7 +99,7 @@ export class DictationService extends EventTarget {
   }
 
   public async stopRecording(): Promise<void> {
-    this.mediaRecorder.stop();
+    this.mediaRecorder?.stop();
 
     if (this.webSocket?.readyState === WebSocket.OPEN) {
       this.webSocket.send(JSON.stringify({ type: 'end' }));
