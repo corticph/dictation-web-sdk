@@ -65,10 +65,9 @@ export class SettingsMenu extends LitElement {
         width: 100%;
         min-width: 200px;
         position-anchor: --settings_popover_btn;
-        position-area: bottom;
+        position-area: bottom span-right;
         position-visibility: always;
-        /* inset: unset; */
-        transform: translateX(40%);
+        position-try-fallbacks: flip-inline;
         overflow-x: hidden;
       }
       .settings-wrapper {
