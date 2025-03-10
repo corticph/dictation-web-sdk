@@ -28,7 +28,7 @@ export interface DictationConfig {
 export type PartialDictationConfig = Partial<DictationConfig>;
 
 export interface ServerConfig {
-  environment?: string;
-  tenant?: string;
-  token?: string;
+  environment: string;
+  tenant: string;
+  accessToken: string;
 }

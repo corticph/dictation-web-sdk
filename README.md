@@ -13,6 +13,12 @@ Include the SDK in your project by importing the JavaScript module:
 ```html
 npm i @corti/dictation-web
 ```
+Then import the module like so:
+
+```js
+// Import the Corti Dictation SDK
+import "@corti/dictation-web";
+```
 
 Alternatively, use a CDN to start quickly (not recommended).
 
@@ -36,11 +42,6 @@ Alternatively, use a CDN to start quickly (not recommended).
 <!DOCTYPE html>
 <html lang="en">
   <body>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@corti/dictation-web/dist/bundle.min.js"
-      preload
-      type="module"
-    ></script>
     <corti-dictation></corti-dictation>
     <textarea
       id="transcript"
@@ -48,8 +49,9 @@ Alternatively, use a CDN to start quickly (not recommended).
     ></textarea>
 
     <script>
+      import "@corti/dictation-web";
       const dictation = document.getElementById('transcript');
-      dictation.authToken = "YOUR_AUTH_TOKEN" // Note: Never hardcode tokens
+      dictation.setAccessToken("YOUR_AUTH_TOKEN") // Note: Never hardcode tokens
       // Listen for events
       dictationEl.addEventListener('transcript', e => {
         document.getElementById('transcript').value += e.detail.data.text + ' ';
@@ -69,7 +71,6 @@ Alternatively, use a CDN to start quickly (not recommended).
 | `selectedDevice`  | Object | The selected device used for recording (MediaDeviceInfo). |
 | `recordingState`  | String | Current state of recording (`stopped`, `recording`, `initializing` and `stopping`, ). |
 | `dictationConfig` | Object | Configuration settings for dictation.                |
-| `authToken`       | String | Authentication token from OAuth server               |
 | `debug_displayAudio`       | Boolean | Overrides any device selection and instead uses getDisplayMedia to stream system audio. SHould only be used for debugging               |
 
 ### Methods
@@ -77,6 +78,7 @@ Alternatively, use a CDN to start quickly (not recommended).
 | Method              | Description                |
 | ------------------- | -------------------------- |
 | `toggleRecording()` | Starts or stops recording. |
+| `setAccessToken(access_token: string)` | Set the latest access token. This will return the server config. |
 
 ### Events
 
@@ -92,12 +94,10 @@ Alternatively, use a CDN to start quickly (not recommended).
 
 ## Authentication
 
-This SDK does not handle OAuth 2.0 authentication. The client must provide an API key or access token as a string in `authToken`.
+This SDK does not handle OAuth 2.0 authentication. The client must provide an API key or access token as a string using `setAccessToken`.
 
-## Notes
-
-- Works in modern browsers that support Web Components and MediaRecorder API.
-- Supports dark and light mode based on browser preference.
+## Styling UI
+If you use the. The UI supports dark and light mode based on browser preference. Alternatively, you can override the CSS variables used in the web component. Refer to our [Styling Guide](docs/styling.md).
 
 ## License
 

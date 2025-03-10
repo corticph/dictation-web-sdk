@@ -93,7 +93,7 @@ export async function getAudioDevices(): Promise<{
  * @returns An object containing:
  *  - `environment`: The extracted environment from the issuer URL.
  *  - `tenant`: The extracted tenant from the issuer URL.
- *  - `token`: The original token string.
+ *  - `accessToken`: The original token string.
  * If the issuer URL doesn't match the expected format, the function returns the full decoded token details.
  *
  * @throws Will throw an error if:
@@ -154,7 +154,7 @@ export function decodeToken(token: string) {
     return {
       environment: match[2],
       tenant: match[3],
-      token,
+      accessToken: token,
     };
   }
 }

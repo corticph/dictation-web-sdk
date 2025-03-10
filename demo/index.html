@@ -69,7 +69,7 @@
 
       // Get the corti-dictation element and assign the server config
       const dictation = document.querySelector('corti-dictation');
-      dictation.authToken = 'YOUR_AUTH_TOKEN';
+      dictation.setAccessToken('YOUR_AUTH_TOKEN');
 
       dictation.dictationConfig = {
         primaryLanguage: 'en',

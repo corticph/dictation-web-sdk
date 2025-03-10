@@ -9,9 +9,10 @@ import ThemeStyles from './styles/theme.js';
 import ButtonStyles from './styles/buttons.js';
 import ComponentStyles from './styles/ComponentStyles.js';
 
-import type { DictationConfig, RecordingState } from './types.js';
+import type { DictationConfig, RecordingState, ServerConfig } from './types.js';
 import { DEFAULT_DICTATION_CONFIG } from './constants.js';
 import CalloutStyles from './styles/callout.js';
+import { decodeToken } from './utils.js';
 
 export class CortiDictation extends LitElement {
   static styles = [ButtonStyles, ThemeStyles, ComponentStyles, CalloutStyles];
@@ -19,11 +20,11 @@ export class CortiDictation extends LitElement {
   @property({ type: Object })
   dictationConfig: DictationConfig = DEFAULT_DICTATION_CONFIG;
 
-  @property({ type: String })
-  authToken: string | undefined;
-
   @property({ type: Boolean })
   debug_displayAudio: boolean = false;
+
+  @state()
+  private _serverConfig: ServerConfig | undefined;
 
   @state()
   private _audioLevel: number = 0;
@@ -96,6 +97,15 @@ export class CortiDictation extends LitElement {
     this._toggleRecording();
   }
 
+  public setAccessToken(token: string) {
+    const decoded = decodeToken(token);
+    if(!decoded) {
+      throw new Error('Invalid token');
+    }
+    this._serverConfig = decoded;
+    return decoded;
+  }
+
   public get selectedDevice(): MediaDeviceInfo | null {
     return this.recorderManager.selectedDevice || null;
   }
@@ -111,24 +121,24 @@ export class CortiDictation extends LitElement {
   public async setRecordingDevice(device: MediaDeviceInfo) {
     this.recorderManager.selectedDevice = device;
     this._selectedDevice = device;
-    if (!this.authToken) return;
+    if (!this._serverConfig) return;
     if (this._recordingState === 'recording') {
       await this.recorderManager.stopRecording();
       await this.recorderManager.startRecording({
         dictationConfig: this.dictationConfig,
-        authToken: this.authToken,
+        serverConfig: this._serverConfig,
       });
     }
   }
 
   _toggleRecording() {
-    if (!this.authToken) return;
+    if (!this._serverConfig) return;
     if (this._recordingState === 'recording') {
       this.recorderManager.stopRecording();
     } else if (this._recordingState === 'stopped') {
       this.recorderManager.startRecording({
         dictationConfig: this.dictationConfig,
-        authToken: this.authToken,
+        serverConfig: this._serverConfig,
         debug_displayAudio: this.debug_displayAudio,
       });
     }
@@ -141,15 +151,7 @@ export class CortiDictation extends LitElement {
   }
 
   render() {
-    const isConfigured = this.authToken;
-    if (!isConfigured) {
-      return html`
-        <div class="wrapper">
-          <div class="callout red small">No Auth Token</div>
-        </div>
-      `;
-    }
-
+  
     const isLoading =
       this._recordingState === 'initializing' ||
       this._recordingState === 'stopping';
