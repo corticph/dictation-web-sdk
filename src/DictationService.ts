@@ -1,29 +1,22 @@
 import type { DictationConfig, ServerConfig } from './types.js';
-import { decodeToken } from './utils.js';
 
 export class DictationService extends EventTarget {
   private mediaRecorder: MediaRecorder;
   private webSocket!: WebSocket;
-  private authToken: string;
+  private serverConfig: ServerConfig;
   private dictationConfig: DictationConfig;
 
   constructor(
     mediaStream: MediaStream,
     {
       dictationConfig,
-      authToken,
-    }: { dictationConfig: DictationConfig; authToken: string },
+      serverConfig,
+    }: { dictationConfig: DictationConfig; serverConfig: ServerConfig },
   ) {
     super();
     this.mediaRecorder = new MediaRecorder(mediaStream);
-    this.authToken = authToken;
+    this.serverConfig = serverConfig;
     this.dictationConfig = dictationConfig;
-
-    // Decode token during construction.
-    const config = decodeToken(this.authToken);
-    if (!config) {
-      throw new Error('Invalid token');
-    }
 
     this.mediaRecorder.ondataavailable = event => {
       if (this.webSocket?.readyState === WebSocket.OPEN) {
@@ -43,8 +36,7 @@ export class DictationService extends EventTarget {
   }
 
   public startRecording() {
-    const serverConfig: ServerConfig | undefined = decodeToken(this.authToken);
-    if (!serverConfig) {
+    if (!this.serverConfig) {
       this.dispatchEvent(
         new CustomEvent('error', {
           detail: 'Invalid token',
@@ -55,7 +47,7 @@ export class DictationService extends EventTarget {
       return;
     }
 
-    const url = `wss://api.${serverConfig.environment}.corti.app/audio-bridge/v2/transcribe?tenant-name=${serverConfig.tenant}&token=Bearer%20${this.authToken}`;
+    const url = `wss://api.${this.serverConfig.environment}.corti.app/audio-bridge/v2/transcribe?tenant-name=${this.serverConfig.tenant}&token=Bearer%20${this.serverConfig.accessToken}`;
     this.webSocket = new WebSocket(url);
 
     this.webSocket.onopen = () => {
