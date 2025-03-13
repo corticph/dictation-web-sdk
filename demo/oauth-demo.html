@@ -82,16 +82,6 @@ THIS IS ONLY FOR DEMONSTRATION PURPOSES.
       const environment = 'eu';
       const TOKEN_URL = `https://keycloak.${environment}.corti.app/realms/${REALM_ID}/protocol/openid-connect/token`;
 
-      // interface TokenResponse {
-      //   access_token: string
-      //   expires_in: number
-      //   refresh_expires_in: number
-      //   refresh_token: string
-      //   token_type: string
-      //   id_token: string
-      //   not_before_policy: number
-      //   scope: string
-      // }
 
       async function getClientCredentialsToken() {
         const params = new URLSearchParams();
