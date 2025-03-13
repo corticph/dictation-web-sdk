@@ -53,16 +53,16 @@
         const audioVisualizer = document.getElementById('audioVisualizer');
         const canvasCtx = audioVisualizer.getContext('2d');
 
-
         // Set your authentication token here
-        dictation.setAccessToken('YOUR_AUTH_TOKEN');
+        try {
+          dictation.setAccessToken('YOUR_AUTH_TOKEN');
+        } catch (e) {
+          console.error('Error setting access token:', e);
+        }
 
         // Populate available microphone devices when they become available.
         function populateDevices(devices, selectedDevice) {
-          if (
-            Array.isArray(devices) &&
-            devices.length > 0
-          ) {
+          if (Array.isArray(devices) && devices.length > 0) {
             micSelector.innerHTML = '';
             devices.forEach(device => {
               const option = document.createElement('option');
@@ -80,7 +80,7 @@
         }
 
         // wait until the dictation component is ready
-        dictation.addEventListener('ready', async(e) => {
+        dictation.addEventListener('ready', async e => {
           populateDevices(dictation.devices, dictation.selectedDevice);
         });
 
@@ -135,7 +135,6 @@
           // A simple bar proportional to the level
           canvasCtx.fillRect(0, 0, width * level, height);
         }
-
       });
     </script>
   </body>

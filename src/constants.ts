@@ -6,5 +6,5 @@ export const DEFAULT_DICTATION_CONFIG: DictationConfig = {
   interimResults: true,
   spokenPunctuation: true,
   automaticPunctuation: true,
-  model: 'others'
+  model: 'others',
 };

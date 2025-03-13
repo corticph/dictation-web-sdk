@@ -69,7 +69,12 @@
 
       // Get the corti-dictation element and assign the server config
       const dictation = document.querySelector('corti-dictation');
-      dictation.setAccessToken('YOUR_AUTH_TOKEN');
+      try {
+        dictation.setAccessToken('YOUR_AUTH_TOKEN')
+      } catch (e) {
+        console.error('Error setting access token:', e);
+      }
+
 
       dictation.dictationConfig = {
         primaryLanguage: 'en',
@@ -82,8 +87,8 @@
           {
             id: 'insert_template',
             phrases: [
-              'insert my <template_name> template',
-              'insert <template_name> template',
+              'insert my {template_name} template',
+              'insert {template_name} template',
             ],
             variables: [
               {
