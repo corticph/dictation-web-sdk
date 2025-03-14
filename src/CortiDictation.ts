@@ -98,12 +98,13 @@ export class CortiDictation extends LitElement {
   }
 
   public setAccessToken(token: string) {
-    const decoded = decodeToken(token);
-    if(!decoded) {
+    try {
+      const decoded = decodeToken(token);
+      this._serverConfig = decoded;
+      return decoded;
+    } catch (e) {
       throw new Error('Invalid token');
     }
-    this._serverConfig = decoded;
-    return decoded;
   }
 
   public get selectedDevice(): MediaDeviceInfo | null {
@@ -151,7 +152,10 @@ export class CortiDictation extends LitElement {
   }
 
   render() {
-  
+    if (!this._serverConfig) {
+      return html` <div style="display: none"></div> `;
+    }
+
     const isLoading =
       this._recordingState === 'initializing' ||
       this._recordingState === 'stopping';

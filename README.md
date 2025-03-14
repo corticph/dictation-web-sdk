@@ -13,11 +13,12 @@ Include the SDK in your project by importing the JavaScript module:
 ```html
 npm i @corti/dictation-web
 ```
+
 Then import the module like so:
 
 ```js
 // Import the Corti Dictation SDK
-import "@corti/dictation-web";
+import '@corti/dictation-web';
 ```
 
 Alternatively, use a CDN to start quickly (not recommended).
@@ -49,9 +50,9 @@ Alternatively, use a CDN to start quickly (not recommended).
     ></textarea>
 
     <script>
-      import "@corti/dictation-web";
+      import '@corti/dictation-web';
       const dictation = document.getElementById('transcript');
-      dictation.setAccessToken("YOUR_AUTH_TOKEN") // Note: Never hardcode tokens
+      dictation.setAccessToken('YOUR_AUTH_TOKEN'); // Note: Never hardcode tokens
       // Listen for events
       dictationEl.addEventListener('transcript', e => {
         document.getElementById('transcript').value += e.detail.data.text + ' ';
@@ -65,39 +66,44 @@ Alternatively, use a CDN to start quickly (not recommended).
 
 ### Properties
 
-| Property          | Type   | Description                                          |
-| ----------------- | ------ | ---------------------------------------------------- |
-| `devices`         | Array  | List of available recording devices.                 |
-| `selectedDevice`  | Object | The selected device used for recording (MediaDeviceInfo). |
-| `recordingState`  | String | Current state of recording (`stopped`, `recording`, `initializing` and `stopping`, ). |
-| `dictationConfig` | Object | Configuration settings for dictation.                |
-| `debug_displayAudio`       | Boolean | Overrides any device selection and instead uses getDisplayMedia to stream system audio. SHould only be used for debugging               |
+| Property             | Type    | Description                                                                                                               |
+| -------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `devices`            | Array   | List of available recording devices.                                                                                      |
+| `selectedDevice`     | Object  | The selected device used for recording (MediaDeviceInfo).                                                                 |
+| `recordingState`     | String  | Current state of recording (`stopped`, `recording`, `initializing` and `stopping`, ).                                     |
+| `dictationConfig`    | Object  | Configuration settings for dictation.                                                                                     |
+| `debug_displayAudio` | Boolean | Overrides any device selection and instead uses getDisplayMedia to stream system audio. Should only be used for debugging |
 
 ### Methods
 
-| Method              | Description                |
-| ------------------- | -------------------------- |
-| `toggleRecording()` | Starts or stops recording. |
+| Method                                 | Description                                                      |
+| -------------------------------------- | ---------------------------------------------------------------- |
+| `toggleRecording()`                    | Starts or stops recording.                                       |
 | `setAccessToken(access_token: string)` | Set the latest access token. This will return the server config. |
 
 ### Events
 
-| Event                      | Description                                                                                   |
-| -------------------------- | --------------------------------------------------------------------------------------------- |
-| `ready`  | Fired once the component is ready.                |
-| `recording-state-changed`  | Fired when the recording state changes. `detail.state` contains the new state.                |
+| Event                       | Description                                                                                                                                                                                             |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ready`                     | Fired once the component is ready.                                                                                                                                                                      |
+| `recording-state-changed`   | Fired when the recording state changes. `detail.state` contains the new state.                                                                                                                          |
 | `recording-devices-changed` | Fired when the user switches recording devices or the list of recording devices changes. `detail.devices` contains the full devices list. `detail.selectedDevice` contains the current selected device. |
-| `transcript`               | Fired when a new transcript is received. `detail.data.text` contains the transcribed text.    |
-| `command`               | Fired whenever a new command is detected.    |
-| `audio-level-changed`      | Fired when the input audio level changes. `detail.audioLevel` contains the new level.         |
-| `error`      | Fired on error. `detail` contains the full error.         |
+| `transcript`                | Fired when a new transcript is received. `detail.data.text` contains the transcribed text.                                                                                                              |
+| `command`                   | Fired whenever a new command is detected.                                                                                                                                                               |
+| `audio-level-changed`       | Fired when the input audio level changes. `detail.audioLevel` contains the new level.                                                                                                                   |
+| `error`                     | Fired on error. `detail` contains the full error.                                                                                                                                                       |
 
 ## Authentication
 
 This SDK does not handle OAuth 2.0 authentication. The client must provide an API key or access token as a string using `setAccessToken`.
 
-## Styling UI
-If you use the. The UI supports dark and light mode based on browser preference. Alternatively, you can override the CSS variables used in the web component. Refer to our [Styling Guide](docs/styling.md).
+## Usage Examples
+
+Explore practical implementations and usage examples in the [Demo Folder](https://github.com/corticph/dictation-web-sdk/tree/main/demo). These demos can also be run locally.
+
+## Styling
+
+This SDK supports custom styling as well as theming. The UI can be fully customized using CSS properties. Refer to our [Styling Guide](https://github.com/corti/dictation-web-sdk/blob/main/docs/styling.md) for detailed instructions.
 
 ## License
 
@@ -105,4 +111,4 @@ This SDK is licensed under MIT.
 
 ## Support
 
-For issues or questions, contact **Corti Support** at [support@corti.ai](mailto:support@corti.ai).
+For issues or questions, contact **Corti Support** at [support@corti.ai](mailto:help@corti.ai).
