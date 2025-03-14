@@ -2,7 +2,8 @@
   "name": "@corti/dictation-web",
   "description": "Web component for Corti Dictation",
   "author": "Corti ApS",
-  "version": "0.1.9",
+  "version": "0.1.10",
+  "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -13,6 +14,24 @@
   "unpkg": "dist/bundle.js",
   "files": [
     "dist"
+  ],
+  "bugs": {
+    "url": "https://help.corti.app",
+    "email": "help@corti.ai"
+  },
+  "repository": "github:corticph/dictation-web-sdk",
+  "homepage": "https://help.corti.app/en/articles/10714657-introducing-the-corti-dictation-browser-sdk",
+  "keywords": [
+    "corti",
+    "dictation",
+    "web",
+    "sdk",
+    "speech",
+    "recognition",
+    "transcription",
+    "audio",
+    "medical",
+    "healthcare"
   ],
   "scripts": {
     "analyze": "cem analyze --litelement",
