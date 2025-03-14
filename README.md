@@ -107,7 +107,7 @@ This SDK supports custom styling as well as theming. The UI can be fully customi
 
 ## License
 
-This SDK is not licensed.
+This SDK is licensed under MIT.
 
 ## Support
 
