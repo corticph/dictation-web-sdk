@@ -101,7 +101,7 @@ If you use the. The UI supports dark and light mode based on browser preference.
 
 ## License
 
-This SDK is not licensed.
+This SDK is licensed under MIT.
 
 ## Support
 
