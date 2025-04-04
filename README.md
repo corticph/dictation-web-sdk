@@ -103,7 +103,9 @@ Explore practical implementations and usage examples in the [Demo Folder](https:
 
 ## Styling
 
-This SDK supports custom styling as well as theming. The UI can be fully customized using CSS properties. Refer to our [Styling Guide](https://github.com/corti/dictation-web-sdk/blob/main/docs/styling.md) for detailed instructions.
+![UI Overview](https://github.com/corticph/dictation-web-sdk/blob/main/docs/ui.png)
+
+The default UI is designed to be slotted into existing applications seamlessly, however, it also supports custom styling as well as theming. The UI can be fully customized using CSS properties. Refer to our [Styling Guide](https://github.com/corticph/dictation-web-sdk/blob/main/docs/styling.md) for detailed instructions.
 
 ## License
 
