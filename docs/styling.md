@@ -28,7 +28,7 @@ corti-dictation {
 ### Component Defaults
 | Variable | Default Value (Light) | Description |
 |----------|--------------|-------------|
-| `--component-font-family` | `'Segoe UI', Roboto, sans-serif` | The font family used in the component. |
+| `--component-font-family` | `-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, Cantarell, Ubuntu, roboto, noto, helvetica, arial, sans-serif` | The font family used in the component. |
 | `--component-text-color` | `#333` | Text color for the component. |
 
 ### Card Styling
