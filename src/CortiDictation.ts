@@ -10,7 +10,7 @@ import ButtonStyles from './styles/buttons.js';
 import ComponentStyles from './styles/ComponentStyles.js';
 
 import type { DictationConfig, RecordingState, ServerConfig } from './types.js';
-import { DEFAULT_DICTATION_CONFIG } from './constants.js';
+import { DEFAULT_DICTATION_CONFIG, LANGUAGES_SUPPORTED } from './constants.js';
 import CalloutStyles from './styles/callout.js';
 import { decodeToken } from './utils.js';
 
@@ -19,6 +19,9 @@ export class CortiDictation extends LitElement {
 
   @property({ type: Object })
   dictationConfig: DictationConfig = DEFAULT_DICTATION_CONFIG;
+
+  @property({ type: Array })
+  languagesSupported: string[] = LANGUAGES_SUPPORTED;
 
   @property({ type: Boolean })
   debug_displayAudio: boolean = false;
@@ -93,6 +96,8 @@ export class CortiDictation extends LitElement {
     });
   }
 
+
+
   public toggleRecording() {
     this._toggleRecording();
   }
@@ -132,6 +137,25 @@ export class CortiDictation extends LitElement {
     }
   }
 
+  public setPrimaryLanguage(language: string) {
+    if (LANGUAGES_SUPPORTED.includes(language)) {
+      this.dictationConfig = {
+        ...this.dictationConfig,
+        primaryLanguage: language,
+      };
+
+      // If recording is in progress, restart to apply the language change
+      if (this._serverConfig && this._recordingState === 'recording') {
+        this.recorderManager.stopRecording();
+        this.recorderManager.startRecording({
+          dictationConfig: this.dictationConfig,
+          serverConfig: this._serverConfig,
+          debug_displayAudio: this.debug_displayAudio,
+        });
+      }
+    }
+  }
+
   _toggleRecording() {
     if (!this._serverConfig) return;
     if (this._recordingState === 'recording') {
@@ -149,6 +173,15 @@ export class CortiDictation extends LitElement {
   async _onRecordingDevicesChanged(event: Event) {
     const customEvent = event as CustomEvent;
     this.setRecordingDevice(customEvent.detail.selectedDevice);
+  }
+
+  // Handle language change events
+  _onLanguageChanged(event: Event) {
+    const customEvent = event as CustomEvent;
+    const language = customEvent.detail.language;
+    if (language) {
+      this.setPrimaryLanguage(language);
+    }
   }
 
   render() {
@@ -179,8 +212,10 @@ export class CortiDictation extends LitElement {
 
         <settings-menu
           .selectedDevice=${this._selectedDevice}
+          .selectedLanguage=${this.dictationConfig.primaryLanguage}
           ?settingsDisabled=${this._recordingState !== 'stopped'}
           @recording-devices-changed=${this._onRecordingDevicesChanged}
+          @language-changed=${this._onLanguageChanged}
         ></settings-menu>
       </div>
     `;
