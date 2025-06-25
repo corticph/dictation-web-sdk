@@ -10,7 +10,7 @@ import CalloutStyles from '../styles/callout.js';
 
 @customElement('settings-menu')
 export class SettingsMenu extends LitElement {
-  @property({ type: String })
+  @property({ type: Object })
   selectedDevice: MediaDeviceInfo | undefined;
 
   @property({ type: String })
@@ -21,6 +21,10 @@ export class SettingsMenu extends LitElement {
 
   @state()
   private _devices: MediaDeviceInfo[] = [];
+
+  get effectiveSelectedLanguage(): string {
+    return this.selectedLanguage || LANGUAGES_SUPPORTED[0] || '';
+  }
 
   constructor() {
     super();
@@ -80,7 +84,6 @@ export class SettingsMenu extends LitElement {
     SelectStyles,
     CalloutStyles,
   ];
-
   private _selectDevice(deviceId: string): void {
     // Find the device object
     const device = this._devices.find(d => d.deviceId === deviceId);
@@ -93,6 +96,22 @@ export class SettingsMenu extends LitElement {
         detail: {
           devices: this._devices,
           selectedDevice: device,
+        },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  private _selectLanguage(language: string): void {
+    if (!LANGUAGES_SUPPORTED.includes(language)) {
+      return;
+    }
+    this.selectedLanguage = language;
+    this.dispatchEvent(
+      new CustomEvent('language-changed', {
+        detail: {
+          language: language,
         },
         bubbles: true,
         composed: true,
@@ -131,7 +150,7 @@ export class SettingsMenu extends LitElement {
                   device => html`
                     <option
                       value=${device.deviceId}
-                      ?selected=${this.selectedDevice === device}
+                      ?selected=${this.selectedDevice?.deviceId === device.deviceId}
                     >
                       ${device.label || 'Unknown Device'}
                     </option>
@@ -147,7 +166,7 @@ export class SettingsMenu extends LitElement {
                 id="language-select"
                 aria-labelledby="language-select-label"
                 @change=${(e: Event) => {
-                  this._selectDevice((e.target as HTMLSelectElement).value);
+                  this._selectLanguage((e.target as HTMLSelectElement).value);
                 }}
                 ?disabled=${this.settingsDisabled}
               >
@@ -155,7 +174,7 @@ export class SettingsMenu extends LitElement {
                   language => html`
                     <option
                       value=${language}
-                      ?selected=${this.selectedLanguage === language}
+                      ?selected=${this.effectiveSelectedLanguage === language}
                     >
                       ${getLanguageName(language)}
                     </option>
