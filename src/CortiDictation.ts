@@ -1,3 +1,5 @@
+import { Corti } from '@corti/sdk';
+
 // corti-dictation.ts
 import { html, LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -9,7 +11,7 @@ import ThemeStyles from './styles/theme.js';
 import ButtonStyles from './styles/buttons.js';
 import ComponentStyles from './styles/ComponentStyles.js';
 
-import type { DictationConfig, RecordingState, ServerConfig } from './types.js';
+import type { RecordingState, ServerConfig } from './types.js';
 import { DEFAULT_DICTATION_CONFIG, LANGUAGES_SUPPORTED } from './constants.js';
 import CalloutStyles from './styles/callout.js';
 import { decodeToken } from './utils.js';
@@ -18,10 +20,10 @@ export class CortiDictation extends LitElement {
   static styles = [ButtonStyles, ThemeStyles, ComponentStyles, CalloutStyles];
 
   @property({ type: Object })
-  dictationConfig: DictationConfig = DEFAULT_DICTATION_CONFIG;
+  dictationConfig: Corti.TranscribeConfig = DEFAULT_DICTATION_CONFIG;
 
   @property({ type: Array })
-  languagesSupported: string[] = LANGUAGES_SUPPORTED;
+  languagesSupported: Corti.TranscribeSupportedLanguage[] = LANGUAGES_SUPPORTED;
 
   @property({ type: Boolean })
   debug_displayAudio: boolean = false;
@@ -95,8 +97,6 @@ export class CortiDictation extends LitElement {
       });
     });
   }
-
-
 
   public toggleRecording() {
     this._toggleRecording();
