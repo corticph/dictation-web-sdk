@@ -2,7 +2,7 @@
   "name": "@corti/dictation-web",
   "description": "Web component for Corti Dictation",
   "author": "Corti ApS",
-  "version": "0.1.16-rc.1",
+  "version": "0.1.16",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
