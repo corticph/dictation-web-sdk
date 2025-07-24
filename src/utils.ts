@@ -185,3 +185,11 @@ export async function getMediaStream(deviceId?: string): Promise<MediaStream> {
 
   return await navigator.mediaDevices.getUserMedia(constraints);
 }
+
+export function getErrorMessage(event: Error) {
+  try {
+    return JSON.parse(event.message);
+  } catch {
+    return event?.message || event;
+  }
+}
