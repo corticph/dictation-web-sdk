@@ -1,42 +1,26 @@
-import { CortiClient, Corti } from '@corti/sdk';
-
-import type { ServerConfig } from './types.js';
-import { getErrorMessage } from './utils.js';
-
-type TranscribeSocket = Awaited<
-  ReturnType<CortiClient['transcribe']['connect']>
->;
+import type { DictationConfig, ServerConfig } from './types.js';
 
 export class DictationService extends EventTarget {
   private mediaRecorder: MediaRecorder;
-  private webSocket!: TranscribeSocket;
+  private webSocket!: WebSocket;
   private serverConfig: ServerConfig;
-  private dictationConfig: Corti.TranscribeConfig;
-  private cortiClient: CortiClient;
+  private dictationConfig: DictationConfig;
 
   constructor(
     mediaStream: MediaStream,
     {
       dictationConfig,
       serverConfig,
-    }: { dictationConfig: Corti.TranscribeConfig; serverConfig: ServerConfig },
+    }: { dictationConfig: DictationConfig; serverConfig: ServerConfig },
   ) {
     super();
     this.mediaRecorder = new MediaRecorder(mediaStream);
     this.serverConfig = serverConfig;
     this.dictationConfig = dictationConfig;
 
-    this.cortiClient = new CortiClient({
-      environment: serverConfig.environment,
-      tenantName: serverConfig.tenant,
-      auth: {
-        accessToken: serverConfig.accessToken,
-      },
-    });
-
     this.mediaRecorder.ondataavailable = event => {
       if (this.webSocket?.readyState === WebSocket.OPEN) {
-        this.webSocket.sendAudio(event.data);
+        this.webSocket.send(event.data);
       }
     };
   }
@@ -51,7 +35,7 @@ export class DictationService extends EventTarget {
     );
   }
 
-  public async startRecording() {
+  public startRecording() {
     if (!this.serverConfig) {
       this.dispatchEvent(
         new CustomEvent('error', {
@@ -63,15 +47,27 @@ export class DictationService extends EventTarget {
       return;
     }
 
-    this.webSocket = await this.cortiClient.transcribe.connect({
-      configuration: this.dictationConfig,
-    });
+    const url = `wss://api.${this.serverConfig.environment}.corti.app/audio-bridge/v2/transcribe?tenant-name=${this.serverConfig.tenant}&token=Bearer%20${this.serverConfig.accessToken}`;
+    this.webSocket = new WebSocket(url);
 
-    this.webSocket.on('message', message => {
+    this.webSocket.onopen = () => {
+      this.webSocket.send(
+        JSON.stringify({
+          type: 'config',
+          configuration: this.dictationConfig,
+        }),
+      );
+    };
+
+    this.webSocket.onmessage = event => {
+      const message = JSON.parse(event.data);
       switch (message.type) {
         case 'CONFIG_ACCEPTED':
           this.mediaRecorder.start(250);
           break;
+        case 'CONFIG_DENIED':
+          this.dispatchCustomEvent('error', message);
+          return this.stopRecording();
         case 'transcript':
           this.dispatchCustomEvent('transcript', message);
           break;
@@ -82,26 +78,22 @@ export class DictationService extends EventTarget {
           console.warn(`Unhandled message type: ${message.type}`);
           break;
       }
-    });
+    };
 
-    this.webSocket.on('error', event => {
-      this.stopRecording();
+    this.webSocket.onerror = event => {
+      this.dispatchCustomEvent('error', event);
+    };
 
-      this.dispatchCustomEvent('error', getErrorMessage(event));
-    });
-
-    this.webSocket.on('close', event => {
+    this.webSocket.onclose = event => {
       this.dispatchCustomEvent('stream-closed', event);
-    });
+    };
   }
 
   public async stopRecording(): Promise<void> {
     this.mediaRecorder?.stop();
 
-    if (this.webSocket.readyState === WebSocket.OPEN) {
-      this.webSocket.sendEnd({
-        type: 'end',
-      });
+    if (this.webSocket?.readyState === WebSocket.OPEN) {
+      this.webSocket.send(JSON.stringify({ type: 'end' }));
     }
 
     const timeout: NodeJS.Timeout = setTimeout(() => {
@@ -110,8 +102,9 @@ export class DictationService extends EventTarget {
       }
     }, 10000);
 
-    this.webSocket.on('close', () => {
+    this.webSocket.onclose = () => {
+      this.webSocket?.close();
       clearTimeout(timeout);
-    });
+    };
   }
 }

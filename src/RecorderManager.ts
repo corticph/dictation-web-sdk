@@ -1,9 +1,7 @@
-import { Corti } from '@corti/sdk';
-
 import { getAudioDevices, getMediaStream } from './utils.js';
 import { AudioService } from './audioService.js';
 import { DictationService } from './DictationService.js';
-import type { RecordingState, ServerConfig } from './types.js';
+import type { DictationConfig, RecordingState, ServerConfig } from './types.js';
 
 export class RecorderManager extends EventTarget {
   public devices: MediaDeviceInfo[] = [];
@@ -62,7 +60,7 @@ export class RecorderManager extends EventTarget {
   }
 
   async startRecording(params: {
-    dictationConfig: Corti.TranscribeConfig;
+    dictationConfig: DictationConfig;
     serverConfig: ServerConfig;
     debug_displayAudio?: boolean;
   }): Promise<void> {

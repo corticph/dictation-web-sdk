@@ -4,10 +4,7 @@ const ThemeStyles = css`
   :host {
     color-scheme: light dark;
     /* Component Defaults */
-    --component-font-family:
-      -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui,
-      helvetica neue, Cantarell, Ubuntu, roboto, noto, helvetica, arial,
-      sans-serif;
+    --component-font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, Cantarell, Ubuntu, roboto, noto, helvetica, arial, sans-serif;
     --component-text-color: light-dark(#333, #eee);
 
     /* Card Defaults */

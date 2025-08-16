@@ -150,8 +150,7 @@ export class SettingsMenu extends LitElement {
                   device => html`
                     <option
                       value=${device.deviceId}
-                      ?selected=${this.selectedDevice?.deviceId ===
-                      device.deviceId}
+                      ?selected=${this.selectedDevice?.deviceId === device.deviceId}
                     >
                       ${device.label || 'Unknown Device'}
                     </option>
