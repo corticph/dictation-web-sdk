@@ -43,7 +43,7 @@ Alternatively, use a CDN to start quickly (not recommended).
 <!DOCTYPE html>
 <html lang="en">
   <body>
-    <corti-dictation></corti-dictation>
+    <corti-dictation id="dictation"></corti-dictation>
     <textarea
       id="transcript"
       placeholder="Transcript will appear here..."
@@ -51,9 +51,10 @@ Alternatively, use a CDN to start quickly (not recommended).
 
     <script>
       import '@corti/dictation-web';
-      const dictation = document.getElementById('transcript');
-      dictation.setAccessToken('YOUR_AUTH_TOKEN'); // Note: Never hardcode tokens
-      // Listen for events
+      const dictationEl = document.getElementById('dictation');
+      dictationEl.addEventListener('ready', () => {
+        dictationEl.setAccessToken('YOUR_AUTH_TOKEN'); // Note: Never hardcode tokens
+      });
       dictationEl.addEventListener('transcript', e => {
         document.getElementById('transcript').value += e.detail.data.text + ' ';
       });
