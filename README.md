@@ -73,7 +73,7 @@ Alternatively, use a CDN to start quickly (not recommended).
 | `selectedDevice`     | Object  | The selected device used for recording (MediaDeviceInfo).                                                                 |
 | `recordingState`     | String  | Current state of recording (`stopped`, `recording`, `initializing` and `stopping`, ).                                     |
 | `dictationConfig`    | Object  | Configuration settings for dictation.                                                                                     |
-| `languagesSupported`    | String[]  | List of all language codes available for use on the Web Component.                                                                                     |
+| `languagesSupported`    | String[]  | List of all language codes available for use with the Web Component.                                                                                     |
 | `debug_displayAudio` | Boolean | Overrides any device selection and instead uses getDisplayMedia to stream system audio. Should only be used for debugging |
 
 ### Methods
