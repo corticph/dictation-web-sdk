@@ -1,14 +1,14 @@
-# Corti Dictation SDK
+# Corti Dictation Web Component
 
 ## Overview
 
-The **Corti Dictation SDK** is a web component that enables real-time speech-to-text dictation using Corti's Dictation API. It provides a simple interface for capturing audio, streaming it to the API, and handling transcripts.
+The **Corti Dictation Web Component** is a web component that enables real-time speech-to-text dictation using Corti's Dictation API. It provides a simple interface for capturing audio, streaming it to the API, and handling transcripts.
 
-> **Note:** OAuth 2.0 authentication is not handled by this SDK. The client must provide an API key or authorization token before using the component.
+> **Note:** OAuth 2.0 authentication is not handled by this library. The client must provide an API key or authorization token before using the component.
 
 ## Installation
 
-Include the SDK in your project by importing the JavaScript module:
+Include the Web Component in your project by importing the JavaScript module:
 
 ```html
 npm i @corti/dictation-web
@@ -17,7 +17,7 @@ npm i @corti/dictation-web
 Then import the module like so:
 
 ```js
-// Import the Corti Dictation SDK
+// Import the Corti Dictation Web Component
 import '@corti/dictation-web';
 ```
 
@@ -73,7 +73,7 @@ Alternatively, use a CDN to start quickly (not recommended).
 | `selectedDevice`     | Object  | The selected device used for recording (MediaDeviceInfo).                                                                 |
 | `recordingState`     | String  | Current state of recording (`stopped`, `recording`, `initializing` and `stopping`, ).                                     |
 | `dictationConfig`    | Object  | Configuration settings for dictation.                                                                                     |
-| `languagesSupported`    | String[]  | List of all language codes available for use on the SDK.                                                                                     |
+| `languagesSupported`    | String[]  | List of all language codes available for use with the Web Component.                                                                                     |
 | `debug_displayAudio` | Boolean | Overrides any device selection and instead uses getDisplayMedia to stream system audio. Should only be used for debugging |
 
 ### Methods
@@ -97,7 +97,7 @@ Alternatively, use a CDN to start quickly (not recommended).
 
 ## Authentication
 
-This SDK does not handle OAuth 2.0 authentication. The client must provide an API key or access token as a string using `setAccessToken`.
+This library does not handle OAuth 2.0 authentication. The client must provide an API key or access token as a string using `setAccessToken`.
 
 ## Usage Examples
 
@@ -111,7 +111,7 @@ The default UI is designed to be slotted into existing applications seamlessly, 
 
 ## License
 
-This SDK is licensed under MIT.
+This Web Component library is licensed under MIT.
 
 ## Support
 
