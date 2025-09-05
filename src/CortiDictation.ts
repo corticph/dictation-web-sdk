@@ -112,6 +112,40 @@ export class CortiDictation extends LitElement {
     }
   }
 
+  public setAuthConfig(config: {
+    accessToken: string;
+    refreshToken?: string;
+    expiresIn?: number;
+    refreshExpiresIn?: number;
+    refreshAccessToken?: (refreshToken?: string) => Promise<{
+      accessToken: string;
+      tokenType: string;
+      expiresIn: number;
+      refreshToken?: string;
+      refreshExpiresIn?: number;
+    }>;
+  }) {
+    try {
+      const decoded = decodeToken(config.accessToken);
+      if (!decoded) {
+        throw new Error('Invalid token format');
+      }
+      
+      this._serverConfig = {
+        environment: decoded.environment,
+        tenant: decoded.tenant,
+        accessToken: config.accessToken,
+        refreshToken: config.refreshToken,
+        expiresIn: config.expiresIn,
+        refreshExpiresIn: config.refreshExpiresIn,
+        refreshAccessToken: config.refreshAccessToken,
+      };
+      return this._serverConfig;
+    } catch (e) {
+      throw new Error('Invalid token');
+    }
+  }
+
   public get selectedDevice(): MediaDeviceInfo | null {
     return this.recorderManager.selectedDevice || null;
   }

@@ -31,6 +31,10 @@ export class DictationService extends EventTarget {
       tenantName: serverConfig.tenant,
       auth: {
         accessToken: serverConfig.accessToken,
+        refreshToken: serverConfig.refreshToken,
+        expiresIn: serverConfig.expiresIn,
+        refreshExpiresIn: serverConfig.refreshExpiresIn,
+        refreshAccessToken: serverConfig.refreshAccessToken,
       },
     });
 
