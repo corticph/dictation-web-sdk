@@ -151,10 +151,15 @@ export function decodeToken(token: string) {
 
   // If the issuer URL matches the expected pattern, return the extracted values along with the token
   if (match) {
+    // Calculate expiration time in seconds from now
+    const now = Math.floor(Date.now() / 1000);
+    const expiresIn = tokenDetails.exp && typeof tokenDetails.exp === 'number' ? tokenDetails.exp - now : undefined;
+    
     return {
       environment: match[2],
       tenant: match[3],
       accessToken: token,
+      expiresIn: expiresIn && expiresIn > 0 ? expiresIn : undefined,
     };
   }
 }
