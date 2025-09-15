@@ -1,4 +1,4 @@
-import { Corti } from '@corti/sdk';
+import { type Corti } from '@corti/sdk';
 
 // corti-dictation.ts
 import { html, LitElement } from 'lit';
@@ -112,34 +112,32 @@ export class CortiDictation extends LitElement {
     }
   }
 
-  public setAuthConfig(config: {
-    accessToken: string;
-    refreshToken?: string;
-    expiresIn?: number;
-    refreshExpiresIn?: number;
-    refreshAccessToken?: (refreshToken?: string) => Promise<{
-      accessToken: string;
-      tokenType: string;
-      expiresIn: number;
-      refreshToken?: string;
-      refreshExpiresIn?: number;
-    }>;
-  }) {
+  public async setAuthConfig(config: Corti.BearerOptions): Promise<ServerConfig> {
     try {
-      const decoded = decodeToken(config.accessToken);
+      const initialToken = 'accessToken' in config
+        ? { accessToken: config.accessToken }
+        : await config.refreshAccessToken();
+
+      if (!initialToken?.accessToken || typeof initialToken.accessToken !== 'string') {
+        throw new Error('Access token is required and must be a string');
+      }
+
+      const decoded = decodeToken(initialToken.accessToken);
+
       if (!decoded) {
         throw new Error('Invalid token format');
       }
-      
+
       this._serverConfig = {
         environment: decoded.environment,
         tenant: decoded.tenant,
-        accessToken: config.accessToken,
+        accessToken: initialToken.accessToken,
         expiresIn: config.expiresIn ?? decoded.expiresIn,
         refreshToken: config.refreshToken,
         refreshExpiresIn: config.refreshExpiresIn,
         refreshAccessToken: config.refreshAccessToken,
       };
+
       return this._serverConfig;
     } catch (e) {
       throw new Error('Invalid token');

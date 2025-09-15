@@ -1,21 +1,12 @@
+import { type Corti } from '@corti/sdk';
+
 export type RecordingState =
   | 'initializing'
   | 'recording'
   | 'stopping'
   | 'stopped';
 
-export interface ServerConfig {
+export type ServerConfig = {
   environment: string;
   tenant: string;
-  accessToken: string;
-  refreshToken?: string;
-  expiresIn?: number;
-  refreshExpiresIn?: number;
-  refreshAccessToken?: (refreshToken?: string) => Promise<{
-    accessToken: string;
-    tokenType: string;
-    expiresIn: number;
-    refreshToken?: string;
-    refreshExpiresIn?: number;
-  }>;
-}
+} & Corti.BearerOptions;
