@@ -132,7 +132,7 @@ export class CortiDictation extends LitElement {
         environment: decoded.environment,
         tenant: decoded.tenant,
         accessToken: initialToken.accessToken,
-        expiresIn: config.expiresIn ?? decoded.expiresIn,
+        expiresAt: decoded.expiresAt,
         refreshToken: config.refreshToken,
         refreshExpiresIn: config.refreshExpiresIn,
         refreshAccessToken: config.refreshAccessToken,
