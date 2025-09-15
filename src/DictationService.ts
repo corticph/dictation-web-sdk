@@ -26,16 +26,12 @@ export class DictationService extends EventTarget {
     this.serverConfig = serverConfig;
     this.dictationConfig = dictationConfig;
 
+    const { environment, tenant: tenantName, ...authConfig } = serverConfig;
+
     this.cortiClient = new CortiClient({
-      environment: serverConfig.environment,
-      tenantName: serverConfig.tenant,
-      auth: {
-        accessToken: serverConfig.accessToken,
-        refreshToken: serverConfig.refreshToken,
-        expiresIn: serverConfig.expiresIn,
-        refreshExpiresIn: serverConfig.refreshExpiresIn,
-        refreshAccessToken: serverConfig.refreshAccessToken,
-      },
+      environment,
+      tenantName,
+      auth: authConfig
     });
 
     this.mediaRecorder.ondataavailable = event => {
