@@ -10,4 +10,5 @@ export type ServerConfig = {
   environment: string;
   tenant: string;
   expiresAt?: number;
+  refreshExpiresAt?: number;
 } & Corti.BearerOptions;

@@ -1,7 +1,7 @@
 import { CortiClient, Corti } from '@corti/sdk';
 
 import type { ServerConfig } from './types.js';
-import { decodeToken, getErrorMessage } from './utils.js';
+import { getErrorMessage } from './utils.js';
 
 type TranscribeSocket = Awaited<
   ReturnType<CortiClient['transcribe']['connect']>
@@ -30,19 +30,24 @@ export class DictationService extends EventTarget {
       environment,
       tenant: tenantName,
       expiresAt,
+      refreshExpiresAt,
       ...authConfig
     } = serverConfig;
 
     const now = Math.floor(Date.now() / 1000);
     const expiresIn = expiresAt ? expiresAt - now : undefined;
+    const refreshExpiresIn = refreshExpiresAt
+      ? refreshExpiresAt - now
+      : undefined;
 
     this.cortiClient = new CortiClient({
       environment,
       tenantName,
       auth: {
         expiresIn,
+        refreshExpiresIn,
         ...authConfig,
-      }
+      },
     });
 
     this.mediaRecorder.ondataavailable = event => {
