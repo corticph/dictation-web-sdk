@@ -111,13 +111,8 @@ The library can automatically refresh tokens when they expire:
 
 ```javascript
 dictation.setAuthConfig({
-  accessToken: 'YOUR_JWT_TOKEN',
-  refreshToken: 'YOUR_REFRESH_TOKEN',
-  expiresIn: 3600,  // Access token expires in 1 hour
-  refreshExpiresIn: 86400, // Refresh token expires in 24 hours
-  
   // This function runs before any API call when the access_token is near expiration
-  refreshAccessToken: async (refreshToken: string) => {
+  refreshAccessToken: async (refreshToken?: string) => {
       // Custom refresh logic -- get new access_token from server
       const response = await fetch("https://your-auth-server/refresh", {
           method: "POST", 
@@ -130,12 +125,11 @@ dictation.setAuthConfig({
       // Return in the expected format
       return {
         accessToken: result.accessToken,
-        tokenType: result.tokenType || 'Bearer',
         expiresIn: result.expiresIn || 3600,
         refreshToken: result.refreshToken,
         refreshExpiresIn: result.refreshExpiresIn,
       };
-  },
+  }
 });
 ```
 
