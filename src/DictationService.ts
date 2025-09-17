@@ -34,6 +34,10 @@ export class DictationService extends EventTarget {
       ...authConfig
     } = serverConfig;
 
+    // We're forced to convert from expiresAt/refreshExpiresAt here,
+    // because we recreate connection every time we connect
+    // => access_token will be called every time if we don't store it
+    // => it makes expiresIn (we receive from API) out of date
     const now = Math.floor(Date.now() / 1000);
     const expiresIn = expiresAt ? expiresAt - now : undefined;
     const refreshExpiresIn = refreshExpiresAt
