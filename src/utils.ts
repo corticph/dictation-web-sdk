@@ -151,10 +151,15 @@ export function decodeToken(token: string) {
 
   // If the issuer URL matches the expected pattern, return the extracted values along with the token
   if (match) {
+    const expiresAt = tokenDetails.exp && typeof tokenDetails.exp === 'number'
+      ? tokenDetails.exp
+      : undefined;
+
     return {
       environment: match[2],
       tenant: match[3],
       accessToken: token,
+      expiresAt,
     };
   }
 }

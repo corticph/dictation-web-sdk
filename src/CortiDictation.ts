@@ -1,4 +1,4 @@
-import { Corti } from '@corti/sdk';
+import { type Corti } from '@corti/sdk';
 
 // corti-dictation.ts
 import { html, LitElement } from 'lit';
@@ -112,6 +112,75 @@ export class CortiDictation extends LitElement {
     }
   }
 
+  public async setAuthConfig(
+    config: Corti.BearerOptions,
+  ): Promise<ServerConfig> {
+    try {
+      const initialToken =
+        'accessToken' in config
+          ? { accessToken: config.accessToken, refreshToken: config.refreshToken }
+          : await config.refreshAccessToken();
+
+      if (
+        !initialToken?.accessToken ||
+        typeof initialToken.accessToken !== 'string'
+      ) {
+        throw new Error('Access token is required and must be a string');
+      }
+
+      // Remove all the parsing and just pass parameters when we implement token decoding on the SDK side
+      const decoded = decodeToken(initialToken.accessToken);
+      const refreshDecoded = initialToken.refreshToken
+        ? decodeToken(initialToken.refreshToken)
+        : undefined;
+
+      if (!decoded) {
+        throw new Error('Invalid token format');
+      }
+
+      this._serverConfig = {
+        environment: decoded.environment,
+        tenant: decoded.tenant,
+        accessToken: initialToken.accessToken,
+        expiresAt: decoded.expiresAt,
+        refreshToken: config.refreshToken,
+        refreshExpiresAt: refreshDecoded?.expiresAt,
+        refreshAccessToken: async (refreshToken?: string) => {
+          try {
+            if (!config.refreshAccessToken) {
+              return {
+                accessToken: this._serverConfig?.accessToken || 'no_token',
+                expiresIn: Infinity,
+                refreshToken,
+              };
+            }
+
+            const response = await config.refreshAccessToken(refreshToken);
+            const decoded = decodeToken(response.accessToken);
+            const refreshDecoded = response.refreshToken
+              ? decodeToken(response.refreshToken)
+              : undefined;
+
+            if (this._serverConfig) {
+              this._serverConfig.accessToken = response.accessToken;
+              this._serverConfig.expiresAt = decoded?.expiresAt;
+              this._serverConfig.refreshExpiresAt = refreshDecoded?.expiresAt;
+              this._serverConfig.refreshToken = response.refreshToken;
+            }
+
+            return response;
+          } catch (e) {
+            throw new Error('Error when refreshing access token');
+          }
+        },
+      };
+
+      return this._serverConfig;
+    } catch (e) {
+      throw new Error('Invalid token');
+    }
+  }
+
   public get selectedDevice(): MediaDeviceInfo | null {
     return this.recorderManager.selectedDevice || null;
   }
@@ -200,10 +269,10 @@ export class CortiDictation extends LitElement {
           class=${isRecording ? 'red' : 'accent'}
         >
           ${isLoading
-            ? html`<icon-loading-spinner></icon-loading-spinner>`
+            ? html` <icon-loading-spinner></icon-loading-spinner>`
             : isRecording
-              ? html`<icon-recording></icon-recording>`
-              : html`<icon-mic-on></icon-mic-on>`}
+              ? html` <icon-recording></icon-recording>`
+              : html` <icon-mic-on></icon-mic-on>`}
           <audio-visualiser
             .level=${this._audioLevel}
             .active=${isRecording}

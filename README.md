@@ -82,6 +82,7 @@ Alternatively, use a CDN to start quickly (not recommended).
 | -------------------------------------- | ---------------------------------------------------------------- |
 | `toggleRecording()`                    | Starts or stops recording.                                       |
 | `setAccessToken(access_token: string)` | Set the latest access token. This will return the server config. |
+| `setAuthConfig(config: AuthConfig)`    | Set authentication configuration with optional refresh mechanism. |
 
 ### Events
 
@@ -97,7 +98,42 @@ Alternatively, use a CDN to start quickly (not recommended).
 
 ## Authentication
 
-This library does not handle OAuth 2.0 authentication. The client must provide an API key or access token as a string using `setAccessToken`.
+This library supports multiple authentication methods:
+
+### Basic Bearer Token
+```javascript
+dictation.setAccessToken('YOUR_JWT_TOKEN');
+```
+
+### With Refresh Token Support
+
+The library can automatically refresh tokens when they expire:
+
+```javascript
+dictation.setAuthConfig({
+  // This function runs before any API call when the access_token is near expiration
+  refreshAccessToken: async (refreshToken?: string) => {
+      // Custom refresh logic -- get new access_token from server
+      const response = await fetch("https://your-auth-server/refresh", {
+          method: "POST", 
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ refreshToken: refreshToken }),
+      });
+      
+      const result = await response.json();
+      
+      // Return in the expected format
+      return {
+        accessToken: result.accessToken,
+        expiresIn: result.expiresIn || 3600,
+        refreshToken: result.refreshToken,
+        refreshExpiresIn: result.refreshExpiresIn,
+      };
+  }
+});
+```
+
+The refresh mechanism automatically handles token renewal when the access token is near expiration, ensuring uninterrupted dictation sessions.
 
 ## Usage Examples
 

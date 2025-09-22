@@ -1,11 +1,14 @@
+import { type Corti } from '@corti/sdk';
+
 export type RecordingState =
   | 'initializing'
   | 'recording'
   | 'stopping'
   | 'stopped';
 
-export interface ServerConfig {
+export type ServerConfig = {
   environment: string;
   tenant: string;
-  accessToken: string;
-}
+  expiresAt?: number;
+  refreshExpiresAt?: number;
+} & Corti.BearerOptions;
