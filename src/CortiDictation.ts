@@ -90,7 +90,7 @@ export class CortiDictation extends LitElement {
         this.dispatchEvent(
           new CustomEvent(eventName, {
             detail: customEvent.detail,
-            bubbles: true,
+            bubbles: eventName !== 'error',
             composed: true,
           }),
         );
