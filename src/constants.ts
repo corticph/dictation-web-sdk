@@ -7,10 +7,11 @@ export const LANGUAGES_SUPPORTED: Corti.TranscribeSupportedLanguage[] = [
   'de',
   'fr',
   'sv',
+  'nl',
+  'no',
 ];
 export const DEFAULT_DICTATION_CONFIG: Corti.TranscribeConfig = {
   primaryLanguage: 'en',
-  interimResults: true,
   spokenPunctuation: true,
   automaticPunctuation: true,
 };
