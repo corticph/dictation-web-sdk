@@ -133,8 +133,9 @@ export class DictationService extends EventTarget {
       }
     }, 10000);
 
-    this.webSocket.on('close', () => {
+    this.webSocket.on('close', (event) => {
       clearTimeout(timeout);
+      this.dispatchCustomEvent('stream-closed', event);
     });
   }
 }
