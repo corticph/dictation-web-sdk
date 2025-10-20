@@ -98,6 +98,9 @@ export class DictationService extends EventTarget {
         case 'command':
           this.dispatchCustomEvent('command', message);
           break;
+        case 'usage':
+          this.dispatchCustomEvent('usage', message);
+          break;
         default:
           console.warn(`Unhandled message type: ${message.type}`);
           break;
