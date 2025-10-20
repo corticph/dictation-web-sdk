@@ -77,6 +77,7 @@ export class CortiDictation extends LitElement {
       'transcript',
       'command',
       'ready',
+      'usage'
     ];
 
     eventsToRelay.forEach(eventName => {
