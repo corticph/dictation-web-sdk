@@ -108,9 +108,16 @@ export class RecorderManager extends EventTarget {
         );
         this.stopRecording();
       });
-      this._dictationService.addEventListener('stream-closed', () =>
-        this.stopRecording(),
-      );
+      this._dictationService.addEventListener('stream-closed', (e) => {
+        this.dispatchEvent(
+          new CustomEvent('stream-closed', {
+            detail: (e as CustomEvent).detail,
+            bubbles: true,
+            composed: true,
+          }),
+        );
+        this.stopRecording();
+      });
       this._dictationService.addEventListener('transcript', e =>
         this.dispatchEvent(
           new CustomEvent('transcript', {
