@@ -94,6 +94,8 @@ Alternatively, use a CDN to start quickly (not recommended).
 | `transcript`                | Fired when a new transcript is received. `detail.data.text` contains the transcribed text.                                                                                                              |
 | `command`                   | Fired whenever a new command is detected.                                                                                                                                                               |
 | `audio-level-changed`       | Fired when the input audio level changes. `detail.audioLevel` contains the new level.                                                                                                                   |
+| `usage`                     | Fired when usage information is received from the server. `detail.credits` contains the usage data.                                                                                                             |
+| `stream-closed`             | Fired when the WebSocket stream is closed. `detail` contains the close event data.                                                                                                                     |
 | `error`                     | Fired on error. `detail` contains the full error.                                                                                                                                                       |
 
 ## Authentication
