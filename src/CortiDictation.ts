@@ -14,7 +14,6 @@ import ComponentStyles from './styles/ComponentStyles.js';
 import type { RecordingState, ServerConfig } from './types.js';
 import { DEFAULT_DICTATION_CONFIG, LANGUAGES_SUPPORTED } from './constants.js';
 import CalloutStyles from './styles/callout.js';
-import { decodeToken } from './utils.js';
 
 export class CortiDictation extends LitElement {
   static styles = [ButtonStyles, ThemeStyles, ComponentStyles, CalloutStyles];
@@ -78,7 +77,7 @@ export class CortiDictation extends LitElement {
       'command',
       'ready',
       'usage',
-      'stream-closed'
+      'stream-closed',
     ];
 
     eventsToRelay.forEach(eventName => {
@@ -106,9 +105,11 @@ export class CortiDictation extends LitElement {
 
   public setAccessToken(token: string) {
     try {
-      const decoded = decodeToken(token);
-      this._serverConfig = decoded;
-      return decoded;
+      this._serverConfig = {
+        accessToken: token
+      };
+
+      return this._serverConfig;
     } catch (e) {
       throw new Error('Invalid token');
     }
@@ -118,35 +119,8 @@ export class CortiDictation extends LitElement {
     config: Corti.BearerOptions,
   ): Promise<ServerConfig> {
     try {
-      const initialToken =
-        'accessToken' in config
-          ? { accessToken: config.accessToken, refreshToken: config.refreshToken }
-          : await config.refreshAccessToken();
-
-      if (
-        !initialToken?.accessToken ||
-        typeof initialToken.accessToken !== 'string'
-      ) {
-        throw new Error('Access token is required and must be a string');
-      }
-
-      // Remove all the parsing and just pass parameters when we implement token decoding on the SDK side
-      const decoded = decodeToken(initialToken.accessToken);
-      const refreshDecoded = initialToken.refreshToken
-        ? decodeToken(initialToken.refreshToken)
-        : undefined;
-
-      if (!decoded) {
-        throw new Error('Invalid token format');
-      }
-
       this._serverConfig = {
-        environment: decoded.environment,
-        tenant: decoded.tenant,
-        accessToken: initialToken.accessToken,
-        expiresAt: decoded.expiresAt,
-        refreshToken: config.refreshToken,
-        refreshExpiresAt: refreshDecoded?.expiresAt,
+        ...config,
         refreshAccessToken: async (refreshToken?: string) => {
           try {
             if (!config.refreshAccessToken) {
@@ -158,15 +132,9 @@ export class CortiDictation extends LitElement {
             }
 
             const response = await config.refreshAccessToken(refreshToken);
-            const decoded = decodeToken(response.accessToken);
-            const refreshDecoded = response.refreshToken
-              ? decodeToken(response.refreshToken)
-              : undefined;
 
             if (this._serverConfig) {
               this._serverConfig.accessToken = response.accessToken;
-              this._serverConfig.expiresAt = decoded?.expiresAt;
-              this._serverConfig.refreshExpiresAt = refreshDecoded?.expiresAt;
               this._serverConfig.refreshToken = response.refreshToken;
             }
 
@@ -179,7 +147,7 @@ export class CortiDictation extends LitElement {
 
       return this._serverConfig;
     } catch (e) {
-      throw new Error('Invalid token');
+      throw new Error('Invalid config');
     }
   }
 
