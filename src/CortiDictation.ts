@@ -14,6 +14,7 @@ import ComponentStyles from './styles/ComponentStyles.js';
 import type { RecordingState, ServerConfig } from './types.js';
 import { DEFAULT_DICTATION_CONFIG, LANGUAGES_SUPPORTED } from './constants.js';
 import CalloutStyles from './styles/callout.js';
+import { decodeToken } from './utils.js';
 
 export class CortiDictation extends LitElement {
   static styles = [ButtonStyles, ThemeStyles, ComponentStyles, CalloutStyles];
@@ -103,10 +104,26 @@ export class CortiDictation extends LitElement {
     this._toggleRecording();
   }
 
-  public setAccessToken(token: string) {
+  /**
+   * Sets the access token and returns the server configuration.
+   * 
+   * NOTE: We decode the token here only for backward compatibility in return values.
+   * The SDK now handles token parsing internally, so this return value should be
+   * reduced in the future to only include necessary fields.
+   */
+  public setAccessToken(token: string): ServerConfig {
     try {
+      const decoded = decodeToken(token);
+  
+      if (!decoded) {
+        throw new Error('Invalid token format');
+      }
+
       this._serverConfig = {
-        accessToken: token
+        environment: decoded.environment,
+        tenant: decoded.tenant,
+        accessToken: decoded.accessToken,
+        expiresAt: decoded.expiresAt,
       };
 
       return this._serverConfig;
@@ -115,12 +132,47 @@ export class CortiDictation extends LitElement {
     }
   }
 
+  /**
+   * Sets the authentication configuration and returns the server configuration.
+   * 
+   * NOTE: We decode tokens here only for backward compatibility in return values.
+   * The SDK now handles token parsing internally, so this return value should be
+   * reduced in the future to only include necessary fields.
+   */
   public async setAuthConfig(
     config: Corti.BearerOptions,
   ): Promise<ServerConfig> {
     try {
+      const initialToken =
+        'accessToken' in config
+          ? { accessToken: config.accessToken, refreshToken: config.refreshToken }
+          : await config.refreshAccessToken();
+
+      if (
+        !initialToken?.accessToken ||
+        typeof initialToken.accessToken !== 'string'
+      ) {
+        throw new Error('Access token is required and must be a string');
+      }
+
+      // Decode tokens only for return value compatibility
+      // The SDK handles its own token parsing internally
+      const decoded = decodeToken(initialToken.accessToken);
+      const refreshDecoded = initialToken.refreshToken
+        ? decodeToken(initialToken.refreshToken)
+        : undefined;
+
+      if (!decoded) {
+        throw new Error('Invalid token format');
+      }
+
       this._serverConfig = {
-        ...config,
+        environment: decoded.environment,
+        tenant: decoded.tenant,
+        accessToken: initialToken.accessToken,
+        expiresAt: decoded.expiresAt,
+        refreshToken: config.refreshToken,
+        refreshExpiresAt: refreshDecoded?.expiresAt,
         refreshAccessToken: async (refreshToken?: string) => {
           try {
             if (!config.refreshAccessToken) {
@@ -132,10 +184,18 @@ export class CortiDictation extends LitElement {
             }
 
             const response = await config.refreshAccessToken(refreshToken);
+            
+            // Decode refreshed tokens for return value compatibility
+            const refreshedDecoded = decodeToken(response.accessToken);
+            const refreshedRefreshDecoded = response.refreshToken
+              ? decodeToken(response.refreshToken)
+              : undefined;
 
-            if (this._serverConfig) {
+            if (this._serverConfig && refreshedDecoded) {
               this._serverConfig.accessToken = response.accessToken;
+              this._serverConfig.expiresAt = refreshedDecoded.expiresAt;
               this._serverConfig.refreshToken = response.refreshToken;
+              this._serverConfig.refreshExpiresAt = refreshedRefreshDecoded?.expiresAt;
             }
 
             return response;
