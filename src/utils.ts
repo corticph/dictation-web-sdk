@@ -93,7 +93,6 @@ export async function getAudioDevices(): Promise<{
  *  - `environment`: The extracted environment from the issuer URL.
  *  - `tenant`: The extracted tenant from the issuer URL.
  *  - `accessToken`: The original token string.
- *  - `expiresAt`: The expiration timestamp from the token.
  * If the issuer URL doesn't match the expected format, returns undefined.
  *
  * @throws Will throw an error if:
