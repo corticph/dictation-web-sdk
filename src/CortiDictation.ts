@@ -106,27 +106,16 @@ export class CortiDictation extends LitElement {
 
   /**
    * Sets the access token and returns the server configuration.
-   * 
+   *
    * NOTE: We decode the token here only for backward compatibility in return values.
    * The SDK now handles token parsing internally, so this return value should be
    * reduced in the future to only include necessary fields.
    */
-  public setAccessToken(token: string): ServerConfig {
+  public setAccessToken(token: string) {
     try {
       const decoded = decodeToken(token);
-  
-      if (!decoded) {
-        throw new Error('Invalid token format');
-      }
-
-      this._serverConfig = {
-        environment: decoded.environment,
-        tenant: decoded.tenant,
-        accessToken: decoded.accessToken,
-        expiresAt: decoded.expiresAt,
-      };
-
-      return this._serverConfig;
+      this._serverConfig = decoded;
+      return decoded;
     } catch (e) {
       throw new Error('Invalid token');
     }
@@ -134,7 +123,7 @@ export class CortiDictation extends LitElement {
 
   /**
    * Sets the authentication configuration and returns the server configuration.
-   * 
+   *
    * NOTE: We decode tokens here only for backward compatibility in return values.
    * The SDK now handles token parsing internally, so this return value should be
    * reduced in the future to only include necessary fields.
@@ -158,9 +147,6 @@ export class CortiDictation extends LitElement {
       // Decode tokens only for return value compatibility
       // The SDK handles its own token parsing internally
       const decoded = decodeToken(initialToken.accessToken);
-      const refreshDecoded = initialToken.refreshToken
-        ? decodeToken(initialToken.refreshToken)
-        : undefined;
 
       if (!decoded) {
         throw new Error('Invalid token format');
@@ -170,9 +156,7 @@ export class CortiDictation extends LitElement {
         environment: decoded.environment,
         tenant: decoded.tenant,
         accessToken: initialToken.accessToken,
-        expiresAt: decoded.expiresAt,
         refreshToken: config.refreshToken,
-        refreshExpiresAt: refreshDecoded?.expiresAt,
         refreshAccessToken: async (refreshToken?: string) => {
           try {
             if (!config.refreshAccessToken) {
@@ -184,18 +168,10 @@ export class CortiDictation extends LitElement {
             }
 
             const response = await config.refreshAccessToken(refreshToken);
-            
-            // Decode refreshed tokens for return value compatibility
-            const refreshedDecoded = decodeToken(response.accessToken);
-            const refreshedRefreshDecoded = response.refreshToken
-              ? decodeToken(response.refreshToken)
-              : undefined;
 
-            if (this._serverConfig && refreshedDecoded) {
+            if (this._serverConfig) {
               this._serverConfig.accessToken = response.accessToken;
-              this._serverConfig.expiresAt = refreshedDecoded.expiresAt;
               this._serverConfig.refreshToken = response.refreshToken;
-              this._serverConfig.refreshExpiresAt = refreshedRefreshDecoded?.expiresAt;
             }
 
             return response;
