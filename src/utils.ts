@@ -81,44 +81,9 @@ export async function getAudioDevices(): Promise<{
   }
 }
 
-export async function getMediaStream(deviceId?: string): Promise<MediaStream> {
-  if (!deviceId) {
-    throw new Error('No device ID provided');
-  }
-
-  if (deviceId === 'display_audio') {
-    const stream = await navigator.mediaDevices.getDisplayMedia({
-      audio: true,
-      video: true,
-    });
-    stream.getTracks().forEach(track => {
-      if (track.kind === 'video') {
-        stream.removeTrack(track);
-      }
-    });
-    return stream;
-  }
-
-  // Get media stream and initialize audio service.
-  const constraints: MediaStreamConstraints =
-    deviceId !== 'default'
-      ? { audio: { deviceId: { exact: deviceId } } }
-      : { audio: true };
-
-  return await navigator.mediaDevices.getUserMedia(constraints);
-}
-
-export function getErrorMessage(event: Error) {
-  try {
-    return JSON.parse(event.message);
-  } catch {
-    return event?.message || event;
-  }
-}
-
 /**
  * Decodes a JWT token and extracts environment and tenant details from its issuer URL.
- * 
+ *
  * NOTE: This function is temporarily kept for backward compatibility in return values.
  * The SDK now handles token parsing internally, so this should be removed once we
  * reduce the return results to only include what's necessary.
@@ -204,4 +169,39 @@ export function decodeToken(token: string): {
   }
 
   return undefined;
+}
+
+export async function getMediaStream(deviceId?: string): Promise<MediaStream> {
+  if (!deviceId) {
+    throw new Error('No device ID provided');
+  }
+
+  if (deviceId === 'display_audio') {
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      audio: true,
+      video: true,
+    });
+    stream.getTracks().forEach(track => {
+      if (track.kind === 'video') {
+        stream.removeTrack(track);
+      }
+    });
+    return stream;
+  }
+
+  // Get media stream and initialize audio service.
+  const constraints: MediaStreamConstraints =
+    deviceId !== 'default'
+      ? { audio: { deviceId: { exact: deviceId } } }
+      : { audio: true };
+
+  return await navigator.mediaDevices.getUserMedia(constraints);
+}
+
+export function getErrorMessage(event: Error) {
+  try {
+    return JSON.parse(event.message);
+  } catch {
+    return event?.message || event;
+  }
 }
