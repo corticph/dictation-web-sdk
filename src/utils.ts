@@ -102,12 +102,7 @@ export async function getAudioDevices(): Promise<{
  *  - The JSON payload is invalid.
  *  - The token payload does not contain an issuer (iss) field.
  */
-export function decodeToken(token: string): {
-  environment: string;
-  tenant: string;
-  accessToken: string;
-  expiresAt?: number;
-} | undefined {
+export function decodeToken(token: string) {
   // Validate the token structure (should contain at least header and payload parts)
   const parts = token.split('.');
   if (parts.length < 2) {
@@ -134,7 +129,7 @@ export function decodeToken(token: string): {
   }
 
   // Parse the JSON string to obtain token details
-  let tokenDetails: { iss: string; exp?: number; [key: string]: unknown };
+  let tokenDetails: { iss: string; [key: string]: unknown };
   try {
     tokenDetails = JSON.parse(jsonPayload);
   } catch (error) {
@@ -167,8 +162,6 @@ export function decodeToken(token: string): {
       expiresAt,
     };
   }
-
-  return undefined;
 }
 
 export async function getMediaStream(deviceId?: string): Promise<MediaStream> {
