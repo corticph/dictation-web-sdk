@@ -116,10 +116,12 @@ dictation.setAuthConfig({
   // This function runs before any API call when the access_token is near expiration
   refreshAccessToken: async (refreshToken?: string) => {
       // Custom refresh logic -- get new access_token from server
-      const response = await fetch("https://your-auth-server/refresh", {
+      // if accessToken is not passed to AuthConfig, refreshToken will be `undefined` for the first call,
+      //   then it will be the refreshToken returned from the previous token request
+      const response = await fetch("https://your-auth-server/token", {
           method: "POST", 
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ refreshToken: refreshToken }),
+          body: JSON.stringify({ refreshToken }),
       });
       
       const result = await response.json();
@@ -127,9 +129,7 @@ dictation.setAuthConfig({
       // Return in the expected format
       return {
         accessToken: result.accessToken,
-        expiresIn: result.expiresIn || 3600,
         refreshToken: result.refreshToken,
-        refreshExpiresIn: result.refreshExpiresIn,
       };
   }
 });

@@ -84,17 +84,16 @@ export async function getAudioDevices(): Promise<{
 /**
  * Decodes a JWT token and extracts environment and tenant details from its issuer URL.
  *
- * This function assumes the JWT token follows the standard header.payload.signature format.
- * It decodes the payload from base64 URL format, parses it as JSON, and then uses a regex
- * to extract the `environment` and `tenant` from the issuer URL (iss field) if it matches the pattern:
- * https://keycloak.{environment}.corti.app/realms/{tenant}.
+ * NOTE: This function is temporarily kept for backward compatibility in return values.
+ * The SDK now handles token parsing internally, so this should be removed once we
+ * reduce the return results to only include what's necessary.
  *
  * @param token - A JSON Web Token (JWT) string.
  * @returns An object containing:
  *  - `environment`: The extracted environment from the issuer URL.
  *  - `tenant`: The extracted tenant from the issuer URL.
  *  - `accessToken`: The original token string.
- * If the issuer URL doesn't match the expected format, the function returns the full decoded token details.
+ * If the issuer URL doesn't match the expected format, returns undefined.
  *
  * @throws Will throw an error if:
  *  - The token format is invalid.

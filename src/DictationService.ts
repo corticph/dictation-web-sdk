@@ -26,32 +26,17 @@ export class DictationService extends EventTarget {
     this.serverConfig = serverConfig;
     this.dictationConfig = dictationConfig;
 
+    // We're forced to remove from expiresIn/refreshExpiresIn here,
+    // because we recreate connection every time we connect
+    // => it makes expiresIn (we receive from API) out of date
     const {
-      environment,
-      tenant: tenantName,
-      expiresAt,
-      refreshExpiresAt,
+      expiresIn, // eslint-disable-line @typescript-eslint/no-unused-vars
+      refreshExpiresIn, // eslint-disable-line @typescript-eslint/no-unused-vars
       ...authConfig
     } = serverConfig;
 
-    // We're forced to convert from expiresAt/refreshExpiresAt here,
-    // because we recreate connection every time we connect
-    // => access_token will be called every time if we don't store it
-    // => it makes expiresIn (we receive from API) out of date
-    const now = Math.floor(Date.now() / 1000);
-    const expiresIn = expiresAt ? expiresAt - now : undefined;
-    const refreshExpiresIn = refreshExpiresAt
-      ? refreshExpiresAt - now
-      : undefined;
-
     this.cortiClient = new CortiClient({
-      environment,
-      tenantName,
-      auth: {
-        expiresIn,
-        refreshExpiresIn,
-        ...authConfig,
-      },
+      auth: authConfig,
     });
 
     this.mediaRecorder.ondataavailable = event => {
