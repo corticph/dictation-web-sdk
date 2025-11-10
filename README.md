@@ -80,7 +80,9 @@ Alternatively, use a CDN to start quickly (not recommended).
 
 | Method                                 | Description                                                      |
 | -------------------------------------- | ---------------------------------------------------------------- |
-| `toggleRecording()`                    | Starts or stops recording.                                       |
+| `startRecording()`                     | Starts a recording.                                              |
+| `stopRecording()`                      | Stops a recording.                                               |
+| `toggleRecording()`                    | Starts or stops recording. Convenience layer on top of the start/stop methods. |
 | `setAccessToken(access_token: string)` | Set the latest access token. This will return the server config. |
 | `setAuthConfig(config: AuthConfig)`    | Set authentication configuration with optional refresh mechanism. |
 
