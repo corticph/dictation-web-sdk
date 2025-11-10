@@ -12,3 +12,5 @@ export type ServerConfig = {
   expiresAt?: number;
   refreshExpiresAt?: number;
 } & Corti.BearerOptions;
+
+export type ConfigurableSettings = "device" | "language";
