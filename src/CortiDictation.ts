@@ -28,6 +28,9 @@ export class CortiDictation extends LitElement {
   @property({ type: Boolean })
   debug_displayAudio: boolean = false;
 
+  @property({ type: Boolean })
+  preventButtonFocus: boolean = true;
+
   @state()
   private _serverConfig: ServerConfig | undefined;
 
@@ -252,6 +255,14 @@ export class CortiDictation extends LitElement {
 
   }
 
+  _onButtonMouseDown(event: MouseEvent) {
+    // Prevent button from taking focus on mouse click
+    // This keeps focus on the textarea
+    if (this.preventButtonFocus) {
+      event.preventDefault();
+    }
+  }
+
   // Handle device change events if needed
   async _onRecordingDevicesChanged(event: Event) {
     const customEvent = event as CustomEvent;
@@ -280,6 +291,7 @@ export class CortiDictation extends LitElement {
       <div class="wrapper">
         <button
           @click=${this.toggleRecording}
+          @mousedown=${this._onButtonMouseDown}
           class=${isRecording ? 'red' : 'accent'}
         >
           ${isLoading
