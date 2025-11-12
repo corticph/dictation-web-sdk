@@ -106,8 +106,25 @@ export class CortiDictation extends LitElement {
     });
   }
 
+  public startRecording() {
+    if (!this._serverConfig) return;
+    this.recorderManager.startRecording({
+      dictationConfig: this.dictationConfig,
+      serverConfig: this._serverConfig!,
+      debug_displayAudio: this.debug_displayAudio,
+    });
+  }
+
+  public stopRecording() {
+    this.recorderManager.stopRecording();
+  }
+
   public toggleRecording() {
-    this._toggleRecording();
+    if (this._recordingState === 'recording') {
+      this.stopRecording();
+    } else if (this._recordingState === 'stopped') {
+      this.startRecording();
+    }
   }
 
   /**
@@ -237,19 +254,6 @@ export class CortiDictation extends LitElement {
     }
   }
 
-  _toggleRecording() {
-    if (!this._serverConfig) return;
-    if (this._recordingState === 'recording') {
-      this.recorderManager.stopRecording();
-    } else if (this._recordingState === 'stopped') {
-      this.recorderManager.startRecording({
-        dictationConfig: this.dictationConfig,
-        serverConfig: this._serverConfig,
-        debug_displayAudio: this.debug_displayAudio,
-      });
-    }
-  }
-
   _onButtonMouseDown(event: MouseEvent) {
     // Prevent button from taking focus on mouse click
     // This keeps focus on the textarea
@@ -285,7 +289,7 @@ export class CortiDictation extends LitElement {
     return html`
       <div class="wrapper">
         <button
-          @click=${this._toggleRecording}
+          @click=${this.toggleRecording}
           @mousedown=${this._onButtonMouseDown}
           class=${isRecording ? 'red' : 'accent'}
         >
