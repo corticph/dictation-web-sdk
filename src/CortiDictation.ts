@@ -251,10 +251,6 @@ export class CortiDictation extends LitElement {
     }
   }
 
-  _toggleRecording() {
-
-  }
-
   _onButtonMouseDown(event: MouseEvent) {
     // Prevent button from taking focus on mouse click
     // This keeps focus on the textarea
