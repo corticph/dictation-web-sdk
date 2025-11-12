@@ -8,10 +8,9 @@ const ComponentStyles = css`
     box-shadow: var(--card-box-shadow);
     padding: var(--card-padding);
     display: flex;
-    width: min-content;
     gap: 4px;
     height: 46px;
-    width: 98px;
+    width: fit-content;
     box-sizing: border-box;
     overflow: hidden;
   }

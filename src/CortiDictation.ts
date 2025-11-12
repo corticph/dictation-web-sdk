@@ -11,7 +11,7 @@ import ThemeStyles from './styles/theme.js';
 import ButtonStyles from './styles/buttons.js';
 import ComponentStyles from './styles/ComponentStyles.js';
 
-import type { RecordingState, ServerConfig } from './types.js';
+import type { ConfigurableSettings, RecordingState, ServerConfig } from './types.js';
 import { DEFAULT_DICTATION_CONFIG, LANGUAGES_SUPPORTED } from './constants.js';
 import CalloutStyles from './styles/callout.js';
 import { decodeToken } from './utils.js';
@@ -28,6 +28,9 @@ export class CortiDictation extends LitElement {
   @property({ type: Boolean })
   debug_displayAudio: boolean = false;
 
+  @property({ type: Array })
+  settingsEnabled: ConfigurableSettings[] = ["device", "language"];
+  
   @property({ type: Boolean })
   preventButtonFocus: boolean = true;
 
@@ -301,13 +304,16 @@ export class CortiDictation extends LitElement {
           ></audio-visualiser>
         </button>
 
+        ${this.settingsEnabled.length > 0 ? html`
         <settings-menu
           .selectedDevice=${this._selectedDevice}
           .selectedLanguage=${this.dictationConfig.primaryLanguage}
           ?settingsDisabled=${this._recordingState !== 'stopped'}
           @recording-devices-changed=${this._onRecordingDevicesChanged}
           @language-changed=${this._onLanguageChanged}
+          .settingsEnabled=${this.settingsEnabled}
         ></settings-menu>
+        ` : ''}
       </div>
     `;
   }
