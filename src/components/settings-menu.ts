@@ -7,6 +7,7 @@ import SelectStyles from '../styles/select.js';
 import { LANGUAGES_SUPPORTED } from '../constants.js';
 import { getAudioDevices, getLanguageName } from '../utils.js';
 import CalloutStyles from '../styles/callout.js';
+import type { ConfigurableSettings } from '../types.js';
 
 @customElement('settings-menu')
 export class SettingsMenu extends LitElement {
@@ -18,6 +19,9 @@ export class SettingsMenu extends LitElement {
 
   @property({ type: Boolean })
   settingsDisabled: boolean = false;
+
+  @property({ type: Array })
+  settingsEnabled: ConfigurableSettings[] = [];
 
   @state()
   private _devices: MediaDeviceInfo[] = [];
@@ -134,6 +138,7 @@ export class SettingsMenu extends LitElement {
                   </div>
                 `
               : ''}
+            ${this.settingsEnabled.includes("device") ? html`
             <div class="form-group">
               <label id="device-select-label" for="device-select">
                 Recording Device
@@ -159,6 +164,8 @@ export class SettingsMenu extends LitElement {
                 )}
               </select>
             </div>
+            ` : ''}
+            ${this.settingsEnabled.includes("language") ? html`
             <div class="form-group">
               <label id="language-select-label" for="language-select">
                 Dictation Language
@@ -183,6 +190,7 @@ export class SettingsMenu extends LitElement {
                 )}
               </select>
             </div>
+            ` : ''}
           </div>
         </div>
       </div>
