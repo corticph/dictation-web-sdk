@@ -1,12 +1,13 @@
 import { html, LitElement, type PropertyValues } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { map } from "lit/directives/map.js";
 import { range } from "lit/directives/range.js";
 import AudioVisualiserStyles from "../styles/audio-visualiser.js";
+import { dualCustomElement } from "../utils/custom-elements.js";
 import { normalizeToRange } from "../utils/validation.js";
 
-@customElement("dictation-audio-visualiser")
+@dualCustomElement("dictation-audio-visualiser", "ambient-audio-visualiser")
 export class DictationAudioVisualiser extends LitElement {
   @property({ type: Number })
   level: number = 0;
@@ -50,6 +51,7 @@ export class DictationAudioVisualiser extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
+    "ambient-audio-visualiser": DictationAudioVisualiser;
     "dictation-audio-visualiser": DictationAudioVisualiser;
   }
 }

@@ -116,9 +116,9 @@ export class CortiAmbient extends CortiRoot<
         ></ambient-recording-button>
         ${
           this.settingsEnabled?.length > 0
-            ? html`<dictation-settings-menu
+            ? html`<ambient-settings-menu
                 .settingsEnabled=${this.settingsEnabled}
-              ></dictation-settings-menu>`
+              ></ambient-settings-menu>`
             : nothing
         }
       </ambient-root>

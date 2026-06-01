@@ -1,7 +1,7 @@
 import type { Corti } from "@corti/sdk";
 import { consume } from "@lit/context";
 import { html, LitElement } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 import {
   languagesContext,
   selectedLanguageContext,
@@ -11,9 +11,10 @@ import {
   languageChangedEvent,
   languagesChangedEvent,
 } from "../utils/events.js";
+import { dualCustomElement } from "../utils/custom-elements.js";
 import { getLanguageName } from "../utils/languages.js";
 
-@customElement("dictation-language-selector")
+@dualCustomElement("dictation-language-selector", "ambient-language-selector")
 export class DictationLanguageSelector extends LitElement {
   @consume({ context: languagesContext, subscribe: true })
   @state()
@@ -68,6 +69,7 @@ export class DictationLanguageSelector extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
+    "ambient-language-selector": DictationLanguageSelector;
     "dictation-language-selector": DictationLanguageSelector;
   }
 }

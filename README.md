@@ -40,12 +40,18 @@ For more control and flexibility, you can use individual components:
 - **`<dictation-language-selector>`** - Language selection dropdown
 - **`<dictation-keybinding-selector>`** - Keybinding configuration component for keyboard shortcuts (supports both push-to-talk and toggle-to-talk)
 
-Ambient stream components:
+Ambient stream components (parallel modular set; shared selectors use the same implementation with `ambient-*` tags):
 
 - **`<corti-ambient>`** - All-in-one ambient capture component (includes virtual mode by default in settings)
 - **`<ambient-root>`** - Context provider for ambient stream sessions
-- **`<ambient-recording-button>`** - Recording button for ambient capture
-- **`<ambient-virtual-mode-selector>`** - Toggles virtual mode: captures the selected microphone plus audio from a shared browser tab, window, or application (mixed as separate channels in one stream)
+- **`<ambient-recording-button>`** - Standalone recording button with audio visualization
+- **`<ambient-settings-menu>`** - Settings menu with device, language, keybinding, and optional virtual mode
+- **`<ambient-device-selector>`** - Device selection dropdown
+- **`<ambient-language-selector>`** - Language selection dropdown
+- **`<ambient-keybinding-selector>`** - Keybinding configuration (push-to-talk and toggle-to-talk)
+- **`<ambient-virtual-mode-selector>`** - Virtual mode toggle (ambient only; tab/window/app audio mixed with microphone)
+
+Device, language, keybinding selectors, and settings menu are registered under both `dictation-*` and `ambient-*` tag names. TypeScript exports mirror that: `DictationDeviceSelector` / `AmbientDeviceSelector`, and so on.
 
 These components share state through a context system, allowing you to build custom UIs while leveraging the same underlying functionality.
 

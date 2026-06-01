@@ -1,12 +1,13 @@
 import { consume } from "@lit/context";
 import { type CSSResultGroup, html, LitElement, nothing } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 import { recordingStateContext } from "../contexts/mixins/recording-state-context.js";
 import ButtonStyles from "../styles/buttons.js";
 import CalloutStyles from "../styles/callout.js";
 import SettingsMenuStyles from "../styles/settings-menu.js";
 import type { ConfigurableSettings, RecordingState } from "../types.js";
 import { commaSeparatedConverter } from "../utils/converters.js";
+import { dualCustomElement } from "../utils/custom-elements.js";
 
 import "./ambient-virtual-mode-selector.js";
 import "./device-selector.js";
@@ -14,7 +15,7 @@ import "./keybinding-selector.js";
 import "./language-selector.js";
 import "../icons/icons.js";
 
-@customElement("dictation-settings-menu")
+@dualCustomElement("dictation-settings-menu", "ambient-settings-menu")
 export class DictationSettingsMenu extends LitElement {
   @consume({ context: recordingStateContext, subscribe: true })
   @state()
@@ -96,6 +97,7 @@ export class DictationSettingsMenu extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
+    "ambient-settings-menu": DictationSettingsMenu;
     "dictation-settings-menu": DictationSettingsMenu;
   }
 }
