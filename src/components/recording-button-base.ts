@@ -42,6 +42,7 @@ import type {
   RecordingState,
 } from "../types.js";
 import {
+  audioEventEvent,
   audioLevelChangedEvent,
   commandEvent,
   deltaUsageEvent,
@@ -178,6 +179,9 @@ export abstract class RecordingButtonBase<
         break;
       case "delta_usage":
         this.dispatchEvent(deltaUsageEvent(message));
+        break;
+      case "audioEvent":
+        this.dispatchEvent(audioEventEvent(message));
         break;
       case "error":
         this.dispatchEvent(errorEvent(message.error));

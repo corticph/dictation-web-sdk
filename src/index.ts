@@ -82,6 +82,7 @@ export type {
   RecordingState,
 } from "./types.js";
 export type {
+  AudioEventEventDetail,
   AudioLevelChangedEventDetail,
   CommandEventDetail,
   DeltaUsageEventDetail,

@@ -18,7 +18,8 @@ export type TranscribeMessage =
   | Corti.TranscribeErrorMessage
   | Corti.TranscribeTranscriptMessage
   | Corti.TranscribeCommandMessage
-  | Corti.TranscribeFlushedMessage;
+  | Corti.TranscribeFlushedMessage
+  | Corti.TranscribeAudioEventMessage;
 
 type OutboundItem =
   | Blob

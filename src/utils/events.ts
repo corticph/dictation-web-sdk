@@ -41,6 +41,10 @@ export type DeltaUsageEventDetail =
 
 export type FactsEventDetail = Corti.StreamFactsMessage;
 
+export type AudioEventEventDetail =
+  | Corti.TranscribeAudioEventMessage
+  | Corti.StreamAudioEventMessage;
+
 export type ErrorEventDetail = {
   message: string;
 };
@@ -142,6 +146,16 @@ export function factsEvent(
   detail: FactsEventDetail,
 ): CustomEvent<FactsEventDetail> {
   return new CustomEvent("facts", {
+    bubbles: true,
+    composed: true,
+    detail,
+  });
+}
+
+export function audioEventEvent(
+  detail: AudioEventEventDetail,
+): CustomEvent<AudioEventEventDetail> {
+  return new CustomEvent("audio-event", {
     bubbles: true,
     composed: true,
     detail,

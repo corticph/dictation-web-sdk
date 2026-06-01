@@ -23,7 +23,8 @@ export type StreamAmbientMessage =
   | Corti.StreamEndedMessage
   | Corti.StreamUsageMessage
   | Corti.StreamErrorMessage
-  | Corti.StreamConfigStatusMessage;
+  | Corti.StreamConfigStatusMessage
+  | Corti.StreamAudioEventMessage;
 
 type OutboundItem = Blob | Corti.StreamEndMessage;
 
