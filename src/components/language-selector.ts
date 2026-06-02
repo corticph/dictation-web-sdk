@@ -7,11 +7,11 @@ import {
   selectedLanguageContext,
 } from "../contexts/mixins/languages-context.js";
 import SelectStyles from "../styles/select.js";
+import { dualCustomElement } from "../utils/custom-elements.js";
 import {
   languageChangedEvent,
   languagesChangedEvent,
 } from "../utils/events.js";
-import { dualCustomElement } from "../utils/custom-elements.js";
 import { getLanguageName } from "../utils/languages.js";
 
 @dualCustomElement("dictation-language-selector", "ambient-language-selector")

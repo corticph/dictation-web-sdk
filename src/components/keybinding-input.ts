@@ -6,8 +6,8 @@ import {
   toggleToTalkKeybindingContext,
 } from "../contexts/mixins/keybindings-context.js";
 import KeybindingSelectorStyles from "../styles/keybinding-selector.js";
-import { keybindingChangedEvent } from "../utils/events.js";
 import { dualCustomElement } from "../utils/custom-elements.js";
+import { keybindingChangedEvent } from "../utils/events.js";
 import { normalizeKeybinding } from "../utils/keybinding.js";
 
 @dualCustomElement("dictation-keybinding-input", "ambient-keybinding-input")
