@@ -1,50 +1,13 @@
 {
-  "name": "@corti/dictation-web",
-  "description": "Web component for Corti Dictation",
-  "author": "Corti ApS",
-  "version": "0.0.0-dev",
-  "license": "MIT",
+  "private": true,
+  "description": "Web components for Corti Speech (dictation + ambient)",
   "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "browser": "./dist/bundle.js",
-      "default": "./dist/bundle.js"
-    }
-  },
-  "jsdelivr": "./dist/bundle.js",
-  "browser": "./dist/bundle.js",
-  "files": [
-    "dist"
-  ],
-  "bugs": {
-    "url": "https://docs.corti.ai",
-    "email": "help@corti.ai"
-  },
-  "repository": "github:corticph/dictation-web",
-  "homepage": "https://docs.corti.ai/stt/dictation-web",
-  "keywords": [
-    "corti",
-    "dictation",
-    "web",
-    "sdk",
-    "speech",
-    "recognition",
-    "transcription",
-    "audio",
-    "medical",
-    "healthcare"
-  ],
   "scripts": {
     "analyze": "cem analyze --litelement",
-    "build": "tsc && npm run analyze -- --exclude dist",
-    "build:bundle": "esbuild dist/index.js --bundle --outfile=dist/bundle.js --format=esm --platform=browser",
-    "release": "npm run build && npm run build:bundle && npm publish --access public",
-    "prepublish": "tsc && npm run analyze -- --exclude dist",
+    "build:dictation": "tsc -p tsconfig.dictation.json && esbuild dist/dictation/index.js --bundle --outfile=dist/dictation/bundle.js --format=esm --platform=browser && cp package.dictation.json dist/dictation/package.json",
+    "build:ambient": "tsc -p tsconfig.ambient.json && mv dist/ambient/ambient-index.js dist/ambient/index.js && mv dist/ambient/ambient-index.d.ts dist/ambient/index.d.ts && (mv dist/ambient/ambient-index.js.map dist/ambient/index.js.map 2>/dev/null || true) && esbuild dist/ambient/index.js --bundle --outfile=dist/ambient/bundle.js --format=esm --platform=browser && cp package.ambient.json dist/ambient/package.json",
+    "build": "npm run build:dictation && npm run build:ambient && npm run analyze -- --exclude dist",
+    "prepublish": "tsc -p tsconfig.dictation.json && tsc -p tsconfig.ambient.json && npm run analyze -- --exclude dist",
     "lint": "biome check .",
     "format": "biome format --write .",
     "biome:check": "biome check .",

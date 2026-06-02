@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build && npm run build:bundle
+        run: npm run build
 
   lint:
     runs-on: ubuntu-latest
@@ -100,18 +100,48 @@ jobs:
 
       - name: Set version
         run: |
-          npm version ${{ steps.version.outputs.version }} --no-git-tag-version
-          echo "package.json version set to $(node -p "require('./package.json').version")"
+          VERSION="${{ steps.version.outputs.version }}"
+          for f in package.dictation.json package.ambient.json; do
+            node -e "
+              const fs = require('fs');
+              const pkg = JSON.parse(fs.readFileSync('${f}', 'utf8'));
+              pkg.version = '${VERSION}';
+              fs.writeFileSync('${f}', JSON.stringify(pkg, null, 2) + '\n');
+            "
+          done
+          echo "Publish manifests version set to ${VERSION}"
 
       - name: Build
-        run: npm run build && npm run build:bundle
+        run: npm run build
 
-      - name: Publish to npm
+      - name: Publish @corti/dictation-web
         run: |
           publish() {  # use latest npm to ensure OIDC support
             npx -y npm@latest publish "$@"
           }
           SUFFIX="${{ steps.version.outputs.suffix }}"
+          cd dist/dictation
+          if [[ -n "$SUFFIX" ]]; then
+            publish --access public --tag "$SUFFIX"
+          else
+            PKG_NAME=$(node -p "require('./package.json').name")
+            PKG_VERSION=$(node -p "require('./package.json').version")
+            CURRENT_LATEST=$(npm view "${PKG_NAME}" dist-tags.latest 2>/dev/null || echo "0.0.0")
+            if npx -y semver "${PKG_VERSION}" -r "<${CURRENT_LATEST}" > /dev/null 2>&1; then
+              echo "Publishing ${PKG_VERSION} with --tag backport (current latest is ${CURRENT_LATEST})"
+              publish --access public --tag backport
+            else
+              publish --access public
+            fi
+          fi
+
+      - name: Publish @corti/ambient-web
+        run: |
+          publish() {  # use latest npm to ensure OIDC support
+            npx -y npm@latest publish "$@"
+          }
+          SUFFIX="${{ steps.version.outputs.suffix }}"
+          cd dist/ambient
           if [[ -n "$SUFFIX" ]]; then
             publish --access public --tag "$SUFFIX"
           else
