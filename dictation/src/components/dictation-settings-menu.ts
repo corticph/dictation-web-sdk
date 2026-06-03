@@ -1,7 +1,7 @@
 import { SettingsMenuBase } from "@core/components/settings-menu-base.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
 import type { TemplateResult } from "lit";
 import { html } from "lit";
-import { safeCustomElement } from "@core/utils/custom-elements.js";
 
 import "./dictation-device-selector.js";
 import "./dictation-keybinding-selector.js";

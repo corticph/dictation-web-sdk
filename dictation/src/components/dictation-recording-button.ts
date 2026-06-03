@@ -1,7 +1,7 @@
 import { RecordingButtonBase } from "@core/components/recording-button-base.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
 import type { Corti } from "@corti/sdk";
 import { consume } from "@lit/context";
-import { safeCustomElement } from "@core/utils/custom-elements.js";
 import { state } from "lit/decorators.js";
 import { DEFAULT_DICTATION_CONFIG } from "../constants.js";
 import {

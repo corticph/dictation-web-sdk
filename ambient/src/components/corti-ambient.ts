@@ -1,9 +1,9 @@
 import { CortiRoot } from "@core/components/corti-root.js";
 import type { ConfigurableSettings } from "@core/types.js";
 import { commaSeparatedConverter } from "@core/utils/converters.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
 import type { Corti } from "@corti/sdk";
 import { html, nothing } from "lit";
-import { safeCustomElement } from "@core/utils/custom-elements.js";
 import { property, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ref } from "lit/directives/ref.js";

@@ -1,7 +1,7 @@
+import { safeCustomElement } from "@core/utils/custom-elements.js";
 import { virtualModeChangedEvent } from "@core/utils/events.js";
 import { consume } from "@lit/context";
 import { html, LitElement } from "lit";
-import { safeCustomElement } from "@core/utils/custom-elements.js";
 import { property, state } from "lit/decorators.js";
 import { virtualModeContext } from "../contexts/ambient-context.js";
 import AmbientVirtualModeSelectorStyles from "../styles/ambient-virtual-mode-selector.js";

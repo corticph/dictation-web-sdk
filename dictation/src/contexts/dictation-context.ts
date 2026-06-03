@@ -1,8 +1,8 @@
 import { RootContext } from "@core/contexts/root-context.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
 import type { Corti } from "@corti/sdk";
 import { createContext, provide } from "@lit/context";
 import type { PropertyValues } from "lit";
-import { safeCustomElement } from "@core/utils/custom-elements.js";
 import { property } from "lit/decorators.js";
 
 export const dictationConfigContext = createContext<
