@@ -19,6 +19,8 @@
     "storybook:build": "tsc -p core && tsc -p tsconfig.stories.json && pnpm run analyze && storybook build"
   },
   "devDependencies": {
+    "@corti/sdk": "3.0.0",
+    "@lit/context": "^1.1.6",
     "@biomejs/biome": "^2.3.6",
     "@custom-elements-manifest/analyzer": "^0.10.3",
     "@open-wc/testing": "^4.0.0",
@@ -35,6 +37,7 @@
     "concurrently": "^8.2.2",
     "esbuild": "^0.25.0",
     "husky": "^8.0.0",
+    "lit": "^3.3.1",
     "lint-staged": "^15.2.7",
     "sinon": "^19.0.2",
     "storybook": "10.1.5",

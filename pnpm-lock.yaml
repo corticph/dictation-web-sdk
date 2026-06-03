@@ -11,9 +11,15 @@ importers:
       '@biomejs/biome':
         specifier: ^2.3.6
         version: 2.4.16
+      '@corti/sdk':
+        specifier: 3.0.0
+        version: 3.0.0
       '@custom-elements-manifest/analyzer':
         specifier: ^0.10.3
         version: 0.10.10
+      '@lit/context':
+        specifier: ^1.1.6
+        version: 1.1.6
       '@open-wc/testing':
         specifier: ^4.0.0
         version: 4.0.0
@@ -59,6 +65,9 @@ importers:
       lint-staged:
         specifier: ^15.2.7
         version: 15.5.2
+      lit:
+        specifier: ^3.3.1
+        version: 3.3.3
       sinon:
         specifier: ^19.0.2
         version: 19.0.5

@@ -32,9 +32,9 @@ import type {
   SocketControllerOutboundItem,
   SocketControllerWebSocket,
 } from "../controllers/socket-controller.js";
+import type { RecordingSocketInboundMessage } from "../socket-messages.js";
 import ButtonStyles from "../styles/buttons.js";
 import RecordingButtonStyles from "../styles/recording-button.js";
-import type { RecordingSocketInboundMessage } from "../socket-messages.js";
 import type { ProxyOptions, RecordingState } from "../types.js";
 import {
   audioEventEvent,
@@ -56,7 +56,8 @@ import "./speech-audio-visualiser.js";
 
 export abstract class RecordingButtonBase<
   TConfig,
-  TMessage extends RecordingSocketInboundMessage = RecordingSocketInboundMessage,
+  TMessage extends
+    RecordingSocketInboundMessage = RecordingSocketInboundMessage,
 > extends LitElement {
   @state()
   _debug_displayAudio?: boolean;
