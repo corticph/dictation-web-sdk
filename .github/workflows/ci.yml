@@ -8,7 +8,7 @@ concurrency:
 
 jobs:
   compile:
-    runs-on: ci
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
@@ -30,7 +30,7 @@ jobs:
         run: pnpm run build
 
   lint:
-    runs-on: ci
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
@@ -52,7 +52,7 @@ jobs:
         run: pnpm run lint
 
   test:
-    runs-on: ci
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
@@ -76,7 +76,7 @@ jobs:
   publish:
     needs: [compile, lint, test]
     if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: ci
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
