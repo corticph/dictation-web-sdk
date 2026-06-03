@@ -117,15 +117,10 @@ jobs:
       - name: Set version
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          for f in dictation/package.json ambient/package.json; do
-            node -e "
-              const fs = require('fs');
-              const pkg = JSON.parse(fs.readFileSync('${f}', 'utf8'));
-              pkg.version = '${VERSION}';
-              fs.writeFileSync('${f}', JSON.stringify(pkg, null, 2) + '\n');
-            "
-          done
-          echo "Publish manifests version set to ${VERSION}"
+          pnpm --dir dictation version "$VERSION" --no-git-tag-version
+          pnpm --dir ambient version "$VERSION" --no-git-tag-version
+          echo "dictation: $(node -p "require('./dictation/package.json').version")"
+          echo "ambient: $(node -p "require('./ambient/package.json').version")"
 
       - name: Build
         run: pnpm run build
