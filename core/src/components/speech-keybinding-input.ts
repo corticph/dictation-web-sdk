@@ -1,12 +1,12 @@
 import { consume } from "@lit/context";
 import { html, LitElement } from "lit";
 import { property, state } from "lit/decorators.js";
-import { safeCustomElement } from "../utils/custom-elements.js";
 import {
   pushToTalkKeybindingContext,
   toggleToTalkKeybindingContext,
 } from "../contexts/mixins/keybindings-context.js";
 import KeybindingSelectorStyles from "../styles/keybinding-selector.js";
+import { safeCustomElement } from "../utils/custom-elements.js";
 import { keybindingChangedEvent } from "../utils/events.js";
 import { normalizeKeybinding } from "../utils/keybinding.js";
 

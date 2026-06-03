@@ -1,10 +1,10 @@
 import { html, LitElement, type PropertyValues } from "lit";
 import { property } from "lit/decorators.js";
-import { safeCustomElement } from "../utils/custom-elements.js";
 import { classMap } from "lit/directives/class-map.js";
 import { map } from "lit/directives/map.js";
 import { range } from "lit/directives/range.js";
 import AudioVisualiserStyles from "../styles/audio-visualiser.js";
+import { safeCustomElement } from "../utils/custom-elements.js";
 import { normalizeToRange } from "../utils/validation.js";
 
 @safeCustomElement("speech-audio-visualiser")
