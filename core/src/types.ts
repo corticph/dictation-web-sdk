@@ -1,5 +1,3 @@
-export type RecordingSocketInboundMessage = { type: string };
-
 export type RecordingState =
   | "initializing"
   | "recording"
