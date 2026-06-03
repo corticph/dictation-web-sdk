@@ -157,14 +157,11 @@ export abstract class RecordingButtonBase<
   }
 
   #handleWebSocketMessage = (message: TMessage): void => {
-    const inbound = message as TMessage & Record<string, unknown>;
 
-    switch (inbound.type) {
+    switch (message.type) {
       case "CONFIG_DENIED":
         this.dispatchEvent(
-          errorEvent(
-            `Config denied: ${String(inbound.reason ?? "Unknown reason")}`,
-          ),
+          errorEvent(`Config denied: ${message.reason ?? "Unknown reason"}`),
         );
         this.#handleStop();
         break;
@@ -173,25 +170,25 @@ export abstract class RecordingButtonBase<
         this.#handleStop();
         break;
       case "transcript":
-        this.dispatchEvent(transcriptEvent(inbound as never));
+        this.dispatchEvent(transcriptEvent(message));
         break;
       case "command":
-        this.dispatchEvent(commandEvent(inbound as never));
+        this.dispatchEvent(commandEvent(message));
         break;
       case "facts":
-        this.dispatchEvent(factsEvent(inbound as never));
+        this.dispatchEvent(factsEvent(message));
         break;
       case "usage":
-        this.dispatchEvent(usageEvent(inbound as never));
+        this.dispatchEvent(usageEvent(message));
         break;
       case "delta_usage":
-        this.dispatchEvent(deltaUsageEvent(inbound as never));
+        this.dispatchEvent(deltaUsageEvent(message));
         break;
       case "audioEvent":
-        this.dispatchEvent(audioEventEvent(inbound as never));
+        this.dispatchEvent(audioEventEvent(message));
         break;
       case "error":
-        this.dispatchEvent(errorEvent(String(inbound.error)));
+        this.dispatchEvent(errorEvent(message.error));
         this.#handleStop();
         break;
       case "ended":
