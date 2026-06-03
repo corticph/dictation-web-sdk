@@ -16,7 +16,7 @@ export default {
     config.resolve ??= {};
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@core": resolve(root, "core/src"),
+      "@corti/core-web": resolve(root, "core/src"),
     };
     return config;
   },

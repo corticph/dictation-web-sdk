@@ -1,4 +1,4 @@
-import { CortiRoot } from "@core/components/corti-root.js";
+import { CortiRoot } from "@corti/core-web/components/corti-root.js";
 import type { Corti, CortiAuth } from "@corti/sdk";
 import { html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";

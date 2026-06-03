@@ -2,7 +2,7 @@ export type {
   ConfigurableSettings,
   Keybinding,
   RecordingState,
-} from "@core/types.js";
+} from "@corti/core-web/types.js";
 export type {
   AudioEventEventDetail,
   AudioLevelChangedEventDetail,
@@ -19,7 +19,7 @@ export type {
   TranscriptEventDetail,
   UsageEventDetail,
   VirtualModeChangedEventDetail,
-} from "@core/utils/events.js";
+} from "@corti/core-web/utils/events.js";
 export { AmbientDeviceSelector } from "./components/ambient-device-selector.js";
 export { AmbientKeybindingSelector } from "./components/ambient-keybinding-selector.js";
 export { AmbientLanguageSelector } from "./components/ambient-language-selector.js";

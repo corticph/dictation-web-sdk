@@ -1,5 +1,5 @@
-import { RecordingButtonBase } from "@core/components/recording-button-base.js";
-import { errorEvent } from "@core/utils/events.js";
+import { RecordingButtonBase } from "@corti/core-web/components/recording-button-base.js";
+import { errorEvent } from "@corti/core-web/utils/events.js";
 import type { Corti } from "@corti/sdk";
 import { consume } from "@lit/context";
 import { customElement, state } from "lit/decorators.js";

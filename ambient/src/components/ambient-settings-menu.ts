@@ -1,4 +1,4 @@
-import { SettingsMenuBase } from "@core/components/settings-menu-base.js";
+import { SettingsMenuBase } from "@corti/core-web/components/settings-menu-base.js";
 import type { TemplateResult } from "lit";
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";

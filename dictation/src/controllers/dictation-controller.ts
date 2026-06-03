@@ -1,13 +1,13 @@
-import { SocketController } from "@core/controllers/socket-controller.js";
-import type { TranscribeMessage } from "@core/socket-messages.js";
-import type { ProxyOptions } from "@core/types.js";
+import { SocketController } from "@corti/core-web/controllers/socket-controller.js";
+import type { TranscribeMessage } from "@corti/core-web/socket-messages.js";
+import type { ProxyOptions } from "@corti/core-web/types.js";
 import {
   type Corti,
   type CortiClient,
   CortiWebSocketProxyClient,
 } from "@corti/sdk";
 
-export type { TranscribeMessage } from "@core/socket-messages.js";
+export type { TranscribeMessage } from "@corti/core-web/socket-messages.js";
 
 type TranscribeSocket = Awaited<
   ReturnType<CortiClient["transcribe"]["connect"]>

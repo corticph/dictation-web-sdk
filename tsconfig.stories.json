@@ -4,7 +4,7 @@
     "rootDir": ".",
     "outDir": "dist/stories",
     "paths": {
-      "@core/*": ["./core/src/*"],
+      "@corti/core-web/*": ["./core/src/*"],
       "@dictation/*": ["./dictation/src/*"],
       "@ambient/*": ["./ambient/src/*"]
     }

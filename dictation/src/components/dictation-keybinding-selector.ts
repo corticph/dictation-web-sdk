@@ -1,4 +1,4 @@
-import { KeybindingSelectorBase } from "@core/components/keybinding-selector-base.js";
+import { KeybindingSelectorBase } from "@corti/core-web/components/keybinding-selector-base.js";
 import { customElement } from "lit/decorators.js";
 
 @customElement("dictation-keybinding-selector")

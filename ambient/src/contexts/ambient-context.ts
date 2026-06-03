@@ -1,4 +1,4 @@
-import { RootContext } from "@core/contexts/root-context.js";
+import { RootContext } from "@corti/core-web/contexts/root-context.js";
 import type { Corti } from "@corti/sdk";
 import { createContext, provide } from "@lit/context";
 import type { PropertyValues } from "lit";

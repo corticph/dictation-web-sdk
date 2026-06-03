@@ -5,18 +5,18 @@
   "packageManager": "pnpm@10.12.1",
   "scripts": {
     "analyze": "cem analyze --litelement --exclude dist",
-    "build": "tsc -p core && pnpm -r run build && pnpm run analyze",
-    "prepublish": "tsc -p core && pnpm -r exec tsc -b && pnpm run analyze",
+    "build": "pnpm -r run build && pnpm run analyze",
+    "prepublish": "pnpm -r exec tsc -b && pnpm run analyze",
     "lint": "biome check .",
     "format": "biome format --write .",
     "biome:check": "biome check .",
     "biome:format": "biome format --write .",
     "biome:fix": "biome check --write .",
     "prepare": "husky && husky install",
-    "test": "tsc -p core && wtr --coverage",
-    "test:watch": "concurrently -k -r \"tsc -p core --watch --preserveWatchOutput\" \"wtr --watch\"",
+    "test": "pnpm --filter @corti/core-web exec tsc -b && wtr --coverage",
+    "test:watch": "concurrently -k -r \"pnpm --filter @corti/core-web exec tsc -b --watch --preserveWatchOutput\" \"wtr --watch\"",
     "storybook": "pnpm run analyze && storybook dev -p 8080",
-    "storybook:build": "tsc -p core && tsc -p tsconfig.stories.json && pnpm run analyze && storybook build"
+    "storybook:build": "pnpm --filter @corti/core-web exec tsc -b && tsc -p tsconfig.stories.json && pnpm run analyze && storybook build"
   },
   "devDependencies": {
     "@corti/sdk": "3.0.0",
@@ -37,7 +37,7 @@
     "concurrently": "^8.2.2",
     "esbuild": "^0.25.0",
     "husky": "^8.0.0",
-    "lit": "^3.3.1",
+    "lit": "^3.3.3",
     "lint-staged": "^15.2.7",
     "sinon": "^19.0.2",
     "storybook": "10.1.5",

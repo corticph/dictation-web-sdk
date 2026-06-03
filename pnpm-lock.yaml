@@ -66,7 +66,7 @@ importers:
         specifier: ^15.2.7
         version: 15.5.2
       lit:
-        specifier: ^3.3.1
+        specifier: ^3.3.3
         version: 3.3.3
       sinon:
         specifier: ^19.0.2
@@ -83,6 +83,9 @@ importers:
 
   ambient:
     dependencies:
+      '@corti/core-web':
+        specifier: workspace:*
+        version: link:../core
       '@corti/sdk':
         specifier: 3.0.0
         version: 3.0.0
@@ -90,10 +93,10 @@ importers:
         specifier: ^1.1.6
         version: 1.1.6
       lit:
-        specifier: ^3.3.1
+        specifier: ^3.3.3
         version: 3.3.3
 
-  dictation:
+  core:
     dependencies:
       '@corti/sdk':
         specifier: 3.0.0
@@ -102,7 +105,22 @@ importers:
         specifier: ^1.1.6
         version: 1.1.6
       lit:
-        specifier: ^3.3.1
+        specifier: ^3.3.3
+        version: 3.3.3
+
+  dictation:
+    dependencies:
+      '@corti/core-web':
+        specifier: workspace:*
+        version: link:../core
+      '@corti/sdk':
+        specifier: 3.0.0
+        version: 3.0.0
+      '@lit/context':
+        specifier: ^1.1.6
+        version: 1.1.6
+      lit:
+        specifier: ^3.3.3
         version: 3.3.3
 
 packages:

@@ -1,6 +1,6 @@
-import { CortiRoot } from "@core/components/corti-root.js";
-import type { ConfigurableSettings } from "@core/types.js";
-import { commaSeparatedConverter } from "@core/utils/converters.js";
+import { CortiRoot } from "@corti/core-web/components/corti-root.js";
+import type { ConfigurableSettings } from "@corti/core-web/types.js";
+import { commaSeparatedConverter } from "@corti/core-web/utils/converters.js";
 import type { Corti } from "@corti/sdk";
 import { html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";

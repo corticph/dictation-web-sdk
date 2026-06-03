@@ -1,0 +1,23 @@
+{
+  "name": "@corti/core-web",
+  "description": "Shared Corti speech web component core (dictation + ambient)",
+  "version": "0.0.0-dev",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js",
+      "default": "./dist/*.js"
+    }
+  },
+  "dependencies": {
+    "@corti/sdk": "3.0.0",
+    "@lit/context": "^1.1.6",
+    "lit": "^3.3.3"
+  },
+  "scripts": {
+    "build": "tsc -b"
+  }
+}

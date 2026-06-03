@@ -7,9 +7,6 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const pkgDir = resolve(root, "dictation");
 
 await esbuild.build({
-  alias: {
-    "@core": resolve(root, "core/src"),
-  },
   bundle: true,
   entryPoints: [resolve(pkgDir, "dist/index.js")],
   format: "esm",
@@ -23,7 +20,9 @@ cpSync(resolve(pkgDir, "package.json"), distPkgPath);
 const distPkg = JSON.parse(readFileSync(distPkgPath, "utf8"));
 if (distPkg.exports?.["."]?.import !== "./bundle.js") {
   throw new Error(
-    "dictation package.json must resolve the main entry to ./bundle.js (tsc output keeps unresolved @core imports)",
+    "dictation package.json must resolve the main entry to ./bundle.js (tsc output keeps unresolved @corti/core-web imports)",
   );
 }
+delete distPkg.dependencies?.["@corti/core-web"];
+delete distPkg.scripts;
 writeFileSync(distPkgPath, `${JSON.stringify(distPkg, null, 2)}\n`);
