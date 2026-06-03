@@ -34,6 +34,7 @@ import type {
 } from "../controllers/socket-controller.js";
 import ButtonStyles from "../styles/buttons.js";
 import RecordingButtonStyles from "../styles/recording-button.js";
+import type { RecordingSocketInboundMessage } from "../socket-messages.js";
 import type { ProxyOptions, RecordingState } from "../types.js";
 import {
   audioEventEvent,
@@ -55,7 +56,7 @@ import "./speech-audio-visualiser.js";
 
 export abstract class RecordingButtonBase<
   TConfig,
-  TMessage extends { type: string },
+  TMessage extends RecordingSocketInboundMessage = RecordingSocketInboundMessage,
 > extends LitElement {
   @state()
   _debug_displayAudio?: boolean;
@@ -155,15 +156,11 @@ export abstract class RecordingButtonBase<
     this.toggleRecording();
   }
 
-  #handleWebSocketMessage = (message: TMessage): void => {
-    const inbound = message as TMessage & Record<string, unknown>;
-
-    switch (inbound.type) {
+  #handleWebSocketMessage = (message: RecordingSocketInboundMessage): void => {
+    switch (message.type) {
       case "CONFIG_DENIED":
         this.dispatchEvent(
-          errorEvent(
-            `Config denied: ${String(inbound.reason ?? "Unknown reason")}`,
-          ),
+          errorEvent(`Config denied: ${message.reason ?? "Unknown reason"}`),
         );
         this.#handleStop();
         break;
@@ -172,25 +169,25 @@ export abstract class RecordingButtonBase<
         this.#handleStop();
         break;
       case "transcript":
-        this.dispatchEvent(transcriptEvent(inbound as never));
+        this.dispatchEvent(transcriptEvent(message));
         break;
       case "command":
-        this.dispatchEvent(commandEvent(inbound as never));
+        this.dispatchEvent(commandEvent(message));
         break;
       case "facts":
-        this.dispatchEvent(factsEvent(inbound as never));
+        this.dispatchEvent(factsEvent(message));
         break;
       case "usage":
-        this.dispatchEvent(usageEvent(inbound as never));
+        this.dispatchEvent(usageEvent(message));
         break;
       case "delta_usage":
-        this.dispatchEvent(deltaUsageEvent(inbound as never));
+        this.dispatchEvent(deltaUsageEvent(message));
         break;
       case "audioEvent":
-        this.dispatchEvent(audioEventEvent(inbound as never));
+        this.dispatchEvent(audioEventEvent(message));
         break;
       case "error":
-        this.dispatchEvent(errorEvent(String(inbound.error)));
+        this.dispatchEvent(errorEvent(String(message.error)));
         this.#handleStop();
         break;
       case "ended":

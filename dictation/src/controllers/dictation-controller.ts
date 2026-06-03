@@ -1,4 +1,5 @@
 import { SocketController } from "@core/controllers/socket-controller.js";
+import type { TranscribeMessage } from "@core/socket-messages.js";
 import type { ProxyOptions } from "@core/types.js";
 import {
   type Corti,
@@ -6,20 +7,11 @@ import {
   CortiWebSocketProxyClient,
 } from "@corti/sdk";
 
+export type { TranscribeMessage } from "@core/socket-messages.js";
+
 type TranscribeSocket = Awaited<
   ReturnType<CortiClient["transcribe"]["connect"]>
 >;
-
-export type TranscribeMessage =
-  | Corti.TranscribeConfigStatusMessage
-  | Corti.TranscribeUsageMessage
-  | Corti.TranscribeDeltaUsageMessage
-  | Corti.TranscribeEndedMessage
-  | Corti.TranscribeErrorMessage
-  | Corti.TranscribeTranscriptMessage
-  | Corti.TranscribeCommandMessage
-  | Corti.TranscribeFlushedMessage
-  | Corti.TranscribeAudioEventMessage;
 
 type OutboundItem =
   | Blob

@@ -1,10 +1,13 @@
 import { SocketController } from "@core/controllers/socket-controller.js";
+import type { StreamAmbientMessage } from "@core/socket-messages.js";
 import type { ProxyOptions } from "@core/types.js";
 import {
   type Corti,
   type CortiClient,
   CortiWebSocketProxyClient,
 } from "@corti/sdk";
+
+export type { StreamAmbientMessage } from "@core/socket-messages.js";
 
 export type AmbientStreamSessionConfig = {
   interactionId: string;
@@ -14,17 +17,6 @@ export type AmbientStreamSessionConfig = {
 type AmbientStreamSocket = Awaited<
   ReturnType<CortiClient["stream"]["connect"]>
 >;
-
-export type StreamAmbientMessage =
-  | Corti.StreamTranscriptMessage
-  | Corti.StreamFactsMessage
-  | Corti.StreamFlushedMessage
-  | Corti.StreamDeltaUsageMessage
-  | Corti.StreamEndedMessage
-  | Corti.StreamUsageMessage
-  | Corti.StreamErrorMessage
-  | Corti.StreamConfigStatusMessage
-  | Corti.StreamAudioEventMessage;
 
 type OutboundItem = Blob | Corti.StreamEndMessage;
 
