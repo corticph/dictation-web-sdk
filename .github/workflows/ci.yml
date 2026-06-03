@@ -117,8 +117,8 @@ jobs:
       - name: Set version
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          pnpm --dir dictation version "$VERSION" --no-git-tag-version
-          pnpm --dir ambient version "$VERSION" --no-git-tag-version
+          (cd dictation && pnpm version "$VERSION" --no-git-tag-version)
+          (cd ambient && pnpm version "$VERSION" --no-git-tag-version)
           echo "dictation: $(node -p "require('./dictation/package.json').version")"
           echo "ambient: $(node -p "require('./ambient/package.json').version")"
 
