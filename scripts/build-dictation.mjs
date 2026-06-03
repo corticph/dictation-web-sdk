@@ -1,4 +1,4 @@
-import { cpSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as esbuild from "esbuild";
@@ -28,3 +28,8 @@ if (distPkg.exports?.["."]?.import !== "./bundle.js") {
 }
 delete distPkg.scripts;
 writeFileSync(distPkgPath, `${JSON.stringify(distPkg, null, 2)}\n`);
+
+const readmeSrc = resolve(pkgDir, "README.md");
+if (existsSync(readmeSrc)) {
+  cpSync(readmeSrc, resolve(pkgDir, "dist/README.md"));
+}
