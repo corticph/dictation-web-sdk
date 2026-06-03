@@ -5,14 +5,13 @@
   "version": "0.0.0-dev",
   "license": "MIT",
   "type": "module",
-  "main": "index.js",
-  "module": "index.js",
+  "main": "bundle.js",
+  "module": "bundle.js",
   "types": "index.d.ts",
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./index.js",
-      "browser": "./bundle.js",
+      "import": "./bundle.js",
       "default": "./bundle.js"
     }
   },
