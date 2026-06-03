@@ -5,17 +5,15 @@ import { property, state } from "lit/decorators.js";
 import {
   languagesContext,
   selectedLanguageContext,
-} from "../contexts/mixins/languages-context.js";
-import SelectStyles from "../styles/select.js";
-import { dualCustomElement } from "../utils/custom-elements.js";
+} from "../../contexts/mixins/languages-context.js";
+import SelectStyles from "../../styles/select.js";
 import {
   languageChangedEvent,
   languagesChangedEvent,
-} from "../utils/events.js";
-import { getLanguageName } from "../utils/languages.js";
+} from "../../utils/events.js";
+import { getLanguageName } from "../../utils/languages.js";
 
-@dualCustomElement("dictation-language-selector", "ambient-language-selector")
-export class DictationLanguageSelector extends LitElement {
+export class LanguageSelectorBase extends LitElement {
   @consume({ context: languagesContext, subscribe: true })
   @state()
   _languages?: Corti.TranscribeSupportedLanguage[];
@@ -34,7 +32,6 @@ export class DictationLanguageSelector extends LitElement {
 
     this.dispatchEvent(languagesChangedEvent(this._languages || [], language));
 
-    // Dispatch backward compatible event
     this.dispatchEvent(languageChangedEvent(language));
   }
 
@@ -64,12 +61,5 @@ export class DictationLanguageSelector extends LitElement {
         </select>
       </div>
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "ambient-language-selector": DictationLanguageSelector;
-    "dictation-language-selector": DictationLanguageSelector;
   }
 }

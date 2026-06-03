@@ -6,8 +6,8 @@ import type {
   ConfigurableSettings,
   ProxyOptions,
   RecordingState,
-} from "../types.js";
-import { commaSeparatedConverter } from "../utils/converters.js";
+} from "../../types.js";
+import { commaSeparatedConverter } from "../../utils/converters.js";
 
 type CortiProviderRoot = LitElement & {
   recordingState?: RecordingState;

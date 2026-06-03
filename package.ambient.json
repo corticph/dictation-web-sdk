@@ -2,7 +2,7 @@
   "name": "@corti/ambient-web",
   "description": "Web component for Corti Ambient",
   "author": "Corti ApS",
-  "version": "0.0.0",
+  "version": "0.7.0-ambient.7",
   "license": "MIT",
   "type": "module",
   "main": "index.js",

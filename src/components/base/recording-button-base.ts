@@ -1,5 +1,6 @@
 import type { CortiAuth } from "@corti/sdk";
 import { consume } from "@lit/context";
+import type { TemplateResult } from "lit";
 import {
   type CSSResultGroup,
   html,
@@ -7,40 +8,40 @@ import {
   type PropertyValues,
 } from "lit";
 import { property, state } from "lit/decorators.js";
-import { AUDIO_CHUNK_INTERVAL_MS } from "../constants.js";
-import { virtualModeContext } from "../contexts/ambient-context.js";
-import { debugDisplayAudioContext } from "../contexts/dictation-context.js";
+import { AUDIO_CHUNK_INTERVAL_MS } from "../../constants.js";
+import { virtualModeContext } from "../../contexts/ambient-context.js";
+import { debugDisplayAudioContext } from "../../contexts/dictation-context.js";
 import {
   accessTokenContext,
   authConfigContext,
   regionContext,
   tenantNameContext,
-} from "../contexts/mixins/auth-context.js";
-import { selectedDeviceContext } from "../contexts/mixins/devices-context.js";
+} from "../../contexts/mixins/auth-context.js";
+import { selectedDeviceContext } from "../../contexts/mixins/devices-context.js";
 import {
   pushToTalkKeybindingContext,
   toggleToTalkKeybindingContext,
-} from "../contexts/mixins/keybindings-context.js";
+} from "../../contexts/mixins/keybindings-context.js";
 import {
   socketProxyContext,
   socketUrlContext,
-} from "../contexts/mixins/proxy-context.js";
-import { recordingStateContext } from "../contexts/mixins/recording-state-context.js";
-import type { TranscribeMessage } from "../controllers/dictation-controller.js";
-import { KeybindingController } from "../controllers/keybinding-controller.js";
-import { MediaController } from "../controllers/media-controller.js";
+} from "../../contexts/mixins/proxy-context.js";
+import { recordingStateContext } from "../../contexts/mixins/recording-state-context.js";
+import type { TranscribeMessage } from "../../controllers/dictation-controller.js";
+import { KeybindingController } from "../../controllers/keybinding-controller.js";
+import { MediaController } from "../../controllers/media-controller.js";
 import type {
   SocketController,
   SocketControllerOutboundItem,
   SocketControllerWebSocket,
-} from "../controllers/socket-controller.js";
-import ButtonStyles from "../styles/buttons.js";
-import RecordingButtonStyles from "../styles/recording-button.js";
+} from "../../controllers/socket-controller.js";
+import ButtonStyles from "../../styles/buttons.js";
+import RecordingButtonStyles from "../../styles/recording-button.js";
 import type {
   ProxyOptions,
   RecordingSocketInboundMessage,
   RecordingState,
-} from "../types.js";
+} from "../../types.js";
 import {
   audioEventEvent,
   audioLevelChangedEvent,
@@ -54,15 +55,22 @@ import {
   streamClosedEvent,
   transcriptEvent,
   usageEvent,
-} from "../utils/events.js";
+} from "../../utils/events.js";
 
-import "./audio-visualiser.js";
-import "../icons/icons.js";
+import "../../icons/icons.js";
 
 export abstract class RecordingButtonBase<
   TConfig,
   TMessage extends RecordingSocketInboundMessage = TranscribeMessage,
 > extends LitElement {
+  protected abstract _renderAudioVisualiser(
+    isRecording: boolean,
+  ): TemplateResult;
+
+  protected get _audioLevel(): number {
+    return this.#mediaController.audioLevel;
+  }
+
   @consume({ context: recordingStateContext, subscribe: true })
   @state()
   _recordingState: RecordingState = "stopped";
@@ -409,10 +417,7 @@ export abstract class RecordingButtonBase<
               ? html`<icon-recording />`
               : html`<icon-mic-on />`
         }
-        <dictation-audio-visualiser
-          .level=${this.#mediaController.audioLevel}
-          ?active=${isRecording}
-        />
+        ${this._renderAudioVisualiser(isRecording)}
       </button>
     `;
   }

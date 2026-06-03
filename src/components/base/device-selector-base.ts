@@ -4,13 +4,11 @@ import { property, state } from "lit/decorators.js";
 import {
   devicesContext,
   selectedDeviceContext,
-} from "../contexts/mixins/devices-context.js";
-import SelectStyles from "../styles/select.js";
-import { dualCustomElement } from "../utils/custom-elements.js";
-import { recordingDevicesChangedEvent } from "../utils/events.js";
+} from "../../contexts/mixins/devices-context.js";
+import SelectStyles from "../../styles/select.js";
+import { recordingDevicesChangedEvent } from "../../utils/events.js";
 
-@dualCustomElement("dictation-device-selector", "ambient-device-selector")
-export class DictationDeviceSelector extends LitElement {
+export class DeviceSelectorBase extends LitElement {
   @consume({ context: devicesContext, subscribe: true })
   @state()
   _devices?: MediaDeviceInfo[];
@@ -62,12 +60,5 @@ export class DictationDeviceSelector extends LitElement {
         </select>
       </div>
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "ambient-device-selector": DictationDeviceSelector;
-    "dictation-device-selector": DictationDeviceSelector;
   }
 }

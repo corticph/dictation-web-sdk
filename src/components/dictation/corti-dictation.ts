@@ -3,14 +3,14 @@ import { html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ref } from "lit/directives/ref.js";
-import { DEFAULT_DICTATION_CONFIG } from "../constants.js";
-import type { DictationRoot } from "../contexts/dictation-context.js";
-import { CortiRoot } from "./corti-root.js";
+import { DEFAULT_DICTATION_CONFIG } from "../../constants.js";
+import type { DictationRoot } from "../../contexts/dictation-context.js";
+import { CortiRoot } from "../base/corti-root.js";
 import type { DictationRecordingButton } from "./dictation-recording-button.js";
 
-import "../contexts/dictation-context.js";
+import "../../contexts/dictation-context.js";
 import "./dictation-recording-button.js";
-import "./settings-menu.js";
+import "./dictation-settings-menu.js";
 
 @customElement("corti-dictation")
 export class CortiDictation extends CortiRoot<

@@ -5,5 +5,10 @@
     "tsBuildInfoFile": "dist/ambient/.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["src/index.ts"]
+  "exclude": [
+    "src/index.ts",
+    "src/components/dictation/**",
+    "src/contexts/dictation-context.ts",
+    "src/controllers/dictation-controller.ts"
+  ]
 }

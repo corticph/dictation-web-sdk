@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import { html, nothing } from "lit";
 
-import "../src/components/audio-visualiser.js";
-import type { CortiDictation } from "../src/components/corti-dictation.js";
+import "../src/components/dictation/dictation-audio-visualiser.js";
+import type { CortiDictation } from "../src/components/dictation/corti-dictation.js";
 
 import DeviceSelectorStoryMeta from "./device-selector.stories.js";
 import LanguageSelectorStoryMeta from "./language-selector.stories.js";
 import SettingsMenuStoryMeta from "./settings-menu.stories.js";
 
-import "../src/components/corti-dictation.js";
+import "../src/components/dictation/corti-dictation.js";
 import {
   disableControls,
   eventAction,

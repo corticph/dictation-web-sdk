@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import { html } from "lit";
 import { action } from "storybook/actions";
-import type { DictationKeybindingSelector } from "../src/components/keybinding-selector.js";
+import type { DictationKeybindingSelector } from "../src/components/dictation/dictation-keybinding-selector.js";
 
-import "../src/components/keybinding-selector.js";
+import "../src/components/dictation/dictation-keybinding-selector.js";
 import "../src/contexts/dictation-context.js";
 import type { DictationRoot } from "../src/contexts/dictation-context.js";
 import { disableControls } from "./helpers.js";

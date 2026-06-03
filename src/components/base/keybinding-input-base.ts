@@ -4,14 +4,12 @@ import { property, state } from "lit/decorators.js";
 import {
   pushToTalkKeybindingContext,
   toggleToTalkKeybindingContext,
-} from "../contexts/mixins/keybindings-context.js";
-import KeybindingSelectorStyles from "../styles/keybinding-selector.js";
-import { dualCustomElement } from "../utils/custom-elements.js";
-import { keybindingChangedEvent } from "../utils/events.js";
-import { normalizeKeybinding } from "../utils/keybinding.js";
+} from "../../contexts/mixins/keybindings-context.js";
+import KeybindingSelectorStyles from "../../styles/keybinding-selector.js";
+import { keybindingChangedEvent } from "../../utils/events.js";
+import { normalizeKeybinding } from "../../utils/keybinding.js";
 
-@dualCustomElement("dictation-keybinding-input", "ambient-keybinding-input")
-export class DictationKeybindingInput extends LitElement {
+export class KeybindingInputBase extends LitElement {
   @property({ type: String })
   keybindingType: "push-to-talk" | "toggle-to-talk" = "toggle-to-talk";
 
@@ -88,12 +86,5 @@ export class DictationKeybindingInput extends LitElement {
         </div>
       </div>
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "ambient-keybinding-input": DictationKeybindingInput;
-    "dictation-keybinding-input": DictationKeybindingInput;
   }
 }

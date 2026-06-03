@@ -3,16 +3,16 @@ import { html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ref } from "lit/directives/ref.js";
-import { DEFAULT_STREAM_CONFIG } from "../constants.js";
-import type { AmbientRoot } from "../contexts/ambient-context.js";
-import type { ConfigurableSettings } from "../types.js";
-import { commaSeparatedConverter } from "../utils/converters.js";
+import { DEFAULT_STREAM_CONFIG } from "../../constants.js";
+import type { AmbientRoot } from "../../contexts/ambient-context.js";
+import type { ConfigurableSettings } from "../../types.js";
+import { commaSeparatedConverter } from "../../utils/converters.js";
+import { CortiRoot } from "../base/corti-root.js";
 import type { AmbientRecordingButton } from "./ambient-recording-button.js";
-import { CortiRoot } from "./corti-root.js";
 
-import "../contexts/ambient-context.js";
+import "../../contexts/ambient-context.js";
 import "./ambient-recording-button.js";
-import "./settings-menu.js";
+import "./ambient-settings-menu.js";
 
 @customElement("corti-ambient")
 export class CortiAmbient extends CortiRoot<

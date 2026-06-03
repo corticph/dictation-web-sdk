@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import { html, nothing } from "lit";
 
-import "../src/components/audio-visualiser.js";
-import type { CortiAmbient } from "../src/components/corti-ambient.js";
+import "../src/components/ambient/ambient-audio-visualiser.js";
+import type { CortiAmbient } from "../src/components/ambient/corti-ambient.js";
 
 import DeviceSelectorStoryMeta from "./device-selector.stories.js";
 import LanguageSelectorStoryMeta from "./language-selector.stories.js";
 import SettingsMenuStoryMeta from "./settings-menu.stories.js";
 
-import "../src/components/corti-ambient.js";
+import "../src/components/ambient/corti-ambient.js";
 import {
   disableControls,
   eventAction,

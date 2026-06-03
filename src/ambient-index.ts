@@ -1,13 +1,13 @@
-export { AmbientRecordingButton } from "./components/ambient-recording-button.js";
-export { AmbientVirtualModeSelector } from "./components/ambient-virtual-mode-selector.js";
+export { AmbientDeviceSelector } from "./components/ambient/ambient-device-selector.js";
+export { AmbientKeybindingSelector } from "./components/ambient/ambient-keybinding-selector.js";
+export { AmbientLanguageSelector } from "./components/ambient/ambient-language-selector.js";
+export { AmbientRecordingButton } from "./components/ambient/ambient-recording-button.js";
+export { AmbientSettingsMenu } from "./components/ambient/ambient-settings-menu.js";
+export { AmbientVirtualModeSelector } from "./components/ambient/ambient-virtual-mode-selector.js";
 export {
   CortiAmbient as default,
   CortiAmbient,
-} from "./components/corti-ambient.js";
-export { DictationDeviceSelector as AmbientDeviceSelector } from "./components/device-selector.js";
-export { DictationKeybindingSelector as AmbientKeybindingSelector } from "./components/keybinding-selector.js";
-export { DictationLanguageSelector as AmbientLanguageSelector } from "./components/language-selector.js";
-export { DictationSettingsMenu as AmbientSettingsMenu } from "./components/settings-menu.js";
+} from "./components/ambient/corti-ambient.js";
 export { AmbientRoot } from "./contexts/ambient-context.js";
 
 export type { AmbientStreamSessionConfig } from "./controllers/ambient-controller.js";

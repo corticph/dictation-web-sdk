@@ -43,9 +43,10 @@ export function KeybindingsContextMixin<T extends Constructor<LitElement>>(
     }
 
     #handleContextRequest = (e: ContextEvent<any>) => {
+      const contextTargetTag = e.contextTarget.tagName.toLowerCase();
       if (
-        e.contextTarget.tagName.toLowerCase() ===
-        "dictation-keybinding-selector"
+        contextTargetTag === "dictation-keybinding-selector" ||
+        contextTargetTag === "ambient-keybinding-selector"
       ) {
         if (
           e.context === pushToTalkKeybindingContext &&

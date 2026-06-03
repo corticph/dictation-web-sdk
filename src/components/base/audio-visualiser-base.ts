@@ -3,12 +3,10 @@ import { property } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { map } from "lit/directives/map.js";
 import { range } from "lit/directives/range.js";
-import AudioVisualiserStyles from "../styles/audio-visualiser.js";
-import { dualCustomElement } from "../utils/custom-elements.js";
-import { normalizeToRange } from "../utils/validation.js";
+import AudioVisualiserStyles from "../../styles/audio-visualiser.js";
+import { normalizeToRange } from "../../utils/validation.js";
 
-@dualCustomElement("dictation-audio-visualiser", "ambient-audio-visualiser")
-export class DictationAudioVisualiser extends LitElement {
+export class AudioVisualiserBase extends LitElement {
   @property({ type: Number })
   level: number = 0;
 
@@ -27,7 +25,6 @@ export class DictationAudioVisualiser extends LitElement {
   }
 
   render() {
-    // Each segment represents 20%. Using Math.round to fill segments.
     const activeSegments = Math.round(this.level * this.segmentCount);
     const segments = map(
       range(this.segmentCount),
@@ -46,12 +43,5 @@ export class DictationAudioVisualiser extends LitElement {
         ${segments}
       </div>
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "ambient-audio-visualiser": DictationAudioVisualiser;
-    "dictation-audio-visualiser": DictationAudioVisualiser;
   }
 }

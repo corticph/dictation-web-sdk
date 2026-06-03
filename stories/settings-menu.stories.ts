@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import { html, nothing } from "lit";
 import { action } from "storybook/actions";
-import type { DictationSettingsMenu } from "../src/components/settings-menu.js";
+import type { DictationSettingsMenu } from "../src/components/dictation/dictation-settings-menu.js";
 
-import "../src/components/settings-menu.js";
+import "../src/components/dictation/dictation-settings-menu.js";
 import "../src/contexts/ambient-context.js";
 import "../src/contexts/dictation-context.js";
 import type { DictationRoot } from "../src/contexts/dictation-context.js";

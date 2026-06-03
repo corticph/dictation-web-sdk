@@ -1,12 +1,12 @@
 export {
   CortiDictation as default,
   CortiDictation,
-} from "./components/corti-dictation.js";
-export { DictationDeviceSelector } from "./components/device-selector.js";
-export { DictationRecordingButton } from "./components/dictation-recording-button.js";
-export { DictationKeybindingSelector } from "./components/keybinding-selector.js";
-export { DictationLanguageSelector } from "./components/language-selector.js";
-export { DictationSettingsMenu } from "./components/settings-menu.js";
+} from "./components/dictation/corti-dictation.js";
+export { DictationDeviceSelector } from "./components/dictation/dictation-device-selector.js";
+export { DictationKeybindingSelector } from "./components/dictation/dictation-keybinding-selector.js";
+export { DictationLanguageSelector } from "./components/dictation/dictation-language-selector.js";
+export { DictationRecordingButton } from "./components/dictation/dictation-recording-button.js";
+export { DictationSettingsMenu } from "./components/dictation/dictation-settings-menu.js";
 export { DictationRoot } from "./contexts/dictation-context.js";
 
 export type {

@@ -1,11 +1,11 @@
 import { consume } from "@lit/context";
 import { html, LitElement } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { virtualModeContext } from "../contexts/ambient-context.js";
-import AmbientVirtualModeSelectorStyles from "../styles/ambient-virtual-mode-selector.js";
-import { virtualModeChangedEvent } from "../utils/events.js";
+import { virtualModeContext } from "../../contexts/ambient-context.js";
+import AmbientVirtualModeSelectorStyles from "../../styles/ambient-virtual-mode-selector.js";
+import { virtualModeChangedEvent } from "../../utils/events.js";
 
-import "../icons/icons.js";
+import "../../icons/icons.js";
 
 @customElement("ambient-virtual-mode-selector")
 export class AmbientVirtualModeSelector extends LitElement {

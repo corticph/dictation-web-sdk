@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import { html } from "lit";
 
-import "../src/components/audio-visualiser.js";
+import "../src/components/dictation/dictation-audio-visualiser.js";
 
-import type { DictationAudioVisualiser } from "../src/components/audio-visualiser.js";
+import type { DictationAudioVisualiser } from "../src/components/dictation/dictation-audio-visualiser.js";
 import { disableControls } from "./helpers.js";
 
 const meta = {
