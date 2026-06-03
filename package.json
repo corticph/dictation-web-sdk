@@ -2,27 +2,21 @@
   "private": true,
   "description": "Web components for Corti Speech (dictation + ambient)",
   "type": "module",
+  "packageManager": "pnpm@10.12.1",
   "scripts": {
-    "analyze": "cem analyze --litelement",
-    "build:dictation": "tsc -p tsconfig.dictation.json && esbuild dist/dictation/index.js --bundle --outfile=dist/dictation/bundle.js --format=esm --platform=browser && cp package.dictation.json dist/dictation/package.json",
-    "build:ambient": "tsc -p tsconfig.ambient.json && mv dist/ambient/ambient-index.js dist/ambient/index.js && mv dist/ambient/ambient-index.d.ts dist/ambient/index.d.ts && (mv dist/ambient/ambient-index.js.map dist/ambient/index.js.map 2>/dev/null || true) && esbuild dist/ambient/index.js --bundle --outfile=dist/ambient/bundle.js --format=esm --platform=browser && cp package.ambient.json dist/ambient/package.json",
-    "build": "npm run build:dictation && npm run build:ambient && npm run analyze -- --exclude dist",
-    "prepublish": "tsc -p tsconfig.dictation.json && tsc -p tsconfig.ambient.json && npm run analyze -- --exclude dist",
+    "analyze": "cem analyze --litelement --exclude dist",
+    "build": "tsc -p core && pnpm -r run build && pnpm run analyze",
+    "prepublish": "tsc -p core && pnpm -r exec tsc -b && pnpm run analyze",
     "lint": "biome check .",
     "format": "biome format --write .",
     "biome:check": "biome check .",
     "biome:format": "biome format --write .",
     "biome:fix": "biome check --write .",
     "prepare": "husky && husky install",
-    "test": "tsc -p tsconfig.test.json && wtr --coverage",
-    "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\"",
-    "storybook": "npm run analyze -- --exclude dist && storybook dev -p 8080",
-    "storybook:build": "tsc && tsc -p tsconfig.stories.json && npm run analyze -- --exclude dist && storybook build"
-  },
-  "dependencies": {
-    "@corti/sdk": "3.0.0",
-    "@lit/context": "^1.1.6",
-    "lit": "^3.3.1"
+    "test": "tsc -p core && wtr --coverage",
+    "test:watch": "concurrently -k -r \"tsc -p core --watch --preserveWatchOutput\" \"wtr --watch\"",
+    "storybook": "pnpm run analyze && storybook dev -p 8080",
+    "storybook:build": "tsc -p core && tsc -p tsconfig.stories.json && pnpm run analyze && storybook build"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.6",
@@ -34,6 +28,7 @@
     "@storybook/web-components": "10.1.5",
     "@storybook/web-components-vite": "^10.1.5",
     "@types/mocha": "^10.0.7",
+    "@web/dev-server-esbuild": "0.4.4",
     "@web/storybook-builder": "^0.1.16",
     "@web/storybook-framework-web-components": "^0.1.2",
     "@web/test-runner": "^0.18.2",

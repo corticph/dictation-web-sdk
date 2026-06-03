@@ -1,6 +1,6 @@
 import { expect } from "@open-wc/testing";
 import * as sinon from "sinon";
-import { getAudioDevices, primeMicStream } from "../src/utils/devices.js";
+import { getAudioDevices, primeMicStream } from "../core/src/utils/devices.js";
 
 interface FakeMediaDevices {
   getUserMedia: sinon.SinonStub;

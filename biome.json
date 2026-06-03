@@ -21,11 +21,15 @@
   },
   "files": {
     "includes": [
-      "src/**",
+      "core/src/**",
+      "dictation/src/**",
+      "ambient/src/**",
+      "scripts/**",
       "stories/**",
       "test/**",
       "!**/*.gen.ts",
-      "!**/*.d.ts"
+      "!**/*.d.ts",
+      "!**/dist"
     ]
   },
   "formatter": {
@@ -72,7 +76,7 @@
       }
     },
     {
-      "includes": ["src/contexts/mixins/**/*.ts"],
+      "includes": ["core/src/contexts/mixins/**/*.ts"],
       "linter": {
         "rules": {
           "correctness": {

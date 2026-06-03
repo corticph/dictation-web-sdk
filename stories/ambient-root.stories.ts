@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import { html } from "lit";
 import { action } from "storybook/actions";
-import type { AmbientRecordingButton } from "../src/components/ambient/ambient-recording-button.js";
+import type { AmbientRecordingButton } from "../ambient/src/components/ambient-recording-button.js";
 
-import "../src/components/ambient/ambient-recording-button.js";
-import "../src/components/internal/speech-audio-visualiser.js";
-import "../src/components/ambient/ambient-settings-menu.js";
-import type { AmbientSettingsMenu } from "../src/components/ambient/ambient-settings-menu.js";
+import "../ambient/src/components/ambient-recording-button.js";
+import "../core/src/components/speech-audio-visualiser.js";
+import "../ambient/src/components/ambient-settings-menu.js";
+import type { AmbientSettingsMenu } from "../ambient/src/components/ambient-settings-menu.js";
 import type { AmbientRoot } from "../src/contexts/ambient-context.js";
 import "../src/contexts/ambient-context.js";
 

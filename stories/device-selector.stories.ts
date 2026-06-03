@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import { html, nothing } from "lit";
 import { action } from "storybook/actions";
-import type { DictationDeviceSelector } from "../src/components/dictation/dictation-device-selector.js";
+import type { DictationDeviceSelector } from "../dictation/src/components/dictation-device-selector.js";
 
-import "../src/components/dictation/dictation-device-selector.js";
+import "../dictation/src/components/dictation-device-selector.js";
 import "../src/contexts/dictation-context.js";
 import type { DictationRoot } from "../src/contexts/dictation-context.js";
 import { disableControls, mockDevices } from "./helpers.js";

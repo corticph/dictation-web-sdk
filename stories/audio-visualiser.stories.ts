@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import { html } from "lit";
 
-import "../src/components/internal/speech-audio-visualiser.js";
+import "../core/src/components/speech-audio-visualiser.js";
 
-import type { SpeechAudioVisualiser } from "../src/components/internal/speech-audio-visualiser.js";
+import type { SpeechAudioVisualiser } from "../core/src/components/speech-audio-visualiser.js";
 import { disableControls } from "./helpers.js";
 
 const meta = {

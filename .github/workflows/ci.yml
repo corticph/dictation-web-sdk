@@ -14,16 +14,20 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
 
   lint:
     runs-on: ubuntu-latest
@@ -32,16 +36,20 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: npm run lint
+        run: pnpm run lint
 
   test:
     runs-on: ubuntu-latest
@@ -50,16 +58,20 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Test
-        run: npm test
+        run: pnpm test
 
   publish:
     needs: [compile, lint, test]
@@ -90,18 +102,22 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "suffix=$SUFFIX" >> $GITHUB_OUTPUT
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Set version
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          for f in package.dictation.json package.ambient.json; do
+          for f in dictation/package.json ambient/package.json; do
             node -e "
               const fs = require('fs');
               const pkg = JSON.parse(fs.readFileSync('${f}', 'utf8'));
@@ -112,7 +128,7 @@ jobs:
           echo "Publish manifests version set to ${VERSION}"
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
 
       - name: Publish @corti/dictation-web
         run: |
@@ -120,7 +136,7 @@ jobs:
             npx -y npm@latest publish "$@"
           }
           SUFFIX="${{ steps.version.outputs.suffix }}"
-          cd dist/dictation
+          cd dictation/dist
           if [[ -n "$SUFFIX" ]]; then
             publish --access public --tag "$SUFFIX"
           else
@@ -141,7 +157,7 @@ jobs:
             npx -y npm@latest publish "$@"
           }
           SUFFIX="${{ steps.version.outputs.suffix }}"
-          cd dist/ambient
+          cd ambient/dist
           if [[ -n "$SUFFIX" ]]; then
             publish --access public --tag "$SUFFIX"
           else

@@ -1,9 +1,23 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "dist"
+    "outDir": "dist/stories",
+    "paths": {
+      "@core/*": ["./core/src/*"],
+      "@dictation/*": ["./dictation/src/*"],
+      "@ambient/*": ["./ambient/src/*"]
+    }
   },
-  "include": ["stories/**/*.ts"]
+  "include": [
+    "core/src/**/*.ts",
+    "dictation/src/**/*.ts",
+    "ambient/src/**/*.ts",
+    "stories/**/*.ts"
+  ],
+  "references": [
+    { "path": "./core" },
+    { "path": "./dictation" },
+    { "path": "./ambient" }
+  ]
 }
-
