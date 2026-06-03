@@ -1,7 +1,5 @@
 import type { Corti } from "@corti/sdk";
 import { consume } from "@lit/context";
-import type { TemplateResult } from "lit";
-import { html } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { DEFAULT_STREAM_CONFIG } from "../../constants.js";
 import {
@@ -16,8 +14,6 @@ import {
 import { errorEvent } from "../../utils/events.js";
 import { RecordingButtonBase } from "../base/recording-button-base.js";
 
-import "./ambient-audio-visualiser.js";
-
 const interactionIdRequiredError = () =>
   new Error(
     "interactionId is required. Set interactionId on corti-ambient or ambient-root.",
@@ -28,13 +24,6 @@ export class AmbientRecordingButton extends RecordingButtonBase<
   AmbientStreamSessionConfig,
   StreamAmbientMessage
 > {
-  protected _renderAudioVisualiser(isRecording: boolean): TemplateResult {
-    return html`<ambient-audio-visualiser
-      .level=${this._audioLevel}
-      ?active=${isRecording}
-    ></ambient-audio-visualiser>`;
-  }
-
   @consume({ context: ambientConfigContext, subscribe: true })
   @state()
   private _ambientConfig?: Corti.StreamConfig;

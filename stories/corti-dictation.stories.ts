@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import { html, nothing } from "lit";
 
-import "../src/components/dictation/dictation-audio-visualiser.js";
+import "../src/components/internal/speech-audio-visualiser.js";
 import type { CortiDictation } from "../src/components/dictation/corti-dictation.js";
 
 import DeviceSelectorStoryMeta from "./device-selector.stories.js";

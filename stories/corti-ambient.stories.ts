@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import { html, nothing } from "lit";
 
-import "../src/components/ambient/ambient-audio-visualiser.js";
+import "../src/components/internal/speech-audio-visualiser.js";
 import type { CortiAmbient } from "../src/components/ambient/corti-ambient.js";
 
 import DeviceSelectorStoryMeta from "./device-selector.stories.js";

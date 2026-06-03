@@ -6,10 +6,9 @@ import {
   toggleToTalkKeybindingContext,
 } from "../../contexts/mixins/keybindings-context.js";
 import KeybindingSelectorStyles from "../../styles/keybinding-selector.js";
+import "../internal/speech-keybinding-input.js";
 
-export abstract class KeybindingSelectorBase extends LitElement {
-  protected abstract _renderKeybindingInputs(): TemplateResult;
-
+export class KeybindingSelectorBase extends LitElement {
   @consume({ context: pushToTalkKeybindingContext, subscribe: true })
   @state()
   _pushToTalkKeybinding?: string | null;
@@ -22,6 +21,19 @@ export abstract class KeybindingSelectorBase extends LitElement {
   disabled: boolean = false;
 
   static styles = KeybindingSelectorStyles;
+
+  protected _renderKeybindingInputs(): TemplateResult {
+    return html`
+      <speech-keybinding-input
+        keybindingType="toggle-to-talk"
+        ?disabled=${this.disabled}
+      ></speech-keybinding-input>
+      <speech-keybinding-input
+        keybindingType="push-to-talk"
+        ?disabled=${this.disabled}
+      ></speech-keybinding-input>
+    `;
+  }
 
   render() {
     return html`

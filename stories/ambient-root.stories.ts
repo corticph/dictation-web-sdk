@@ -4,7 +4,7 @@ import { action } from "storybook/actions";
 import type { AmbientRecordingButton } from "../src/components/ambient/ambient-recording-button.js";
 
 import "../src/components/ambient/ambient-recording-button.js";
-import "../src/components/ambient/ambient-audio-visualiser.js";
+import "../src/components/internal/speech-audio-visualiser.js";
 import "../src/components/ambient/ambient-settings-menu.js";
 import type { AmbientSettingsMenu } from "../src/components/ambient/ambient-settings-menu.js";
 import type { AmbientRoot } from "../src/contexts/ambient-context.js";

@@ -58,17 +58,21 @@ import {
 } from "../../utils/events.js";
 
 import "../../icons/icons.js";
+import "../internal/speech-audio-visualiser.js";
 
 export abstract class RecordingButtonBase<
   TConfig,
   TMessage extends RecordingSocketInboundMessage = TranscribeMessage,
 > extends LitElement {
-  protected abstract _renderAudioVisualiser(
-    isRecording: boolean,
-  ): TemplateResult;
-
   protected get _audioLevel(): number {
     return this.#mediaController.audioLevel;
+  }
+
+  protected _renderAudioVisualiser(isRecording: boolean): TemplateResult {
+    return html`<speech-audio-visualiser
+      .level=${this._audioLevel}
+      ?active=${isRecording}
+    ></speech-audio-visualiser>`;
   }
 
   @consume({ context: recordingStateContext, subscribe: true })
