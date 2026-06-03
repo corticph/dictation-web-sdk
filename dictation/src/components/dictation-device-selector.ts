@@ -1,7 +1,7 @@
-import { DeviceSelectorBase } from "@corti/core-web/components/device-selector-base.js";
-import { customElement } from "lit/decorators.js";
+import { DeviceSelectorBase } from "@core/components/device-selector-base.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
 
-@customElement("dictation-device-selector")
+@safeCustomElement("dictation-device-selector")
 export class DictationDeviceSelector extends DeviceSelectorBase {}
 
 declare global {

@@ -1,9 +1,10 @@
-import { CortiRoot } from "@corti/core-web/components/corti-root.js";
-import type { ConfigurableSettings } from "@corti/core-web/types.js";
-import { commaSeparatedConverter } from "@corti/core-web/utils/converters.js";
+import { CortiRoot } from "@core/components/corti-root.js";
+import type { ConfigurableSettings } from "@core/types.js";
+import { commaSeparatedConverter } from "@core/utils/converters.js";
 import type { Corti } from "@corti/sdk";
 import { html, nothing } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
+import { property, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ref } from "lit/directives/ref.js";
 import { DEFAULT_AMBIENT_CONFIG } from "../constants.js";
@@ -14,7 +15,7 @@ import "../contexts/ambient-context.js";
 import "./ambient-recording-button.js";
 import "./ambient-settings-menu.js";
 
-@customElement("corti-ambient")
+@safeCustomElement("corti-ambient")
 export class CortiAmbient extends CortiRoot<
   AmbientRoot,
   AmbientRecordingButton

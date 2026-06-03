@@ -1,8 +1,9 @@
-import { RootContext } from "@corti/core-web/contexts/root-context.js";
+import { RootContext } from "@core/contexts/root-context.js";
 import type { Corti } from "@corti/sdk";
 import { createContext, provide } from "@lit/context";
 import type { PropertyValues } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
+import { property } from "lit/decorators.js";
 import { DEFAULT_AMBIENT_CONFIG } from "../constants.js";
 
 export const ambientConfigContext = createContext<
@@ -15,7 +16,7 @@ export const interactionIdContext = createContext<string | undefined>(
 
 export const virtualModeContext = createContext<boolean>(Symbol("virtualMode"));
 
-@customElement("ambient-root")
+@safeCustomElement("ambient-root")
 export class AmbientRoot extends RootContext {
   @provide({ context: ambientConfigContext })
   @property({ attribute: false, type: Object })

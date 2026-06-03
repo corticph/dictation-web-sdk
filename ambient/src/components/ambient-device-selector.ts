@@ -1,7 +1,7 @@
-import { DeviceSelectorBase } from "@corti/core-web/components/device-selector-base.js";
-import { customElement } from "lit/decorators.js";
+import { DeviceSelectorBase } from "@core/components/device-selector-base.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
 
-@customElement("ambient-device-selector")
+@safeCustomElement("ambient-device-selector")
 export class AmbientDeviceSelector extends DeviceSelectorBase {}
 
 declare global {

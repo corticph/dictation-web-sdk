@@ -2,7 +2,7 @@ export type {
   ConfigurableSettings,
   Keybinding,
   RecordingState,
-} from "@corti/core-web/types.js";
+} from "@core/types.js";
 export type {
   AudioEventEventDetail,
   AudioLevelChangedEventDetail,
@@ -18,7 +18,7 @@ export type {
   RecordingStateChangedEventDetail,
   TranscriptEventDetail,
   UsageEventDetail,
-} from "@corti/core-web/utils/events.js";
+} from "@core/utils/events.js";
 export {
   CortiDictation as default,
   CortiDictation,

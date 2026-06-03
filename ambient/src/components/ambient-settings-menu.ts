@@ -1,14 +1,14 @@
-import { SettingsMenuBase } from "@corti/core-web/components/settings-menu-base.js";
+import { SettingsMenuBase } from "@core/components/settings-menu-base.js";
 import type { TemplateResult } from "lit";
 import { html } from "lit";
-import { customElement } from "lit/decorators.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
 
 import "./ambient-device-selector.js";
 import "./ambient-keybinding-selector.js";
 import "./ambient-language-selector.js";
 import "./ambient-virtual-mode-selector.js";
 
-@customElement("ambient-settings-menu")
+@safeCustomElement("ambient-settings-menu")
 export class AmbientSettingsMenu extends SettingsMenuBase {
   protected _renderDeviceSelector(isRecording: boolean): TemplateResult {
     return html`<ambient-device-selector

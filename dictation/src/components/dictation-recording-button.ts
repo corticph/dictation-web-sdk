@@ -1,7 +1,8 @@
-import { RecordingButtonBase } from "@corti/core-web/components/recording-button-base.js";
+import { RecordingButtonBase } from "@core/components/recording-button-base.js";
 import type { Corti } from "@corti/sdk";
 import { consume } from "@lit/context";
-import { customElement, state } from "lit/decorators.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
+import { state } from "lit/decorators.js";
 import { DEFAULT_DICTATION_CONFIG } from "../constants.js";
 import {
   debugDisplayAudioContext,
@@ -12,7 +13,7 @@ import {
   type TranscribeMessage,
 } from "../controllers/dictation-controller.js";
 
-@customElement("dictation-recording-button")
+@safeCustomElement("dictation-recording-button")
 export class DictationRecordingButton extends RecordingButtonBase<
   Corti.TranscribeConfig,
   TranscribeMessage

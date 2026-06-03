@@ -38,7 +38,6 @@
     "real-time"
   ],
   "dependencies": {
-    "@corti/core-web": "workspace:*",
     "@corti/sdk": "3.0.0",
     "@lit/context": "^1.1.6",
     "lit": "^3.3.3"

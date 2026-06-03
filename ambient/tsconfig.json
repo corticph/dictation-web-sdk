@@ -6,7 +6,7 @@
     "outDir": "dist",
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     "paths": {
-      "@corti/core-web/*": ["../core/src/*"]
+      "@core/*": ["../core/src/*"]
     }
   },
   "include": ["src/**/*.ts"],

@@ -1,7 +1,8 @@
-import { CortiRoot } from "@corti/core-web/components/corti-root.js";
+import { CortiRoot } from "@core/components/corti-root.js";
 import type { Corti, CortiAuth } from "@corti/sdk";
 import { html, nothing } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
+import { property, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ref } from "lit/directives/ref.js";
 import { DEFAULT_DICTATION_CONFIG } from "../constants.js";
@@ -12,7 +13,7 @@ import "../contexts/dictation-context.js";
 import "./dictation-recording-button.js";
 import "./dictation-settings-menu.js";
 
-@customElement("corti-dictation")
+@safeCustomElement("corti-dictation")
 export class CortiDictation extends CortiRoot<
   DictationRoot,
   DictationRecordingButton

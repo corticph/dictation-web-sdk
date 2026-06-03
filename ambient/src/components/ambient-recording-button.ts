@@ -1,8 +1,9 @@
-import { RecordingButtonBase } from "@corti/core-web/components/recording-button-base.js";
-import { errorEvent } from "@corti/core-web/utils/events.js";
+import { RecordingButtonBase } from "@core/components/recording-button-base.js";
+import { errorEvent } from "@core/utils/events.js";
 import type { Corti } from "@corti/sdk";
 import { consume } from "@lit/context";
-import { customElement, state } from "lit/decorators.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
+import { state } from "lit/decorators.js";
 import { DEFAULT_AMBIENT_CONFIG } from "../constants.js";
 import {
   ambientConfigContext,
@@ -20,7 +21,7 @@ const interactionIdRequiredError = () =>
     "interactionId is required. Set interactionId on corti-ambient or ambient-root.",
   );
 
-@customElement("ambient-recording-button")
+@safeCustomElement("ambient-recording-button")
 export class AmbientRecordingButton extends RecordingButtonBase<
   AmbientStreamSessionConfig,
   StreamAmbientMessage

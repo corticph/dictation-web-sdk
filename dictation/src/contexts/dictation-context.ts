@@ -1,8 +1,9 @@
-import { RootContext } from "@corti/core-web/contexts/root-context.js";
+import { RootContext } from "@core/contexts/root-context.js";
 import type { Corti } from "@corti/sdk";
 import { createContext, provide } from "@lit/context";
 import type { PropertyValues } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
+import { property } from "lit/decorators.js";
 
 export const dictationConfigContext = createContext<
   Corti.TranscribeConfig | undefined
@@ -10,7 +11,7 @@ export const dictationConfigContext = createContext<
 export const debugDisplayAudioContext = createContext<boolean | undefined>(
   Symbol("debugDisplayAudio"),
 );
-@customElement("dictation-root")
+@safeCustomElement("dictation-root")
 export class DictationRoot extends RootContext {
   // ─────────────────────────────────────────────────────────────────────────────
   // Properties

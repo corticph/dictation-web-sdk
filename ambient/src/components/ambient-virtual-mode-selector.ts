@@ -1,13 +1,14 @@
-import { virtualModeChangedEvent } from "@corti/core-web/utils/events.js";
+import { virtualModeChangedEvent } from "@core/utils/events.js";
 import { consume } from "@lit/context";
 import { html, LitElement } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
+import { property, state } from "lit/decorators.js";
 import { virtualModeContext } from "../contexts/ambient-context.js";
 import AmbientVirtualModeSelectorStyles from "../styles/ambient-virtual-mode-selector.js";
 
-import "@corti/core-web/icons/icons.js";
+import "@core/icons/icons.js";
 
-@customElement("ambient-virtual-mode-selector")
+@safeCustomElement("ambient-virtual-mode-selector")
 export class AmbientVirtualModeSelector extends LitElement {
   @consume({ context: virtualModeContext, subscribe: true })
   @state()

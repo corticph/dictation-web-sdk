@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@corti/core-web/*": ["core/src/*"]
+      "@core/*": ["core/src/*"]
     }
   },
   "include": ["test/**/*.ts"]

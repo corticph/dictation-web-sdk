@@ -1,13 +1,13 @@
-import { SettingsMenuBase } from "@corti/core-web/components/settings-menu-base.js";
+import { SettingsMenuBase } from "@core/components/settings-menu-base.js";
 import type { TemplateResult } from "lit";
 import { html } from "lit";
-import { customElement } from "lit/decorators.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
 
 import "./dictation-device-selector.js";
 import "./dictation-keybinding-selector.js";
 import "./dictation-language-selector.js";
 
-@customElement("dictation-settings-menu")
+@safeCustomElement("dictation-settings-menu")
 export class DictationSettingsMenu extends SettingsMenuBase {
   protected _renderDeviceSelector(isRecording: boolean): TemplateResult {
     return html`<dictation-device-selector

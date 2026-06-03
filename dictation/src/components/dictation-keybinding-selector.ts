@@ -1,7 +1,7 @@
-import { KeybindingSelectorBase } from "@corti/core-web/components/keybinding-selector-base.js";
-import { customElement } from "lit/decorators.js";
+import { KeybindingSelectorBase } from "@core/components/keybinding-selector-base.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
 
-@customElement("dictation-keybinding-selector")
+@safeCustomElement("dictation-keybinding-selector")
 export class DictationKeybindingSelector extends KeybindingSelectorBase {}
 
 declare global {

@@ -1,7 +1,7 @@
-import { LanguageSelectorBase } from "@corti/core-web/components/language-selector-base.js";
-import { customElement } from "lit/decorators.js";
+import { LanguageSelectorBase } from "@core/components/language-selector-base.js";
+import { safeCustomElement } from "@core/utils/custom-elements.js";
 
-@customElement("ambient-language-selector")
+@safeCustomElement("ambient-language-selector")
 export class AmbientLanguageSelector extends LanguageSelectorBase {}
 
 declare global {
