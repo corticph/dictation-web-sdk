@@ -1,12 +1,13 @@
 import { html, LitElement, type PropertyValues } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
+import { safeCustomElement } from "../utils/custom-elements.js";
 import { classMap } from "lit/directives/class-map.js";
 import { map } from "lit/directives/map.js";
 import { range } from "lit/directives/range.js";
 import AudioVisualiserStyles from "../styles/audio-visualiser.js";
 import { normalizeToRange } from "../utils/validation.js";
 
-@customElement("speech-audio-visualiser")
+@safeCustomElement("speech-audio-visualiser")
 export class SpeechAudioVisualiser extends LitElement {
   @property({ type: Number })
   level: number = 0;

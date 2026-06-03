@@ -1,6 +1,7 @@
 import { consume } from "@lit/context";
 import { html, LitElement } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
+import { safeCustomElement } from "../utils/custom-elements.js";
 import {
   pushToTalkKeybindingContext,
   toggleToTalkKeybindingContext,
@@ -9,7 +10,7 @@ import KeybindingSelectorStyles from "../styles/keybinding-selector.js";
 import { keybindingChangedEvent } from "../utils/events.js";
 import { normalizeKeybinding } from "../utils/keybinding.js";
 
-@customElement("speech-keybinding-input")
+@safeCustomElement("speech-keybinding-input")
 export class SpeechKeybindingInput extends LitElement {
   @property({ type: String })
   keybindingType: "push-to-talk" | "toggle-to-talk" = "toggle-to-talk";
