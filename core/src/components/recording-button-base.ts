@@ -157,7 +157,6 @@ export abstract class RecordingButtonBase<
   }
 
   #handleWebSocketMessage = (message: TMessage): void => {
-
     switch (message.type) {
       case "CONFIG_DENIED":
         this.dispatchEvent(
