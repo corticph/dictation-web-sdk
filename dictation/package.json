@@ -23,7 +23,8 @@
     "email": "help@corti.ai"
   },
   "repository": "github:corticph/dictation-web",
-  "homepage": "https://docs.corti.ai/sdk/dictation/overview",
+  "documentation": "https://docs.corti.ai/sdk/dictation",
+  "homepage": "https://docs.corti.ai/sdk/dictation",
   "keywords": [
     "corti",
     "dictation",

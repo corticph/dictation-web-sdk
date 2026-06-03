@@ -23,7 +23,8 @@
     "email": "help@corti.ai"
   },
   "repository": "github:corticph/dictation-web",
-  "homepage": "https://docs.corti.ai/sdk/ambient/overview",
+  "documentation": "https://docs.corti.ai/sdk/ambient",
+  "homepage": "https://docs.corti.ai/sdk/ambient",
   "keywords": [
     "corti",
     "ambient",
