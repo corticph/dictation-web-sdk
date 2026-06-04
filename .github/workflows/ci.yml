@@ -131,7 +131,7 @@ jobs:
             npx -y npm@latest publish "$@"
           }
           SUFFIX="${{ steps.version.outputs.suffix }}"
-          cd dictation/dist
+          cd dictation
           if [[ -n "$SUFFIX" ]]; then
             publish --access public --tag "$SUFFIX"
           else
@@ -152,7 +152,7 @@ jobs:
             npx -y npm@latest publish "$@"
           }
           SUFFIX="${{ steps.version.outputs.suffix }}"
-          cd ambient/dist
+          cd ambient
           if [[ -n "$SUFFIX" ]]; then
             publish --access public --tag "$SUFFIX"
           else

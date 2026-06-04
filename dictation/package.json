@@ -5,18 +5,21 @@
   "version": "0.0.0-dev",
   "license": "MIT",
   "type": "module",
-  "main": "bundle.js",
-  "module": "bundle.js",
-  "types": "index.d.ts",
+  "main": "dist/bundle.js",
+  "module": "dist/bundle.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "import": "./bundle.js",
-      "default": "./bundle.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/bundle.js",
+      "default": "./dist/bundle.js"
     }
   },
-  "jsdelivr": "./bundle.js",
-  "browser": "./bundle.js",
+  "jsdelivr": "./dist/bundle.js",
+  "browser": "./dist/bundle.js",
+  "files": [
+    "dist"
+  ],
   "bugs": {
     "url": "https://docs.corti.ai",
     "email": "help@corti.ai"
@@ -42,6 +45,6 @@
     "lit": "^3.3.3"
   },
   "scripts": {
-    "build": "tsc -b && node ../scripts/build-dictation.mjs"
+    "build": "tsc -b && node ../scripts/build-package.mjs dictation"
   }
 }
