@@ -5,6 +5,7 @@ import { createContext, provide } from "@lit/context";
 import type { PropertyValues } from "lit";
 import { property } from "lit/decorators.js";
 import { DEFAULT_AMBIENT_CONFIG } from "../constants.js";
+import { applyVirtualModeToAmbientConfig } from "../utils/virtual-mode-config.js";
 
 export const ambientConfigContext = createContext<
   Corti.StreamConfig | undefined
@@ -36,33 +37,12 @@ export class AmbientRoot extends RootContext {
     this.addEventListener("virtual-mode-changed", (e: Event) => {
       const event = e as CustomEvent<{ enabled: boolean }>;
       this.virtualMode = event.detail.enabled;
-      // Set multichannel transcription for virtual mode
       const base = this.ambientConfig ?? DEFAULT_AMBIENT_CONFIG;
 
-      if (event.detail.enabled) {
-        this.ambientConfig = {
-          ...base,
-          transcription: {
-            ...base.transcription,
-            isDiarization: false,
-            isMultichannel: true,
-            participants: [
-              { channel: 0, role: "doctor" },
-              { channel: 1, role: "patient" },
-            ],
-          },
-        };
-      } else {
-        this.ambientConfig = {
-          ...base,
-          transcription: {
-            ...base.transcription,
-            isDiarization: true,
-            isMultichannel: false,
-            participants: [],
-          },
-        };
-      }
+      this.ambientConfig = applyVirtualModeToAmbientConfig(
+        base,
+        event.detail.enabled,
+      );
     });
 
     this.addEventListener("languages-changed", (e: Event) => {
@@ -89,12 +69,18 @@ export class AmbientRoot extends RootContext {
   protected override willUpdate(changedProperties: PropertyValues): void {
     super.willUpdate(changedProperties);
 
-    if (!changedProperties.has("ambientConfig")) {
-      return;
+    if (changedProperties.has("virtualMode")) {
+      const base = this.ambientConfig ?? DEFAULT_AMBIENT_CONFIG;
+      this.ambientConfig = applyVirtualModeToAmbientConfig(
+        base,
+        this.virtualMode,
+      );
     }
 
-    this._selectedLanguage =
-      this.ambientConfig?.transcription?.primaryLanguage ?? "en";
+    if (changedProperties.has("ambientConfig")) {
+      this._selectedLanguage =
+        this.ambientConfig?.transcription?.primaryLanguage ?? "en";
+    }
   }
 }
 
