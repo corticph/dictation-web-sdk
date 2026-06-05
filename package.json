@@ -1,6 +1,7 @@
 {
   "private": true,
   "description": "Web components for Corti Speech (dictation + ambient)",
+  "repository": "github:corticph/speech-web-components",
   "type": "module",
   "packageManager": "pnpm@10.12.1",
   "scripts": {
@@ -25,10 +26,10 @@
     "@custom-elements-manifest/analyzer": "^0.10.3",
     "@open-wc/testing": "^4.0.0",
     "@storybook/addon-a11y": "10.1.5",
-    "@storybook/addon-docs": "^10.1.5",
+    "@storybook/addon-docs": "10.1.5",
     "@storybook/addon-links": "10.1.5",
     "@storybook/web-components": "10.1.5",
-    "@storybook/web-components-vite": "^10.1.5",
+    "@storybook/web-components-vite": "10.1.5",
     "@types/mocha": "^10.0.7",
     "@web/dev-server-esbuild": "0.4.4",
     "@web/storybook-builder": "^0.1.16",

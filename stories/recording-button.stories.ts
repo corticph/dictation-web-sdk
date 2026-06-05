@@ -4,8 +4,8 @@ import { action } from "storybook/actions";
 import type { DictationRecordingButton } from "../dictation/src/components/dictation-recording-button.js";
 
 import "../dictation/src/components/dictation-recording-button.js";
-import "../src/contexts/dictation-context.js";
-import type { DictationRoot } from "../src/contexts/dictation-context.js";
+import "../dictation/src/contexts/dictation-context.js";
+import type { DictationRoot } from "../dictation/src/contexts/dictation-context.js";
 import { disableControls } from "./helpers.js";
 
 export type RecordingButtonStory = DictationRecordingButton &

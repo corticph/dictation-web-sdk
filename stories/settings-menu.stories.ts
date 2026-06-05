@@ -4,9 +4,9 @@ import { action } from "storybook/actions";
 import type { DictationSettingsMenu } from "../dictation/src/components/dictation-settings-menu.js";
 
 import "../dictation/src/components/dictation-settings-menu.js";
-import "../src/contexts/ambient-context.js";
-import "../src/contexts/dictation-context.js";
-import type { DictationRoot } from "../src/contexts/dictation-context.js";
+import "../ambient/src/contexts/ambient-context.js";
+import "../dictation/src/contexts/dictation-context.js";
+import type { DictationRoot } from "../dictation/src/contexts/dictation-context.js";
 import DeviceSelectorStoryMeta, {
   type DeviceSelectorStory,
   WithCustomDevices as WithCustomDevicesDeviceSelectorStory,

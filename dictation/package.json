@@ -24,7 +24,7 @@
     "url": "https://docs.corti.ai",
     "email": "help@corti.ai"
   },
-  "repository": "github:corticph/dictation-web",
+  "repository": "github:corticph/speech-web-components",
   "documentation": "https://docs.corti.ai/sdk/dictation",
   "homepage": "https://docs.corti.ai/sdk/dictation",
   "keywords": [

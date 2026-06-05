@@ -2,7 +2,7 @@ import { action } from "storybook/actions";
 import {
   LANGUAGES_SUPPORTED_EU,
   LANGUAGES_SUPPORTED_US,
-} from "../src/constants";
+} from "../core/src/constants.js";
 
 export function disableControls(controls: string[]) {
   const argTypes: Record<string, unknown> = {};

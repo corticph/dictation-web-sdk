@@ -7,8 +7,8 @@ import "../ambient/src/components/ambient-recording-button.js";
 import "../core/src/components/speech-audio-visualiser.js";
 import "../ambient/src/components/ambient-settings-menu.js";
 import type { AmbientSettingsMenu } from "../ambient/src/components/ambient-settings-menu.js";
-import type { AmbientRoot } from "../src/contexts/ambient-context.js";
-import "../src/contexts/ambient-context.js";
+import type { AmbientRoot } from "../ambient/src/contexts/ambient-context.js";
+import "../ambient/src/contexts/ambient-context.js";
 
 type AmbientRootStory = AmbientSettingsMenu &
   Pick<
