@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.6/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -21,11 +21,15 @@
   },
   "files": {
     "includes": [
-      "src/**",
+      "core/src/**",
+      "dictation/src/**",
+      "ambient/src/**",
+      "scripts/**",
       "stories/**",
       "test/**",
       "!**/*.gen.ts",
-      "!**/*.d.ts"
+      "!**/*.d.ts",
+      "!**/dist"
     ]
   },
   "formatter": {
@@ -67,6 +71,19 @@
         "rules": {
           "suspicious": {
             "noUnknownAtRules": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["core/src/contexts/mixins/**/*.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedPrivateClassMembers": "off"
+          },
+          "suspicious": {
+            "noExplicitAny": "off"
           }
         }
       }

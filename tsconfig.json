@@ -1,21 +1,8 @@
 {
-  "compilerOptions": {
-    "target": "es2021",
-    "module": "Node16",
-    "moduleResolution": "node16",
-    "noEmitOnError": true,
-    "lib": ["es2021", "dom", "DOM.Iterable"],
-    "strict": true,
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "importHelpers": false,
-    "outDir": "dist",
-    "sourceMap": true,
-    "inlineSources": true,
-    "declaration": true,
-    "incremental": true,
-    "skipLibCheck": true
-  },
-  "include": ["src/**/*.ts"]
+  "files": [],
+  "references": [
+    { "path": "./core" },
+    { "path": "./dictation" },
+    { "path": "./ambient" }
+  ]
 }

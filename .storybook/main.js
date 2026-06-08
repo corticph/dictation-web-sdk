@@ -1,3 +1,8 @@
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+
 export default {
   stories: ['../stories/**/*.stories.ts'],
   addons: [
@@ -6,6 +11,15 @@ export default {
     '@storybook/addon-a11y'
   ],
   framework:  '@storybook/web-components-vite',
+
+  viteFinal: async (config) => {
+    config.resolve ??= {};
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@core": resolve(root, "core/src"),
+    };
+    return config;
+  },
 
   wdsFinal: async (config) => {
     return {

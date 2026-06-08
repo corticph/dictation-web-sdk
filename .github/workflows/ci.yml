@@ -14,16 +14,20 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: npm run build && npm run build:bundle
+        run: pnpm run build
 
   lint:
     runs-on: ubuntu-latest
@@ -32,16 +36,20 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: npm run lint
+        run: pnpm run lint
 
   test:
     runs-on: ubuntu-latest
@@ -50,16 +58,20 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Test
-        run: npm test
+        run: pnpm test
 
   publish:
     needs: [compile, lint, test]
@@ -90,28 +102,57 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "suffix=$SUFFIX" >> $GITHUB_OUTPUT
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Set version
         run: |
-          npm version ${{ steps.version.outputs.version }} --no-git-tag-version
-          echo "package.json version set to $(node -p "require('./package.json').version")"
+          VERSION="${{ steps.version.outputs.version }}"
+          (cd dictation && pnpm version "$VERSION" --no-git-tag-version)
+          (cd ambient && pnpm version "$VERSION" --no-git-tag-version)
+          echo "dictation: $(node -p "require('./dictation/package.json').version")"
+          echo "ambient: $(node -p "require('./ambient/package.json').version")"
 
       - name: Build
-        run: npm run build && npm run build:bundle
+        run: pnpm run build
 
-      - name: Publish to npm
+      - name: Publish @corti/dictation-web
         run: |
           publish() {  # use latest npm to ensure OIDC support
             npx -y npm@latest publish "$@"
           }
           SUFFIX="${{ steps.version.outputs.suffix }}"
+          cd dictation
+          if [[ -n "$SUFFIX" ]]; then
+            publish --access public --tag "$SUFFIX"
+          else
+            PKG_NAME=$(node -p "require('./package.json').name")
+            PKG_VERSION=$(node -p "require('./package.json').version")
+            CURRENT_LATEST=$(npm view "${PKG_NAME}" dist-tags.latest 2>/dev/null || echo "0.0.0")
+            if npx -y semver "${PKG_VERSION}" -r "<${CURRENT_LATEST}" > /dev/null 2>&1; then
+              echo "Publishing ${PKG_VERSION} with --tag backport (current latest is ${CURRENT_LATEST})"
+              publish --access public --tag backport
+            else
+              publish --access public
+            fi
+          fi
+
+      - name: Publish @corti/ambient-web
+        run: |
+          publish() {  # use latest npm to ensure OIDC support
+            npx -y npm@latest publish "$@"
+          }
+          SUFFIX="${{ steps.version.outputs.suffix }}"
+          cd ambient
           if [[ -n "$SUFFIX" ]]; then
             publish --access public --tag "$SUFFIX"
           else

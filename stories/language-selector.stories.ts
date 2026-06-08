@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import { html, nothing } from "lit";
 import { action } from "storybook/actions";
-import type { DictationLanguageSelector } from "../src/components/language-selector.js";
+import type { DictationLanguageSelector } from "../dictation/src/components/dictation-language-selector.js";
 
-import "../src/components/language-selector.js";
-import "../src/contexts/dictation-context.js";
+import "../dictation/src/components/dictation-language-selector.js";
+import "../dictation/src/contexts/dictation-context.js";
 
-import type { DictationRoot } from "../src/contexts/dictation-context.js";
+import type { DictationRoot } from "../dictation/src/contexts/dictation-context.js";
 import { languages } from "./helpers.js";
 
 export type LanguageSelectorStory = DictationLanguageSelector &

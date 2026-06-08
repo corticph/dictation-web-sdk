@@ -1,0 +1,50 @@
+{
+  "name": "@corti/dictation-web",
+  "description": "Web component for Corti Dictation",
+  "author": "Corti ApS",
+  "version": "0.0.0-dev",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/bundle.js",
+  "module": "dist/bundle.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/bundle.js",
+      "default": "./dist/bundle.js"
+    }
+  },
+  "jsdelivr": "./dist/bundle.js",
+  "browser": "./dist/bundle.js",
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://docs.corti.ai",
+    "email": "help@corti.ai"
+  },
+  "repository": "github:corticph/speech-web-components",
+  "documentation": "https://docs.corti.ai/sdk/dictation",
+  "homepage": "https://docs.corti.ai/sdk/dictation",
+  "keywords": [
+    "corti",
+    "dictation",
+    "web",
+    "sdk",
+    "speech",
+    "recognition",
+    "transcription",
+    "audio",
+    "medical",
+    "healthcare"
+  ],
+  "dependencies": {
+    "@corti/sdk": "3.0.0",
+    "@lit/context": "^1.1.6",
+    "lit": "^3.3.3"
+  },
+  "scripts": {
+    "build": "tsc -b && node ../scripts/build-package.mjs dictation"
+  }
+}

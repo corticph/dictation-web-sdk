@@ -7,7 +7,7 @@ tsconfig.tsbuildinfo
 .DS_Store
 
 ## npm
-/node_modules/
+**/node_modules/
 /npm-debug.log
 
 ## testing
@@ -18,8 +18,9 @@ tsconfig.tsbuildinfo
 
 # build
 /_site/
-/dist/
+**/dist/
 /out-tsc/
+**/.tsbuildinfo
 
 storybook-static
 custom-elements.json
