@@ -12,8 +12,8 @@ importers:
         specifier: ^2.3.6
         version: 2.4.16
       '@corti/sdk':
-        specifier: 3.0.0
-        version: 3.0.0
+        specifier: 4.0.0-rc
+        version: 4.0.0-rc
       '@custom-elements-manifest/analyzer':
         specifier: ^0.10.3
         version: 0.10.10
@@ -84,8 +84,8 @@ importers:
   ambient:
     dependencies:
       '@corti/sdk':
-        specifier: 3.0.0
-        version: 3.0.0
+        specifier: 4.0.0-rc
+        version: 4.0.0-rc
       '@lit/context':
         specifier: ^1.1.6
         version: 1.1.6
@@ -96,8 +96,8 @@ importers:
   dictation:
     dependencies:
       '@corti/sdk':
-        specifier: 3.0.0
-        version: 3.0.0
+        specifier: 4.0.0-rc
+        version: 4.0.0-rc
       '@lit/context':
         specifier: ^1.1.6
         version: 1.1.6
@@ -188,8 +188,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@corti/sdk@3.0.0':
-    resolution: {integrity: sha512-MWuhqsU/G8DGARrq8eMfm9GjwsrKvvvKKymeP+WxaV3wGNogWWPBidrtScIabjo64Okv7+79gxArelwUc2X8VQ==}
+  '@corti/sdk@4.0.0-rc':
+    resolution: {integrity: sha512-fXdrkeb9WQLoYEZX+Z5LJwnKLVl3wCC7EteOhFFyKxdveLdNa0q5owSTAqHYJb0VseNLRPzxTHCnLmLF+z8Hag==}
     engines: {node: '>=18.0.0'}
 
   '@custom-elements-manifest/analyzer@0.10.10':
@@ -3874,7 +3874,7 @@ snapshots:
   '@biomejs/cli-win32-x64@2.4.16':
     optional: true
 
-  '@corti/sdk@3.0.0':
+  '@corti/sdk@4.0.0-rc':
     dependencies:
       ws: 8.21.0
     transitivePeerDependencies:
