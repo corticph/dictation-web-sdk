@@ -10,7 +10,7 @@ export const DEFAULT_VIRTUAL_MODE_PARTICIPANTS: Corti.StreamConfigParticipant[] 
 export const DEFAULT_AMBIENT_CONFIG: Corti.StreamConfig = {
   mode: { outputLocale: "en", type: "facts" },
   transcription: {
-    isDiarization: true,
+    diarize: true,
     isMultichannel: false,
     participants: [],
     primaryLanguage: "en",
