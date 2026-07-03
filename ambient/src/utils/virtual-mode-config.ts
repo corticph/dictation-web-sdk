@@ -12,7 +12,7 @@ export function applyVirtualModeToAmbientConfig(
       ...base,
       transcription: {
         ...base.transcription,
-        isDiarization: false,
+        diarize: false,
         isMultichannel: true,
         participants: existingParticipants?.length
           ? existingParticipants
@@ -25,7 +25,7 @@ export function applyVirtualModeToAmbientConfig(
     ...base,
     transcription: {
       ...base.transcription,
-      isDiarization: true,
+      diarize: true,
       isMultichannel: false,
       participants:
         existingParticipants === DEFAULT_VIRTUAL_MODE_PARTICIPANTS
