@@ -119,6 +119,7 @@ jobs:
           VERSION="${{ steps.version.outputs.version }}"
           (cd dictation && pnpm version "$VERSION" --no-git-tag-version)
           (cd ambient && pnpm version "$VERSION" --no-git-tag-version)
+          sed -i "s/WEB_COMPONENT_VERSION = \"[^\"]*\"/WEB_COMPONENT_VERSION = \"${VERSION}\"/" dictation/src/version.ts ambient/src/version.ts
           echo "dictation: $(node -p "require('./dictation/package.json').version")"
           echo "ambient: $(node -p "require('./ambient/package.json').version")"
 

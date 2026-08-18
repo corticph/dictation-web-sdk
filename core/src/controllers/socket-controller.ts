@@ -54,6 +54,7 @@ export abstract class SocketController<
   #connectingPromise: Promise<boolean | "superseded"> | null = null;
   #isConnecting = false;
 
+  protected abstract readonly _analytics: Record<string, string>;
   protected abstract _connectThroughProxy(
     config: TConfig,
     proxy: ProxyOptions,
@@ -95,6 +96,7 @@ export abstract class SocketController<
     };
 
     this.#cortiClient = new CortiClient({
+      analytics: this._analytics,
       auth,
       environment: this.host._region,
       tenantName: this.host._tenantName,

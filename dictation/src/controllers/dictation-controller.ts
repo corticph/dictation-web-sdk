@@ -1,11 +1,13 @@
 import { SocketController } from "@core/controllers/socket-controller.js";
 import type { TranscribeMessage } from "@core/socket-messages.js";
 import type { ProxyOptions } from "@core/types.js";
+import { proxyWithAnalytics, speechAnalytics } from "@core/utils/analytics.js";
 import {
   type Corti,
   type CortiClient,
   CortiWebSocketProxyClient,
 } from "@corti/sdk";
+import { WEB_COMPONENT_NAME, WEB_COMPONENT_VERSION } from "../version.js";
 
 export type { TranscribeMessage } from "@core/socket-messages.js";
 
@@ -24,6 +26,11 @@ export class DictationController extends SocketController<
   Corti.TranscribeConfig,
   TranscribeSocket
 > {
+  protected readonly _analytics = speechAnalytics(
+    WEB_COMPONENT_NAME,
+    WEB_COMPONENT_VERSION,
+  );
+
   async stopRecording(): Promise<void> {
     await this.pause();
   }
@@ -36,7 +43,7 @@ export class DictationController extends SocketController<
       // awaitConfiguration: false — CONFIG_* appears in network activity before the socket is configured server-side
       awaitConfiguration: false,
       configuration: dictationConfig,
-      proxy,
+      proxy: proxyWithAnalytics(proxy, this._analytics),
     });
   }
 
