@@ -2,9 +2,9 @@ import { type Corti, type CortiAuth, CortiClient } from "@corti/sdk";
 import type { ReactiveController, ReactiveControllerHost } from "lit";
 import { errorEvent, languagesChangedEvent } from "../utils/events.js";
 import {
-  enabledLanguageCodes,
   getLanguagesByRegion,
   getPreferredDefaultLanguage,
+  languageCodesFromList,
 } from "../utils/languages.js";
 
 interface LanguagesControllerHost extends ReactiveControllerHost {
@@ -137,7 +137,7 @@ export class LanguagesController implements ReactiveController {
 
     const result = await client.languages.list({ endpoint });
 
-    return enabledLanguageCodes(result.languages, endpoint);
+    return languageCodesFromList(result.languages);
   }
 
   #languagesListEndpoint(): Corti.LanguagesListRequestEndpoint | undefined {

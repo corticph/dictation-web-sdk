@@ -1,21 +1,32 @@
 import { expect } from "@open-wc/testing";
-import { enabledLanguageCodes } from "../core/src/utils/languages.js";
+import { languageCodesFromList } from "../core/src/utils/languages.js";
 
-describe("enabledLanguageCodes", () => {
-  const payload = {
-    da: { streams: { enabled: true }, transcribe: { enabled: true } },
-    en: { streams: { enabled: true }, transcribe: { enabled: false } },
-    sv: { streams: { enabled: false }, transcribe: { enabled: true } },
-  };
-
-  it("keeps codes enabled for the requested endpoint", () => {
-    expect(enabledLanguageCodes(payload, "transcribe")).to.deep.equal([
-      "da",
-      "sv",
-    ]);
-    expect(enabledLanguageCodes(payload, "streams")).to.deep.equal([
-      "da",
-      "en",
-    ]);
+describe("languageCodesFromList", () => {
+  it("uses the map keys from GET /languages", () => {
+    expect(
+      languageCodesFromList({
+        bg: {
+          endpoints: {
+            streams: { enabled: true },
+            transcribe: { enabled: true },
+            transcripts: { enabled: false },
+          },
+        },
+        da: {
+          endpoints: {
+            streams: { enabled: true },
+            transcribe: { enabled: true },
+            transcripts: { enabled: true },
+          },
+        },
+        "en-x-noformat": {
+          endpoints: {
+            streams: { enabled: true },
+            transcribe: { enabled: true },
+            transcripts: { enabled: true },
+          },
+        },
+      }),
+    ).to.deep.equal(["bg", "da", "en-x-noformat"]);
   });
 });

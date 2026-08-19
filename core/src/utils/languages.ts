@@ -61,17 +61,9 @@ export function getLanguagesByRegion(region?: string): {
   return { defaultLanguage, languages };
 }
 
-type LanguageEndpoints = Record<
-  Corti.LanguagesListRequestEndpoint,
-  { enabled: boolean }
->;
-
-export function enabledLanguageCodes(
+/** Codes from GET /languages. The `endpoint` query already limits the map to enabled languages. */
+export function languageCodesFromList(
   languages: Corti.LanguagesListResponse["languages"],
-  endpoint: Corti.LanguagesListRequestEndpoint,
 ): Corti.TranscribeSupportedLanguage[] {
-  return Object.entries(languages as Record<string, LanguageEndpoints>)
-    .filter(([, value]) => value[endpoint].enabled)
-    .map(([code]) => code)
-    .sort();
+  return Object.keys(languages).sort();
 }
