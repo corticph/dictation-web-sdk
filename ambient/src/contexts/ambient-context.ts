@@ -1,11 +1,14 @@
+import { analyticsContext } from "@core/contexts/mixins/analytics-context.js";
 import { RootContext } from "@core/contexts/root-context.js";
+import { speechAnalytics } from "@core/utils/analytics.js";
 import { safeCustomElement } from "@core/utils/custom-elements.js";
 import type { Corti } from "@corti/sdk";
 import { createContext, provide } from "@lit/context";
 import type { PropertyValues } from "lit";
-import { property } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 import { DEFAULT_AMBIENT_CONFIG } from "../constants.js";
 import { applyVirtualModeToAmbientConfig } from "../utils/virtual-mode-config.js";
+import { WEB_COMPONENT_NAME, WEB_COMPONENT_VERSION } from "../version.js";
 
 export const ambientConfigContext = createContext<
   Corti.StreamConfig | undefined
@@ -19,6 +22,10 @@ export const virtualModeContext = createContext<boolean>(Symbol("virtualMode"));
 
 @safeCustomElement("ambient-root")
 export class AmbientRoot extends RootContext {
+  @provide({ context: analyticsContext })
+  @state()
+  _analytics = speechAnalytics(WEB_COMPONENT_NAME, WEB_COMPONENT_VERSION);
+
   @provide({ context: ambientConfigContext })
   @property({ attribute: false, type: Object })
   ambientConfig: Corti.StreamConfig = DEFAULT_AMBIENT_CONFIG;

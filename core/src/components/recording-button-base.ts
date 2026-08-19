@@ -9,6 +9,7 @@ import {
 } from "lit";
 import { property, state } from "lit/decorators.js";
 import { AUDIO_CHUNK_INTERVAL_MS } from "../constants.js";
+import { analyticsContext } from "../contexts/mixins/analytics-context.js";
 import {
   accessTokenContext,
   authConfigContext,
@@ -82,6 +83,10 @@ export abstract class RecordingButtonBase<
   @consume({ context: selectedDeviceContext, subscribe: true })
   @state()
   _selectedDevice?: MediaDeviceInfo;
+
+  @consume({ context: analyticsContext, subscribe: true })
+  @state()
+  _analytics?: Record<string, string>;
 
   @consume({ context: accessTokenContext, subscribe: true })
   @state()

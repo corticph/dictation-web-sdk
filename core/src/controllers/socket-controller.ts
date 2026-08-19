@@ -7,6 +7,7 @@ import { errorEvent } from "../utils/events.js";
 export interface SocketControllerHost extends ReactiveControllerHost {
   dispatchEvent: (event: Event) => void;
   _accessToken?: string;
+  _analytics?: Record<string, string>;
   _authConfig?: CortiAuth.AuthTokenDerivable;
   _region?: string;
   _tenantName?: string;
@@ -55,7 +56,6 @@ export abstract class SocketController<
   #connectingPromise: Promise<boolean | "superseded"> | null = null;
   #isConnecting = false;
 
-  protected abstract readonly _analytics: Record<string, string>;
   protected abstract _connectThroughProxy(
     config: TConfig,
     proxy: ProxyOptions,
@@ -81,7 +81,9 @@ export abstract class SocketController<
 
     return this._connectThroughProxy(
       config,
-      proxyWithAnalytics(proxyOptions, this._analytics),
+      this.host._analytics
+        ? proxyWithAnalytics(proxyOptions, this.host._analytics)
+        : proxyOptions,
     );
   }
 
@@ -100,7 +102,7 @@ export abstract class SocketController<
     };
 
     this.#cortiClient = new CortiClient({
-      analytics: this._analytics,
+      analytics: this.host._analytics,
       auth,
       environment: this.host._region,
       tenantName: this.host._tenantName,
