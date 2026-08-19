@@ -54,6 +54,14 @@ export class DictationRoot extends RootContext {
   protected override willUpdate(changedProperties: PropertyValues): void {
     super.willUpdate(changedProperties);
 
+    if (changedProperties.has("analytics")) {
+      this._analytics = speechAnalytics(
+        WEB_COMPONENT_NAME,
+        WEB_COMPONENT_VERSION,
+        this.analytics,
+      );
+    }
+
     if (!changedProperties.has("dictationConfig")) {
       return;
     }

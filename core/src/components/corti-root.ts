@@ -69,6 +69,13 @@ export class CortiRoot<
   socketProxy?: ProxyOptions;
 
   /**
+   * Extra keys on `x-corti-analytics`. `web_component` and
+   * `web_component_version` are reserved by the component.
+   */
+  @property({ attribute: false, type: Object })
+  analytics?: Record<string, string>;
+
+  /**
    * Which settings should be available in the UI.
    *  If an empty array is passed, the settings will be disabled entirely.
    */

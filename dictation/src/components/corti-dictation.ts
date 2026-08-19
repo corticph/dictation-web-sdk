@@ -101,6 +101,7 @@ export class CortiDictation extends CortiRoot<
         class=${classMap({ hidden: isHidden })}
         .accessToken=${this.accessToken}
         .authConfig=${this.authConfig}
+        .analytics=${this.analytics}
         .socketUrl=${this.socketUrl}
         .socketProxy=${this.socketProxy}
         .dictationConfig=${this._dictationConfig}

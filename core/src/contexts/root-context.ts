@@ -18,6 +18,13 @@ export class RootContext extends DevicesContextMixin(
   @property({ type: Boolean })
   noWrapper: boolean = false;
 
+  /**
+   * Extra keys on `x-corti-analytics`. `web_component` and
+   * `web_component_version` are reserved by the component.
+   */
+  @property({ attribute: false, type: Object })
+  analytics?: Record<string, string>;
+
   static styles: CSSResultGroup = [ComponentStyles];
 
   render() {

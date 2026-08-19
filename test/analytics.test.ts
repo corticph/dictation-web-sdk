@@ -6,10 +6,16 @@ import {
 } from "../core/src/utils/analytics.js";
 
 describe("speech analytics", () => {
-  it("builds web_component keys for the SDK analytics payload", () => {
-    expect(speechAnalytics("@corti/dictation-web", "1.2.3")).to.deep.equal({
+  it("merges extra keys and keeps web_component identity", () => {
+    expect(
+      speechAnalytics("@corti/dictation-web", "1.2.3", {
+        web_component: "spoof",
+        workflow: "ambient-scribe",
+      }),
+    ).to.deep.equal({
       web_component: "@corti/dictation-web",
       web_component_version: "1.2.3",
+      workflow: "ambient-scribe",
     });
   });
 

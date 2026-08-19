@@ -5,8 +5,10 @@ export const X_CORTI_ANALYTICS = "x-corti-analytics";
 export function speechAnalytics(
   webComponent: string,
   webComponentVersion: string,
+  extra?: Record<string, string>,
 ): Record<string, string> {
   return {
+    ...extra,
     web_component: webComponent,
     web_component_version: webComponentVersion,
   };
