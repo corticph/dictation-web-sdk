@@ -6,11 +6,11 @@ import {
 } from "../core/src/utils/analytics.js";
 
 describe("speech analytics", () => {
-  it("merges extra keys and keeps web_component identity", () => {
+  it("merges extra keys, lowercases them, and keeps web_component identity", () => {
     expect(
       speechAnalytics("@corti/dictation-web", "1.2.3", {
+        Workflow: "Ambient-Scribe",
         web_component: "spoof",
-        workflow: "ambient-scribe",
       }),
     ).to.deep.equal({
       web_component: "@corti/dictation-web",
@@ -28,8 +28,11 @@ describe("speech analytics", () => {
 
     expect(proxy.url).to.equal("wss://proxy.example/stream");
     expect(proxy.queryParameters?.foo).to.equal("bar");
-    expect(proxy.queryParameters?.[X_CORTI_ANALYTICS]).to.equal(
-      JSON.stringify(analytics),
-    );
+    expect(
+      JSON.parse(proxy.queryParameters?.[X_CORTI_ANALYTICS] ?? "{}"),
+    ).to.deep.equal({
+      web_component: "@corti/ambient-web",
+      web_component_version: "1.2.3",
+    });
   });
 });

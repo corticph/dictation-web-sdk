@@ -81,9 +81,7 @@ export abstract class SocketController<
 
     return this._connectThroughProxy(
       config,
-      this.host._analytics
-        ? proxyWithAnalytics(proxyOptions, this.host._analytics)
-        : proxyOptions,
+      proxyWithAnalytics(proxyOptions, this.host._analytics),
     );
   }
 
