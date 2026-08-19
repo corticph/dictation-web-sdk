@@ -26,6 +26,13 @@ export class AmbientRoot extends RootContext {
   @state()
   _analytics = speechAnalytics(WEB_COMPONENT_NAME, WEB_COMPONENT_VERSION);
 
+  /**
+   * Published package version. `0.0.0-dev` in local builds.
+   */
+  get version(): string {
+    return WEB_COMPONENT_VERSION;
+  }
+
   @provide({ context: ambientConfigContext })
   @property({ attribute: false, type: Object })
   ambientConfig: Corti.StreamConfig = DEFAULT_AMBIENT_CONFIG;

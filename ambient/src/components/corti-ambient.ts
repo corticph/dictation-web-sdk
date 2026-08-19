@@ -9,6 +9,7 @@ import { classMap } from "lit/directives/class-map.js";
 import { ref } from "lit/directives/ref.js";
 import { DEFAULT_AMBIENT_CONFIG } from "../constants.js";
 import type { AmbientRoot } from "../contexts/ambient-context.js";
+import { WEB_COMPONENT_VERSION } from "../version.js";
 import type { AmbientRecordingButton } from "./ambient-recording-button.js";
 
 import "../contexts/ambient-context.js";
@@ -23,6 +24,13 @@ export class CortiAmbient extends CortiRoot<
   // ─────────────────────────────────────────────────────────────────────────────
   // Properties
   // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Published package version. `0.0.0-dev` in local builds.
+   */
+  get version(): string {
+    return WEB_COMPONENT_VERSION;
+  }
 
   @property({
     converter: commaSeparatedConverter,

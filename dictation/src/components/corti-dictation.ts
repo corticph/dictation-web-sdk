@@ -7,6 +7,7 @@ import { classMap } from "lit/directives/class-map.js";
 import { ref } from "lit/directives/ref.js";
 import { DEFAULT_DICTATION_CONFIG } from "../constants.js";
 import type { DictationRoot } from "../contexts/dictation-context.js";
+import { WEB_COMPONENT_VERSION } from "../version.js";
 import type { DictationRecordingButton } from "./dictation-recording-button.js";
 
 import "../contexts/dictation-context.js";
@@ -21,6 +22,13 @@ export class CortiDictation extends CortiRoot<
   // ─────────────────────────────────────────────────────────────────────────────
   // Properties
   // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Published package version. `0.0.0-dev` in local builds.
+   */
+  get version(): string {
+    return WEB_COMPONENT_VERSION;
+  }
 
   /**
    * Overrides any device selection and instead uses getDisplayMedia to stream system audio.

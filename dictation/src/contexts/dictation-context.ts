@@ -23,6 +23,13 @@ export class DictationRoot extends RootContext {
   // Properties
   // ─────────────────────────────────────────────────────────────────────────────
 
+  /**
+   * Published package version. `0.0.0-dev` in local builds.
+   */
+  get version(): string {
+    return WEB_COMPONENT_VERSION;
+  }
+
   @provide({ context: dictationConfigContext })
   @property({ attribute: false, type: Object })
   dictationConfig?: Corti.TranscribeConfig;
