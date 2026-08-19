@@ -1,7 +1,7 @@
 import { SocketController } from "@core/controllers/socket-controller.js";
 import type { TranscribeMessage } from "@core/socket-messages.js";
 import type { ProxyOptions } from "@core/types.js";
-import { proxyWithAnalytics, speechAnalytics } from "@core/utils/analytics.js";
+import { speechAnalytics } from "@core/utils/analytics.js";
 import {
   type Corti,
   type CortiClient,
@@ -43,7 +43,7 @@ export class DictationController extends SocketController<
       // awaitConfiguration: false — CONFIG_* appears in network activity before the socket is configured server-side
       awaitConfiguration: false,
       configuration: dictationConfig,
-      proxy: proxyWithAnalytics(proxy, this._analytics),
+      proxy,
     });
   }
 
