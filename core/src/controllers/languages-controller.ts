@@ -1,20 +1,29 @@
-import type { Corti } from "@corti/sdk";
+import { type Corti, type CortiAuth, CortiClient } from "@corti/sdk";
 import type { ReactiveController, ReactiveControllerHost } from "lit";
 import { errorEvent, languagesChangedEvent } from "../utils/events.js";
-import { getLanguagesByRegion } from "../utils/languages.js";
+import {
+  enabledLanguageCodes,
+  getLanguagesByRegion,
+  getPreferredDefaultLanguage,
+} from "../utils/languages.js";
 
 interface LanguagesControllerHost extends ReactiveControllerHost {
+  localName: string;
   region?: string;
+  tenantName?: string;
   dispatchEvent(event: CustomEvent): boolean;
   requestUpdate(): void;
+  _accessToken?: string;
+  _analytics?: Record<string, string>;
+  _authConfig?: CortiAuth.AuthTokenDerivable;
   _languages?: Corti.TranscribeSupportedLanguage[];
   _selectedLanguage?: Corti.TranscribeSupportedLanguage;
 }
 
 /**
- * Controller that manages automatic language loading based on region.
- * Loads languages when they're not present and handles region changes.
- * Reacts to updates and automatically loads languages when needed.
+ * Controller that manages automatic language loading.
+ * Prefers GET /languages when auth is available. Falls back to the region list
+ * only when the request is skipped (no auth) or fails. An empty API list is kept.
  */
 export class LanguagesController implements ReactiveController {
   host: LanguagesControllerHost;
@@ -62,9 +71,21 @@ export class LanguagesController implements ReactiveController {
     this.#loadingLanguages = true;
 
     try {
-      const { languages, defaultLanguage } = getLanguagesByRegion(
-        this.host.region,
-      );
+      let languages: Corti.TranscribeSupportedLanguage[] | undefined;
+
+      try {
+        languages = await this.#languagesFromApi();
+      } catch (error) {
+        this.host.dispatchEvent(
+          errorEvent(
+            `Failed to load languages from API, using region defaults: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          ),
+        );
+      }
+
+      languages ??= getLanguagesByRegion(this.host.region).languages;
 
       this.#autoLoadedLanguages = true;
       this.host._languages = languages;
@@ -73,7 +94,7 @@ export class LanguagesController implements ReactiveController {
       const selectedLanguage =
         previousLanguage && languages.includes(previousLanguage)
           ? previousLanguage
-          : defaultLanguage;
+          : getPreferredDefaultLanguage(languages);
 
       this.host._selectedLanguage = selectedLanguage;
       this.host.requestUpdate();
@@ -85,6 +106,50 @@ export class LanguagesController implements ReactiveController {
     } finally {
       this.#loadingLanguages = false;
     }
+  }
+
+  async #languagesFromApi(): Promise<
+    Corti.TranscribeSupportedLanguage[] | undefined
+  > {
+    if (!this.host._authConfig && !this.host._accessToken) {
+      return;
+    }
+
+    const endpoint = this.#languagesListEndpoint();
+
+    if (!endpoint) {
+      return;
+    }
+
+    const auth: CortiAuth.AuthTokenDerivable = this.host._authConfig || {
+      accessToken: this.host._accessToken || "",
+      refreshAccessToken: () => ({
+        accessToken: this.host._accessToken || "",
+      }),
+    };
+
+    const client = new CortiClient({
+      analytics: this.host._analytics,
+      auth,
+      environment: this.host.region,
+      tenantName: this.host.tenantName,
+    });
+
+    const result = await client.languages.list({ endpoint });
+
+    return enabledLanguageCodes(result.languages, endpoint);
+  }
+
+  #languagesListEndpoint(): Corti.LanguagesListRequestEndpoint | undefined {
+    if (this.host.localName === "ambient-root") {
+      return "streams";
+    }
+
+    if (this.host.localName === "dictation-root") {
+      return "transcribe";
+    }
+
+    return undefined;
   }
 
   /**

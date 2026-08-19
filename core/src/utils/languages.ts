@@ -60,3 +60,18 @@ export function getLanguagesByRegion(region?: string): {
 
   return { defaultLanguage, languages };
 }
+
+type LanguageEndpoints = Record<
+  Corti.LanguagesListRequestEndpoint,
+  { enabled: boolean }
+>;
+
+export function enabledLanguageCodes(
+  languages: Corti.LanguagesListResponse["languages"],
+  endpoint: Corti.LanguagesListRequestEndpoint,
+): Corti.TranscribeSupportedLanguage[] {
+  return Object.entries(languages as Record<string, LanguageEndpoints>)
+    .filter(([, value]) => value[endpoint].enabled)
+    .map(([code]) => code)
+    .sort();
+}
