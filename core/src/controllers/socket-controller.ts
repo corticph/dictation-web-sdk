@@ -1,11 +1,13 @@
 import { type CortiAuth, CortiClient } from "@corti/sdk";
 import type { ReactiveController, ReactiveControllerHost } from "lit";
 import type { ProxyOptions } from "../types.js";
+import { proxyWithAnalytics } from "../utils/analytics.js";
 import { errorEvent } from "../utils/events.js";
 
 export interface SocketControllerHost extends ReactiveControllerHost {
   dispatchEvent: (event: Event) => void;
   _accessToken?: string;
+  _analytics?: Record<string, string>;
   _authConfig?: CortiAuth.AuthTokenDerivable;
   _region?: string;
   _tenantName?: string;
@@ -77,7 +79,10 @@ export abstract class SocketController<
       throw new Error("Proxy URL is required when using proxy client");
     }
 
-    return this._connectThroughProxy(config, proxyOptions);
+    return this._connectThroughProxy(
+      config,
+      proxyWithAnalytics(proxyOptions, this.host._analytics),
+    );
   }
 
   async #openViaAuth(config: TConfig): Promise<TSocket> {
@@ -95,6 +100,7 @@ export abstract class SocketController<
     };
 
     this.#cortiClient = new CortiClient({
+      analytics: this.host._analytics,
       auth,
       environment: this.host._region,
       tenantName: this.host._tenantName,

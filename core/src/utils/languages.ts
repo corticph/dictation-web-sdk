@@ -60,3 +60,10 @@ export function getLanguagesByRegion(region?: string): {
 
   return { defaultLanguage, languages };
 }
+
+/** Codes from GET /languages. The `endpoint` query already limits the map to enabled languages. */
+export function languageCodesFromList(
+  languages: Corti.LanguagesListResponse["languages"],
+): Corti.TranscribeSupportedLanguage[] {
+  return Object.keys(languages).sort();
+}
